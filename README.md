@@ -53,28 +53,29 @@ partials/ contains reusable layout components (header, footer)
 
 ---
 
-🚀 Running Locally
+## 🚀 Running Locally
 You can run the site locally by simply opening index.html in your browser.
 
 Optionally, you can use a simple static server:
-
+```bash
 npx serve src
-✍️ Publishing Content
+```
+
+## ✍️ Publishing Content
 New articles are added as standalone HTML files under the posts/ directory.
 
 Each post follows a simple structure and can be linked directly from the homepage or topic pages.
 
-📄 License
-Code (HTML, CSS, JavaScript) is licensed under the MIT License.
+## 📄 License
+- **Code** (HTML, CSS, JavaScript) is licensed under the **MIT License**.
+- **Written content** (articles, explanations, diagrams) is licensed under
+**Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0).**
 
-Written content (articles, explanations, diagrams) is licensed under
-Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0).
+See the [`LICENSE`](LICENSE) file for details.
 
-See the LICENSE file and CONTENT_LICENSE.md for details.
-
-🤝 Contributions
+## 🤝 Contributions
 This is a personal educational project, but suggestions, corrections, and discussions are welcome via issues.
 
-📌 Motivation
+## 📌 Motivation
 Discrete mathematics is often seen as abstract or disconnected from practice.
 This project aims to bridge that gap by presenting concepts with intuition, rigor, and practical relevance for engineers.
