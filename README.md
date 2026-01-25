@@ -36,7 +36,6 @@ No frameworks, no backend, and no build dependencies are required to run the sit
 ## 📁 Project Structure
 
 ```text
-docs/
 ├─ index.html
 ├─ pages/
 ├─ posts/
