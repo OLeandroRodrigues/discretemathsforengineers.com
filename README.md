@@ -4,7 +4,7 @@
 
 The goal of this project is to present discrete mathematics in a clear, structured, and practical way, connecting formal theory with real-world engineering and computing problems.
 
-🌐 Website: https://discretemathsforengineer.com
+🌐 Website: https://discretemathsforengineers.com
 
 ---
 
@@ -36,7 +36,7 @@ No frameworks, no backend, and no build dependencies are required to run the sit
 ## 📁 Project Structure
 
 ```text
-src/
+docs/
 ├─ index.html
 ├─ pages/
 ├─ posts/
