@@ -1,0 +1,11 @@
+{
+  "name": "discretemathsforengineers-site",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "npm run build && npx serve dist"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

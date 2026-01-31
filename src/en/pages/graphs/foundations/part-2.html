@@ -1,0 +1,154 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graphs → Foundations · Part 2 — Graph</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graphs</a>
+        <span class="sep">›</span>
+        <span class="current">Foundations · Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graphs → Foundations</h2>
+          <p>Part 2 of 2 — Graph</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Foundations</strong>
+            <span>Part 2 of 2</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/foundations/part-1.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true" href="/en/pages/graphs/foundations/part-2.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/foundations/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/graphs/foundations/part-2.html">2</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Intuition</h3>
+              <p>
+                A <strong>graph</strong> is a set of vertices connected by edges.
+              </p>
+
+              <figure class="graph-figure">
+                <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet" role="img"
+                    aria-label="Example graph with vertices A, B, C, D, and E">
+
+                  <!-- EDGES: underlay -->
+                  <g fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M170 210 L320 90" />
+                    <path d="M170 210 L370 210" />
+                    <path d="M320 90 L370 210" />
+                    <path d="M370 210 L540 150" />
+                    <path d="M170 210 C210 305, 290 320, 340 290" />
+                    <path d="M340 290 C470 330, 560 260, 540 150" />
+                    <path d="M320 90 C430 75, 520 85, 540 150" />
+                  </g>
+
+                  <!-- EDGES: main -->
+                  <g fill="none" stroke="rgba(234,234,234,0.75)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M170 210 L320 90" />
+                    <path d="M170 210 L370 210" />
+                    <path d="M320 90 L370 210" />
+                    <path d="M370 210 L540 150" />
+                    <path d="M170 210 C210 305, 290 320, 340 290" />
+                    <path d="M340 290 C470 330, 560 260, 540 150" />
+                    <path d="M320 90 C430 75, 520 85, 540 150" />
+                  </g>
+
+                  <!-- NODES -->
+                  <g>
+                    <circle cx="320" cy="90"  r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                    <circle cx="170" cy="210" r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                    <circle cx="370" cy="210" r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                    <circle cx="540" cy="150" r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                    <circle cx="340" cy="290" r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                  </g>
+
+                  <!-- LABELS (badge + text) -->
+                  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                    font-size="17" font-weight="800" text-anchor="middle" dominant-baseline="middle">
+                    <g fill="rgba(26,188,156,0.95)">
+                      <circle cx="320" cy="90"  r="13"/>
+                      <circle cx="170" cy="210" r="13"/>
+                      <circle cx="370" cy="210" r="13"/>
+                      <circle cx="540" cy="150" r="13"/>
+                      <circle cx="340" cy="290" r="13"/>
+                    </g>
+                    <g fill="#0E2A25">
+                      <text x="320" y="90">A</text>
+                      <text x="170" y="210">B</text>
+                      <text x="370" y="210">C</text>
+                      <text x="540" y="150">D</text>
+                      <text x="340" y="290">E</text>
+                    </g>
+                  </g>
+                </svg>
+
+                <figcaption>
+                  Example of an undirected graph with five vertices.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>Notation</h3>
+
+              <p class="math">
+                Let <span class="katex-inline">\(G=(V,A)\)</span>, where:
+              </p>
+
+              <ul class="math-list">
+                <li><span class="katex-inline">\(V=\{A,B,C,D,E\}\)</span> is the set of vertices;</li>
+                <li><span class="katex-inline">\(A\)</span> is the set of edges (unordered pairs of vertices).</li>
+              </ul>
+
+              <p class="math">
+                In this example, one possible edge set is:
+              </p>
+
+              <div class="math-block">
+                \[
+                A=\{\{A,B\},\{B,C\},\{A,C\},\{A,D\},\{C,D\},\{B,E\},\{D,E\}\}
+                \]
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
