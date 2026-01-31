@@ -1,0 +1,38 @@
+# =====================
+# Node / npm
+# =====================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =====================
+# Build output
+# =====================
+dist/
+
+# =====================
+# OS / Editor
+# =====================
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# JetBrains
+.idea/
+
+# =====================
+# Environment files
+# =====================
+.env
+.env.*
+
+# =====================
+# Cache / temp
+# =====================
+.cache/
+.tmp/
+temp/
