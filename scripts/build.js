@@ -163,6 +163,44 @@ function buildHtmlUnderLang(lang, sharedPartials) {
   walk(langSrc);
 }
 
+/* ---------- root index redirect (/) ---------- */
+
+function writeRootIndexRedirect() {
+  const outFile = path.join(DIST, "index.html");
+
+  // Notes:
+  // - Works for custom domain (root = /)
+  // - Preserves querystring + hash
+  // - Uses location.replace so it doesn't pollute history
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="refresh" content="0; url=/en/" />
+  <link rel="canonical" href="/en/" />
+  <title>Discrete Maths for Engineers</title>
+  <meta name="robots" content="noindex" />
+  <script>
+    (function () {
+      var qs = location.search || "";
+      var h = location.hash || "";
+      // If user already landed in /en or /pt (some edge case), do nothing.
+      if (/\\/(en|pt)(\\/|$)/.test(location.pathname)) return;
+      location.replace("/en/" + qs + h);
+    })();
+  </script>
+</head>
+<body>
+  <noscript>
+    <p>Redirecting to <a href="/en/">/en/</a>…</p>
+  </noscript>
+</body>
+</html>`;
+
+  fs.writeFileSync(outFile, html, "utf8");
+}
+
 /* ---------- main ---------- */
 
 function main() {
@@ -175,6 +213,9 @@ function main() {
   }
 
   copyDir(SHARED_ASSETS, path.join(DIST, "assets"));
+
+  // Make https://discretemathsforengineers.com/ open EN by default
+  writeRootIndexRedirect();
 
   console.log("Build complete → dist/");
 }
