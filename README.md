@@ -36,18 +36,28 @@ No frameworks, no backend, and no build dependencies are required to run the sit
 ## 📁 Project Structure
 
 ```text
-├─ index.html
-├─ pages/
-├─ posts/
-├─ assets/
-│  ├─ css/
-│  ├─ js/
-│  └─ img/
-└─ partials/
-
-posts/ contains the published articles and notes
-assets/ contains stylesheets, scripts, images, and fonts
-partials/ contains reusable layout components (header, footer)
+discretemathsforengineers.com/
+├─ src/
+│  ├─ shared/
+│  │  ├─ partials/        # Shared layout components
+│  │  └─ assets/          # Global CSS and JavaScript
+│  │
+│  ├─ en/                 # English content
+│  │  ├─ index.html
+│  │  ├─ pages/           # Topics → Series → Parts
+│  │  └─ partials/        # Language-specific sidebar
+│  │
+│  ├─ pt/                 # Portuguese content
+│  │  ├─ index.html
+│  │  ├─ pages/           # Topics → Series → Parts
+│  │  └─ partials/        # Language-specific sidebar
+│
+├─ scripts/
+│  └─ build.js            # Static site generator
+│
+├─ dist/                  # Generated deploy
+├─ package.json
+└─ README.md
 ```
 
 ---

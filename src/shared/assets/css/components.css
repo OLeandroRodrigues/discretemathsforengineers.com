@@ -285,6 +285,27 @@ details.menu[open] .chev{ transform: rotate(90deg); }
   margin-top: 12px;
 }
 
+/* Grid for side-by-side cards (Part 2, comparisons, examples) */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure cards stretch nicely */
+.cards-grid .card {
+  height: 100%;
+}
+
+/* Mobile: stack cards vertically */
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .main-footer{
   margin-top: auto;
   padding: 12px 18px;
