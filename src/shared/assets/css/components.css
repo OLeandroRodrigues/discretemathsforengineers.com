@@ -266,6 +266,7 @@ details.menu[open] .chev{ transform: rotate(90deg); }
   background: rgba(0,0,0,0.18);
   padding: 14px 14px;
   border-top: 1px solid var(--border-strong);
+  min-width:0;
 }
 
 .card h3{
@@ -418,3 +419,6 @@ code{
   margin: 0;
 }
 
+.math-block{
+  overflow-x:auto;
+}
