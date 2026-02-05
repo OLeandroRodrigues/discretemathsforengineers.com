@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Graphs → Foundations · Part 1 — Graph</title>
+  <title>Graphs → Foundations · Part 1 — Vertex & Edge</title>
   {{> head}}
 </head>
 
@@ -26,7 +26,7 @@
       <div class="main-header">
         <div>
           <h2>Graphs → Foundations</h2>
-          <p>Part 1 of 7 — Graph</p>
+          <p>Part 1 of 9 — Vertex & Edge</p>
         </div>
       </div>
 
@@ -35,7 +35,7 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Series: Foundations</strong>
-            <span>Part 1 of 7</span>
+            <span>Part 1 of 9</span>
           </div>
 
           <div class="series-actions">
@@ -52,38 +52,72 @@
           <a class="pill" href="/en/pages/graphs/foundations/part-5.html">5</a>
           <a class="pill" href="/en/pages/graphs/foundations/part-6.html">6</a>
           <a class="pill" href="/en/pages/graphs/foundations/part-7.html">7</a>
+          <a class="pill" href="/en/pages/graphs/foundations/part-8.html">8</a>
+          <a class="pill" href="/en/pages/graphs/foundations/part-9.html">9</a>
         </div>
       </div>
 
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <section class="card">
-            <h3>Definition of a graph</h3>
-
-            <blockquote class="math-quote">
-              <p>
-                A graph <span class="math">\(G = (V, A)\)</span> is a mathematical structure defined by the sets:
-              </p>
-
-              <ul class="math-list">
-                <li>
-                  <span class="math">\(V\)</span>, a finite and non-empty set of vertices, with
-                  <span class="math">\(|V| = n\)</span>;
-                </li>
-                <li>
-                  <span class="math">\(A\)</span>, a set of
-                  <span class="math">\(|A| = m\)</span> edges, where each edge is an unordered pair of elements of
-                  <span class="math">\(V\)</span>.
-                </li>
-              </ul>
+            <section class="card">
+              <h3>Vertex</h3>
 
               <p class="math-note">
-                In a simple undirected graph, we have
-                <span class="math">\(A \subseteq \{\{u,v\} \mid u,v \in V,\; u \neq v\}\)</span>.
+                A <strong>vertex</strong> is one of the fundamental elements of a graph.
+                Formally, a vertex is an element of the set
+                <span class="math">\(V\)</span>.
               </p>
-            </blockquote>
-          </section>
+
+              <p class="math-note">
+                Intuitively, vertices represent the <em>objects</em> of the problem modeled
+                by the graph, such as cities, users, states, or points.
+              </p>
+
+              <p class="math-note">
+                The set of vertices is usually denoted by
+                <span class="math">\(V = \{v_1, v_2, \dots, v_n\}\)</span>,
+                where <span class="math">\(|V| = n\)</span>.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Edge</h3>
+
+              <p class="math-note">
+                An <strong>edge</strong> is a <strong>directed</strong> connection between two vertices.
+                Formally, an edge is an ordered pair
+                <span class="math">\((u, v)\)</span>, with
+                <span class="math">\(u, v \in V\)</span>.
+              </p>
+
+              <p class="math-note">
+                The edge <span class="math">\((u, v)\)</span> indicates that there is a connection
+                that starts at vertex <strong>u</strong> and ends at vertex <strong>v</strong>.
+              </p>
+
+              <p class="math-note">
+                The set of edge is denoted by
+                <span class="math">\(A \subseteq V \times V\)</span>,
+                and the number of edges is given by <span class="math">\(|A| = m\)</span>.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Important note</h3>
+
+              <p class="math-note">
+                In <strong>undirected graphs</strong>, connections have no direction and are
+                called <strong>edges</strong>, being represented by
+                <strong>unordered</strong> pairs of vertices.
+              </p>
+
+              <p class="math-note">
+                In <strong>directed graphs</strong>, the term
+                <strong>arc</strong> is used, emphasizing the existence of direction.
+              </p>
+            </section>
+
         </article>
       </div>
 
