@@ -1,8 +1,7 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Graphs → Foundations · Part 3 — Directed Graph</title>
+  <title>Graphs → Foundations · Part 3 — Graph</title>
   {{> head}}
 </head>
 
@@ -26,7 +25,7 @@
       <div class="main-header">
         <div>
           <h2>Graphs → Foundations</h2>
-          <p>Part 3 of 7 — Directed Graph</p>
+          <p>Part 3 of 9 — Graph</p>
         </div>
       </div>
 
@@ -35,7 +34,7 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Series: Foundations</strong>
-            <span>Part 3 of 7</span>
+            <span>Part 3 of 9</span>
           </div>
 
           <div class="series-actions">
@@ -52,6 +51,8 @@
           <a class="pill" href="/en/pages/graphs/foundations/part-5.html">5</a>
           <a class="pill" href="/en/pages/graphs/foundations/part-6.html">6</a>
           <a class="pill" href="/en/pages/graphs/foundations/part-7.html">7</a>
+          <a class="pill" href="/en/pages/graphs/foundations/part-8.html">8</a>
+          <a class="pill" href="/en/pages/graphs/foundations/part-9.html">9</a>
         </div>
       </div>
 
@@ -59,83 +60,36 @@
       <div class="content">
         <article class="prose">
           <div class="cards-grid">
-           <section class="card">
-             <h3>Intuition</h3>
-            <p>
-              A <strong>directed graph</strong> is a set of vertices connected by edges
-              that have a direction.
-            </p>
-            <p class="math-note">
-              Formally, each edge represents an ordered pair of vertices, indicating
-              the source and the destination.
-            </p>
+            <section class="card">
+              <h3>Intuition</h3>
+              <p>
+                A <strong>graph</strong> is a set of vertices connected by edges.
+              </p>
 
               <figure class="graph-figure">
-                <svg viewBox="0 0 720 360"
-                    preserveAspectRatio="xMidYMid meet"
-                    role="img"
-                    aria-label="Exemplo de grafo orientado com vértices A, B, C, D e E">
+                <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet" role="img"
+                    aria-label="Example graph with vertices A, B, C, D, and E">
 
-                  <!-- Perfect arrow: tip exactly at path end -->
-                  <defs>
-                    <marker id="arrow"
-                            viewBox="0 0 10 10"
-                            markerWidth="10"
-                            markerHeight="10"
-                            refX="10"
-                            refY="5"
-                            orient="auto"
-                            markerUnits="userSpaceOnUse">
-                      <path d="M 0 0 L 10 5 L 0 10 Z"
-                            fill="rgba(234,234,234,0.95)"/>
-                    </marker>
-                  </defs>
-
-                  <!-- EDGES (2 layers): underlay -->
-                  <g fill="none"
-                    stroke="rgba(234,234,234,0.35)"
-                    stroke-width="6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    marker-end="url(#arrow)">
-
-                    <!-- B -> A (endpoints on node border, r=28) -->
-                    <path d="M191.9 192.5 L298.1 107.5"/>
-
-                    <!-- B -> C -->
-                    <path d="M198 210 L342 210"/>
-
-                    <!-- A -> C -->
-                    <path d="M330.8 115.8 L359.2 184.2"/>
-
-                    <!-- C -> D -->
-                    <path d="M396.4 200.7 L513.6 159.3"/>
-
-                    <!-- B -> E (quadratic, endpoints on borders) -->
-                    <path d="M176.8 237.2 Q200 330 313.1 297.7"/>
-
-                    <!-- E -> D (quadratic, endpoints on borders; chega lindo em D) -->
-                    <path d="M367.2 283.2 Q460 260 523.5 172.6"/>
-
-                    <!-- A -> D (top arc; endpoints on borders) -->
-                    <path d="M347.0 82.6 Q430 60 518.3 132.3"/>
+                  <!-- EDGES: underlay -->
+                  <g fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M170 210 L320 90" />
+                    <path d="M170 210 L370 210" />
+                    <path d="M320 90 L370 210" />
+                    <path d="M370 210 L540 150" />
+                    <path d="M170 210 C210 305, 290 320, 340 290" />
+                    <path d="M340 290 C470 330, 560 260, 540 150" />
+                    <path d="M320 90 C430 75, 520 85, 540 150" />
                   </g>
 
                   <!-- EDGES: main -->
-                  <g fill="none"
-                    stroke="rgba(234,234,234,0.78)"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    marker-end="url(#arrow)">
-
-                    <path d="M191.9 192.5 L298.1 107.5"/>      <!-- B -> A -->
-                    <path d="M198 210 L342 210"/>              <!-- B -> C -->
-                    <path d="M330.8 115.8 L359.2 184.2"/>      <!-- A -> C -->
-                    <path d="M396.4 200.7 L513.6 159.3"/>      <!-- C -> D -->
-                    <path d="M176.8 237.2 Q200 330 313.1 297.7"/>  <!-- B -> E -->
-                    <path d="M367.2 283.2 Q460 260 523.5 172.6"/>   <!-- E -> D -->
-                    <path d="M347.0 82.6 Q430 60 518.3 132.3"/>     <!-- A -> D -->
+                  <g fill="none" stroke="rgba(234,234,234,0.75)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M170 210 L320 90" />
+                    <path d="M170 210 L370 210" />
+                    <path d="M320 90 L370 210" />
+                    <path d="M370 210 L540 150" />
+                    <path d="M170 210 C210 305, 290 320, 340 290" />
+                    <path d="M340 290 C470 330, 560 260, 540 150" />
+                    <path d="M320 90 C430 75, 520 85, 540 150" />
                   </g>
 
                   <!-- NODES -->
@@ -147,12 +101,9 @@
                     <circle cx="340" cy="290" r="28" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
                   </g>
 
-                  <!-- LABELS -->
+                  <!-- LABELS (badge + text) -->
                   <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
-                    font-size="17"
-                    font-weight="800"
-                    text-anchor="middle"
-                    dominant-baseline="middle">
+                    font-size="17" font-weight="800" text-anchor="middle" dominant-baseline="middle">
                     <g fill="rgba(26,188,156,0.95)">
                       <circle cx="320" cy="90"  r="13"/>
                       <circle cx="170" cy="210" r="13"/>
@@ -171,9 +122,32 @@
                 </svg>
 
                 <figcaption>
-                  Example of a directed graph (digraph) with five vertices.
+                  Example of an undirected graph with five vertices.
                 </figcaption>
               </figure>
+            </section>
+
+            <section class="card">
+              <h3>Notation</h3>
+
+              <p class="math">
+                Let <span class="katex-inline">\(G=(V,A)\)</span>, where:
+              </p>
+
+              <ul class="math-list">
+                <li><span class="katex-inline">\(V=\{A,B,C,D,E\}\)</span> is the set of vertices;</li>
+                <li><span class="katex-inline">\(A\)</span> is the set of edges (unordered pairs of vertices).</li>
+              </ul>
+
+              <p class="math">
+                In this example, one possible edge set is:
+              </p>
+
+              <div class="math-block">
+                \[
+                A=\{\{A,B\},\{B,C\},\{A,C\},\{A,D\},\{C,D\},\{B,E\},\{D,E\}\}
+                \]
+              </div>
             </section>
           </div>
         </article>

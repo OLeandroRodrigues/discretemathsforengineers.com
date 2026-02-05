@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <title>Grafos → Fundamentos · Parte 1 — Grafo</title>
+  <title>Grafos → Fundamentos · Parte 1 — Vértice e Arco</title>
   {{> head}}
 </head>
 
@@ -25,7 +25,7 @@
       <div class="main-header">
         <div>
           <h2>Grafos → Fundamentos</h2>
-          <p>Parte 1 de 7 — Grafo</p>
+          <p>Parte 1 de 9 — Vértice e Arco</p>
         </div>
       </div>
 
@@ -34,7 +34,7 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Fundamentos</strong>
-            <span>Parte 1 de 7</span>
+            <span>Parte 1 de 9</span>
           </div>
 
           <div class="series-actions">
@@ -51,6 +51,8 @@
           <a class="pill" href="/pt/pages/grafos/fundamentos/parte-5.html">5</a>
           <a class="pill" href="/pt/pages/grafos/fundamentos/parte-6.html">6</a>
           <a class="pill" href="/pt/pages/grafos/fundamentos/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/grafos/fundamentos/parte-8.html">8</a>
+          <a class="pill" href="/pt/pages/grafos/fundamentos/parte-9.html">9</a>
         </div>
       </div>
 
@@ -58,32 +60,63 @@
       <div class="content">
         <article class="prose">
           <section class="card">
-            <h3>Definição de grafo</h3>
+            <h3>Vértice</h3>
 
-            <blockquote class="math-quote">
-              <p>
-                Um grafo <span class="math">\(G = (V, A)\)</span> é uma estrutura matemática
-                constituída pelos conjuntos:
-              </p>
+            <p class="math-note">
+              Um <strong>vértice</strong> é um dos elementos fundamentais de um grafo.
+              Formalmente, um vértice é um elemento do conjunto
+              <span class="math">\(V\)</span>.
+            </p>
 
-              <ul class="math-list">
-                <li>
-                  <span class="math">\(V\)</span>, um conjunto finito e não vazio de vértices,
-                  com <span class="math">\(|V| = n\)</span>;
-                </li>
-                <li>
-                  <span class="math">\(A\)</span>, um conjunto com
-                  <span class="math">\(|A| = m\)</span> arestas, onde cada aresta é um par
-                  não ordenado de elementos de <span class="math">\(V\)</span>.
-                </li>
-              </ul>
+            <p class="math-note">
+              Intuitivamente, os vértices representam os <em>objetos</em> do problema modelado
+              pelo grafo, como cidades, usuários, estados ou pontos.
+            </p>
 
-              <p class="math-note">
-                Em um grafo simples não direcionado, vale que
-                <span class="math">\(A \subseteq \{\{u,v\} \mid u,v \in V,\; u \neq v\}\)</span>.
-              </p>
-            </blockquote>
+            <p class="math-note">
+              O conjunto de vértices é geralmente denotado por
+              <span class="math">\(V = \{v_1, v_2, \dots, v_n\}\)</span>,
+              onde <span class="math">\(|V| = n\)</span>.
+            </p>
           </section>
+
+          <section class="card">
+            <h3>Arco</h3>
+
+            <p class="math-note">
+              Um <strong>arco</strong> é uma conexão <strong>direcionada</strong> entre dois vértices.
+              Formalmente, um arco é um par ordenado
+              <span class="math">\((u, v)\)</span>, com
+              <span class="math">\(u, v \in V\)</span>.
+            </p>
+
+            <p class="math-note">
+              O arco <span class="math">\((u, v)\)</span> indica que existe uma ligação
+              que parte do vértice <strong>u</strong> e chega ao vértice <strong>v</strong>.
+            </p>
+
+            <p class="math-note">
+              O conjunto de arcos é denotado por
+              <span class="math">\(A \subseteq V \times V\)</span>,
+              e o número de arcos é dado por <span class="math">\(|A| = m\)</span>.
+            </p>
+          </section>
+
+          <section class="card">
+            <h3>Observação importante</h3>
+
+            <p class="math-note">
+              Em grafos <strong>não orientados</strong>, as conexões não possuem direção e são
+              chamadas de <strong>arestas</strong>, sendo representadas por pares
+              <strong>não ordenados</strong> de vértices.
+            </p>
+
+            <p class="math-note">
+              Já em grafos <strong>orientados</strong>, utilizamos o termo
+              <strong>arco</strong>, enfatizando a existência de direção.
+            </p>
+          </section>
+
         </article>
       </div>
 
