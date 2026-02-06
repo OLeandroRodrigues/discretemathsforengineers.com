@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graphs → Computational Representation · Part 1 — Adjacency Matrix</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graphs</a>
+        <span class="sep">›</span>
+        <span class="current">Computational Representation · Part 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graphs → Computational Representation</h2>
+          <p>Part 1 of 1 — Adjacency Matrix</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Computational Representation</strong>
+            <span>Part 1 of 1</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/en/pages/graphs/computational-representation/part-1.html">1</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card">
+                <h3>Adjacency Matrix</h3>
+
+                <p class="math-note">
+                  Let <span class="math">\(G = (V, A)\)</span> be a graph with
+                  <span class="math">\(V = \{v_1, v_2, \dots, v_n\}\)</span>.
+                  The <strong>adjacency matrix</strong> of <span class="math">\(G\)</span>
+                  is the matrix
+                </p>
+
+                <p class="math-note">
+                  <span class="math">\[
+                    M = (m_{ij}) \in \mathbb{R}^{n \times n}
+                  \]</span>
+                  defined by
+                </p>
+
+                <div class="math-block">
+                  \[
+                    m_{ij} =
+                    \begin{cases}
+                      1, & \text{if there exists an edge (or arc) from } v_i \text{ to } v_j, \\
+                      0, & \text{otherwise.}
+                    \end{cases}
+                  \]
+                </div>
+
+                <p class="math-note">
+                  Each entry <span class="math">\(m_{ij}\)</span> indicates whether the vertices
+                  <span class="math">\(v_i\)</span> and <span class="math">\(v_j\)</span>
+                  are adjacent in the graph.
+                </p>
+              </section>
+
+              <section class="card">
+                <h3>Adjacency Matrix Example with Directed Graph G</h3>
+
+                <div class="cards-grid" style="grid-template-columns: 1.05fr 0.95fr; align-items: start;">
+                  <!-- LEFT: Graph -->
+                  <div class="card" style="padding: 12px;">
+                    <svg viewBox="0 0 720 360"
+                          preserveAspectRatio="xMidYMid meet"
+                          role="img"
+                          aria-label="Directed graph with labeled edges (vertical layout)">
+
+                        <defs>
+                          <marker id="arrow"
+                                  viewBox="0 0 10 10"
+                                  markerWidth="10"
+                                  markerHeight="10"
+                                  refX="10"
+                                  refY="5"
+                                  orient="auto"
+                                  markerUnits="userSpaceOnUse">
+                            <path d="M 0 0 L 10 5 L 0 10 Z"
+                                  fill="rgba(234,234,234,0.95)" />
+                          </marker>
+                        </defs>
+
+                        <!-- EDGES -->
+                        <g fill="none"
+                          stroke="rgba(234,234,234,0.8)"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          marker-end="url(#arrow)">
+
+                          <path d="M318 78 L190 185"/>        <!-- q: A -> B -->
+                          <path d="M368 60 C445 45 505 75 525 140"/> <!-- r: A -> D -->
+                          <path d="M350 92 L360 176"/>        <!-- w: A -> C -->
+                          <path d="M205 210 L325 210"/>      <!-- t: B -> C -->
+                          <path d="M395 205 L505 182"/>      <!-- y: C -> D -->
+                          <path d="M180 232 C205 315 285 335 325 315"/> <!-- u: B -> E -->
+                          <path d="M540 205 C525 315 430 340 365 320"/> <!-- i: D -> E -->
+                        </g>
+
+                        <!-- EDGE LABELS -->
+                        <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                          font-size="35"
+                          font-weight="800"
+                          fill="rgba(231,76,60,0.95)">
+                          <text x="235" y="135">q</text>
+                          <text x="455" y="52">r</text>
+                          <text x="352" y="145">w</text>
+                          <text x="255" y="198">t</text>
+                          <text x="455" y="190">y</text>
+                          <text x="240" y="305">u</text>
+                          <text x="505" y="300">i</text>
+                        </g>
+
+                        <!-- NODES -->
+                        <g>
+                          <circle cx="340" cy="60"  r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                          <circle cx="170" cy="210" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                          <circle cx="360" cy="210" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                          <circle cx="540" cy="170" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                          <circle cx="340" cy="305" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                        </g>
+
+                        <!-- LABELS -->
+                        <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                          font-size="19"
+                          font-weight="900"
+                          text-anchor="middle"
+                          dominant-baseline="middle">
+                          <g fill="rgba(26,188,156,0.95)">
+                            <circle cx="340" cy="60"  r="15"/>
+                            <circle cx="170" cy="210" r="15"/>
+                            <circle cx="360" cy="210" r="15"/>
+                            <circle cx="540" cy="170" r="15"/>
+                            <circle cx="340" cy="305" r="15"/>
+                          </g>
+                          <g fill="#0E2A25">
+                            <text x="340" y="60">A</text>
+                            <text x="170" y="210">B</text>
+                            <text x="360" y="210">C</text>
+                            <text x="540" y="170">D</text>
+                            <text x="340" y="305">E</text>
+                          </g>
+                        </g>
+                      </svg>
+
+                     <div class="graph-meta">
+                        <p class="math-note"><strong>Arcs in the graph (from the figure):</strong></p>
+
+                        <div class="arc-row" role="list">
+                          <span class="arc-chip"><strong>A → B</strong> <em>(q)</em></span>
+                          <span class="arc-chip"><strong>A → C</strong> <em>(w)</em></span>
+                          <span class="arc-chip"><strong>A → D</strong> <em>(r)</em></span>
+                          <span class="arc-chip"><strong>B → C</strong> <em>(t)</em></span>
+                          <span class="arc-chip"><strong>B → E</strong> <em>(u)</em></span>
+                          <span class="arc-chip"><strong>C → D</strong> <em>(y)</em></span>
+                          <span class="arc-chip"><strong>D → E</strong> <em>(i)</em></span>
+                        </div>
+
+                        <p class="math-note" style="margin-top:10px;">
+                          <strong>Vertex order:</strong>
+                          <span class="math">(A, B, C, D, E)</span>
+                        </p>
+                      </div>
+                  </div>
+
+                  <!-- RIGHT: Matrix + explanation -->
+                  <div>
+                    <p class="math-note">
+                      Let <strong>G = (V, A)</strong> with <strong>V = {A, B, C, D, E}</strong>.
+                      The adjacency matrix of <strong>G</strong> is:
+                    </p>
+
+                    <div class="math-block" style="margin-top: 10px;">
+                      \[
+                      M=
+                      \begin{pmatrix}
+                      0&1&1&1&0\\
+                      0&0&1&0&1\\
+                      0&0&0&1&0\\
+                      0&0&0&0&1\\
+                      0&0&0&0&0
+                      \end{pmatrix}
+                      \]
+                    </div>
+
+                    <p class="math-note" style="margin-top: 10px;">
+                      Each entry <span class="math">\(m_{ij}\)</span> indicates whether there exists an arc from
+                      vertex <span class="math">\(v_i\)</span> to vertex <span class="math">\(v_j\)</span>:
+                    </p>
+
+                    <ul class="math-list" style="margin-top: 8px;">
+                      <li><span class="math">\(m_{ij}=1\)</span> ⇒ there exists an arc <span class="math">\(v_i \to v_j\)</span></li>
+                      <li><span class="math">\(m_{ij}=0\)</span> ⇒ there is no arc <span class="math">\(v_i \to v_j\)</span></li>
+                    </ul>
+
+                    <div class="note" style="margin-top: 10px;">
+                      <strong>Examples (matching the graph):</strong><br/>
+                      <span class="math">\(m_{AB}=1\)</span> indicates the arc <strong>A → B</strong> (q).<br/>
+                      <span class="math">\(m_{EA}=0\)</span> indicates that there is <strong>no</strong> arc <strong>E → A</strong>.
+                    </div>
+                  </div>
+                </div>
+              </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
