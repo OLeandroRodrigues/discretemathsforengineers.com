@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <title>Grafos → Representação Computacional · Parte 1 — Matriz de Adjacência</title>
+  <title>Grafos → Representação Computacional · Parte 2 — Matriz de Incidência</title>
   {{> head}}
 </head>
 
@@ -18,14 +18,14 @@
         <span class="sep">›</span>
         <a href="#">Grafos</a>
         <span class="sep">›</span>
-        <span class="current">Representação Computacional · Parte 1</span>
+        <span class="current">Representação Computacional · Parte 2</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Grafos → Representação Computacional</h2>
-          <p>Parte 1 de 2 — Matriz de Adjacência</p>
+          <p>Parte 2 de 2 — Matriz de Incidência</p>
         </div>
       </div>
 
@@ -34,18 +34,18 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Representação Computacional</strong>
-            <span>Parte 1 de 2</span>
+            <span>Parte 2 de 2</span>
           </div>
 
           <div class="series-actions">
-            <a class="btn disabled" aria-disabled="true">← Anterior</a>
-            <a class="btn" href="/pt/pages/grafos/representacao-computacional/parte-2.html">Próxima →</a>
+            <a class="btn" href="/pt/pages/grafos/representacao-computacional/parte-1.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
           </div>
         </div>
 
         <div class="pill-row">
-          <a class="pill active" href="/pt/pages/grafos/representacao-computacional/parte-1.html">1</a>
-          <a class="pill" href="/pt/pages/grafos/representacao-computacional/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/representacao-computacional/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/grafos/representacao-computacional/parte-2.html">2</a>
         </div>
       </div>
 
@@ -54,41 +54,62 @@
         <article class="prose">
           <div class="cards-grid">
             <section class="card">
-                <h3>Matriz de Adjacência</h3>
+              <h3>Matriz de Incidência</h3>
 
-                <p class="math-note">
-                  Seja <span class="math">\(G = (V, A)\)</span> um grafo com
-                  <span class="math">\(V = \{v_1, v_2, \dots, v_n\}\)</span>.
-                  A <strong>matriz de adjacência</strong> de <span class="math">\(G\)</span>
-                  é a matriz
-                </p>
+              <p class="math-note">
+                Seja <span class="math">\(G=(V,A)\)</span> um grafo com
+                <span class="math">\(V=\{v_1,v_2,\dots,v_n\}\)</span> e
+                <span class="math">\(A=\{a_1,a_2,\dots,a_m\}\)</span>.
+                A <strong>matriz de incidência</strong> de <span class="math">\(G\)</span> é a matriz
+                <span class="math">\[
+                  B=(b_{ij}) \in \mathbb{R}^{n \times m},
+                \]</span>
+                onde <strong>as linhas representam arestas (ou arcos)</strong> e <strong>as colunas representam vértices</strong>.
+              </p>
 
-                <p class="math-note">
-                  <span class="math">\[
-                    M = (m_{ij}) \in \mathbb{R}^{n \times n}
-                  \]</span>
-                  definida por
-                </p>
+              <hr class="soft" />
 
-                <div class="math-block">
-                  \[
-                    m_{ij} =
-                    \begin{cases}
-                      1, & \text{se existe uma aresta (ou arco) de } v_i \text{ para } v_j, \\
-                      0, & \text{caso contrário.}
-                    \end{cases}
-                  \]
-                </div>
+              <h4 style="margin: 0 0 8px; font-size: 13px; font-weight: 850;">Grafo não orientado</h4>
 
-                <p class="math-note">
-                  Cada entrada <span class="math">\(m_{ij}\)</span> indica se os vértices
-                  <span class="math">\(v_i\)</span> e <span class="math">\(v_j\)</span>
-                  estão adjacentes no grafo.
-                </p>
-              </section>
-              <section class="card">
-                <h3>Exemplo Matriz de Adjacência com grafo orientado G</h3>
+              <div class="math-block" style="margin-top: 10px;">
+                \[
+                  b_{ij} =
+                  \begin{cases}
+                    -1, & \text{se } a_i \text{ sai de } v_j, \\
+                    \phantom{-}1, & \text{se } a_i \text{ chega em } v_j, \\
+                    0, & \text{caso contrário.}
+                  \end{cases}
+                \]
+              </div>
 
+              <p class="math-note">
+                Cada coluna da matriz possui exatamente <strong>dois valores 1</strong>,
+                correspondentes aos <strong>dois vértices</strong> ligados pela aresta.
+              </p>
+
+              <hr class="soft" />
+
+              <h4 style="margin: 0 0 8px; font-size: 13px; font-weight: 850;">Grafo orientado (mais usado em computação)</h4>
+
+              <div class="math-block" style="margin-top: 10px;">
+                \[
+                  b_{ij} =
+                  \begin{cases}
+                    -1, & \text{se } a_j \text{ sai de } v_i, \\
+                    \phantom{-}1, & \text{se } a_j \text{ chega em } v_i, \\
+                    0, & \text{caso contrário.}
+                  \end{cases}
+                \]
+              </div>
+
+              <ul class="math-list" style="margin-top: 10px;">
+                <li><span class="math">\(-1\)</span> indica o vértice de <strong>origem</strong> do arco</li>
+                <li><span class="math">\(+1\)</span> indica o vértice de <strong>destino</strong> do arco</li>
+                <li><span class="math">\(0\)</span> indica que o vértice <strong>não participa</strong> daquele arco</li>
+              </ul>
+            </section>
+               <section class="card">
+                <h3>Exemplo Matriz de Incidência com grafo orientado G</h3>
                 <div class="example-grid">
                   <!-- LEFT: Graph -->
                   <div class="example-graph">
@@ -192,68 +213,38 @@
                           </g>
                         </g>
                       </svg>
-                     <div class="graph-meta">
-                        <p class="math-note"><strong>Arcos no grafo (pela figura):</strong></p>
-
-                        <div class="arc-row" role="list">
-                          <span class="arc-chip" role="listitem"><strong>A → B</strong> <em>(q)</em></span>
-                          <span class="arc-chip" role="listitem"><strong>A → C</strong> <em>(w)</em></span>
-                          <span class="arc-chip" role="listitem"><strong>A → D</strong> <em>(r)</em></span>
-
-                          <span class="arc-chip" role="listitem"><strong>B → C</strong> <em>(t)</em></span>
-                          <span class="arc-chip" role="listitem"><strong>B → E</strong> <em>(u)</em></span>
-
-                          <span class="arc-chip" role="listitem"><strong>C → D</strong> <em>(y)</em></span>
-                          <span class="arc-chip" role="listitem"><strong>D → E</strong> <em>(i)</em></span>
-                        </div>
-
-                        <p class="math-note" style="margin-top:10px;">
-                          <strong>Ordem dos vértices:</strong>
-                          <span class="math">(A, B, C, D, E)</span>
-                        </p>
-                      </div>
-
-                    
                   </div>
 
-                  <!-- RIGHT: Matrix + explanation -->
-                  <div>
-                    <p class="math-note">
-                      Seja <strong>G = (V, A)</strong> com <strong>V = {A, B, C, D, E}</strong>.
-                      A matriz de adjacência de <strong>G</strong> é:
-                    </p>
+                  <!-- RIGHT: INCIDENCE MATRIX -->
+                <div>
+                  <p class="math-note">
+                    Ordem dos vértices:
+                    <span class="math">(A, B, C, D, E)</span>
+                  </p>
 
-                    <div class="math-block" style="margin-top: 10px;">
-                      \[
-                      M=
-                      \begin{pmatrix}
-                      0&1&1&1&0\\
-                      0&0&1&0&1\\
-                      0&0&0&1&0\\
-                      0&0&0&0&1\\
-                      0&0&0&0&0
-                      \end{pmatrix}
-                      \]
-                    </div>
-
-                    <p class="math-note" style="margin-top: 10px;">
-                      Cada entrada <span class="math">\(m_{ij}\)</span> indica se existe um arco do vértice
-                      <span class="math">\(v_i\)</span> para o vértice <span class="math">\(v_j\)</span>:
-                    </p>
-
-                    <ul class="math-list" style="margin-top: 8px;">
-                      <li><span class="math">\(m_{ij}=1\)</span> ⇒ existe arco <span class="math">\(v_i \to v_j\)</span></li>
-                      <li><span class="math">\(m_{ij}=0\)</span> ⇒ não existe arco <span class="math">\(v_i \to v_j\)</span></li>
-                    </ul>
-
-                    <div class="note" style="margin-top: 10px;">
-                      <strong>Exemplos (batem com o grafo):</strong><br/>
-                      <span class="math">\(m_{AB}=1\)</span> indica o arco <strong>A → B</strong> (q).<br/>
-                      <span class="math">\(m_{EA}=0\)</span> indica que <strong>não</strong> existe arco <strong>E → A</strong>.
-                    </div>
+                  <div class="math-block" style="margin-top:10px;">
+                    \[
+                    \begin{array}{c|ccccc}
+                        & A & B & C & D & E \\\hline
+                      q & -1 &  1 &  0 &  0 &  0 \\
+                      w & -1 &  0 &  1 &  0 &  0 \\
+                      r & -1 &  0 &  0 &  1 &  0 \\
+                      t &  0 & -1 &  1 &  0 &  0 \\
+                      y &  0 &  0 & -1 &  1 &  0 \\
+                      u &  0 & -1 &  0 &  0 &  1 \\
+                      i &  0 &  0 &  0 & -1 &  1
+                    \end{array}
+                    \]
                   </div>
+
+                  <p class="math-note" style="margin-top:10px;">
+                    Cada coluna representa um <strong>vértice</strong> e cada linha representa uma
+                    <strong>aresta (arco)</strong>.
+                  </p>
+                </div>
                 </div>
               </section>
+
           </div>
         </article>
       </div>
