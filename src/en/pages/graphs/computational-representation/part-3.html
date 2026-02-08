@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graphs → Computational Representation · Part 3 — Adjacency List</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graphs</a>
+        <span class="sep">›</span>
+        <span class="current">Computational Representation · Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graphs → Computational Representation</h2>
+          <p>Part 3 of 3 — Adjacency List</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Computational Representation</strong>
+            <span>Part 3 of 3</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/computational-representation/part-2.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/computational-representation/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/computational-representation/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/graphs/computational-representation/part-3.html">3</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+           <section class="card">
+              <h3>Adjacency List</h3>
+
+              <p class="math-note">
+                The <strong>adjacency list</strong> is a computational representation of graphs
+                based on <strong>linked lists</strong> (or equivalent structures).
+              </p>
+
+              <div class="math-quote">
+                Each <strong>vertex</strong> of the graph maintains a list containing all
+                vertices <strong>adjacent</strong> to it.
+              </div>
+
+              <ul class="math-list">
+                <li><strong>Vertex</strong>: main node of the structure</li>
+                <li><strong>Link</strong>: points from one vertex to another adjacent vertex</li>
+                <li><strong>Each element</strong>: vertex + list of links</li>
+              </ul>
+
+              <p class="math-note">
+                This representation is especially efficient for
+                <strong>sparse</strong> graphs and is the most commonly used in practical implementations.
+              </p>
+            </section>
+
+            <!-- CARD 2: EXAMPLE -->
+            <section class="card">
+              <h3>Example — Directed graph and adjacency list</h3>
+
+              <div class="example-grid">
+                <!-- GRAPH -->
+                <div class="example-graph">
+                  <svg viewBox="0 0 720 360"
+                        preserveAspectRatio="xMidYMid meet"
+                        role="img"
+                        aria-label="Directed graph with labeled edges (vertical layout)">
+
+                      <defs>
+                        <marker id="arrow"
+                                viewBox="0 0 10 10"
+                                markerWidth="10"
+                                markerHeight="10"
+                                refX="10"
+                                refY="5"
+                                orient="auto"
+                                markerUnits="userSpaceOnUse">
+                          <path d="M 0 0 L 10 5 L 0 10 Z"
+                                fill="rgba(234,234,234,0.95)" />
+                        </marker>
+                      </defs>
+
+                      <!--
+                        A(340, 60)  B(170, 200)  C(360, 210)  D(540, 170)  E(340, 305)
+                      -->
+
+                      <!-- EDGES -->
+                      <g fill="none"
+                        stroke="rgba(234,234,234,0.8)"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        marker-end="url(#arrow)">
+
+                        <!-- q: A -> B -->
+                        <path d="M318 78 L190 185"/>
+
+                        <!-- r: A -> D -->
+                        <path d="M368 60 C445 45 505 75 525 140"/>
+
+                        <!-- w: A -> C -->
+                        <path d="M350 92 L360 176"/>
+
+                        <!-- t: B -> C -->
+                        <path d="M205 210 L325 210"/>
+
+                        <!-- y: C -> D -->
+                        <path d="M395 205 L505 182"/>
+
+                        <!-- u: B -> E -->
+                        <path d="M180 232 C205 315 285 335 325 315"/>
+
+                        <!-- i: D -> E -->
+                        <path d="M540 205 C525 315 430 340 365 320"/>
+                      </g>
+
+                      <!-- EDGE LABELS -->
+                      <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                        font-size="35"
+                        font-weight="800"
+                        fill="rgba(231,76,60,0.95)">
+                        <text x="235" y="135">q</text>
+                        <text x="455" y="52">r</text>
+                        <text x="352" y="145">w</text>
+                        <text x="255" y="198">t</text>
+                        <text x="455" y="190">y</text>
+                        <text x="240" y="305">u</text>
+                        <text x="505" y="300">i</text>
+                      </g>
+
+                      <!-- NODES -->
+                      <g>
+                        <circle cx="340" cy="60"  r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                        <circle cx="170" cy="210" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                        <circle cx="360" cy="210" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                        <circle cx="540" cy="170" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                        <circle cx="340" cy="305" r="32" fill="rgba(0,0,0,0.18)" stroke="rgba(234,234,234,0.85)" stroke-width="2"/>
+                      </g>
+
+                      <!-- LABELS -->
+                      <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                        font-size="19"
+                        font-weight="900"
+                        text-anchor="middle"
+                        dominant-baseline="middle">
+
+                        <g fill="rgba(26,188,156,0.95)">
+                          <circle cx="340" cy="60"  r="15"/>
+                          <circle cx="170" cy="210" r="15"/>
+                          <circle cx="360" cy="210" r="15"/>
+                          <circle cx="540" cy="170" r="15"/>
+                          <circle cx="340" cy="305" r="15"/>
+                        </g>
+
+                        <g fill="#0E2A25">
+                          <text x="340" y="60">A</text>
+                          <text x="170" y="210">B</text>
+                          <text x="360" y="210">C</text>
+                          <text x="540" y="170">D</text>
+                          <text x="340" y="305">E</text>
+                        </g>
+                      </g>
+                    </svg>
+                </div>
+
+                <!-- LIST -->
+                <div>
+                  <p class="math-note">Adjacency list corresponding to the graph:</p>
+
+                  <div class="math-block">
+                    <pre><code>
+                    A → B → C → D → NULL
+                    B → C → E → NULL
+                    C → D → NULL
+                    D → E → NULL
+                    E → NULL
+                    </code></pre>
+                  </div>
+
+                  <p class="math-note" style="margin-top:10px;">
+                    Each line represents a <strong>vertex</strong> and the elements to the right
+                    are the vertices reachable via an <strong>outgoing edge</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="note">
+                Unlike matrices, the adjacency list stores only the existing connections,
+                reducing memory usage.
+              </div>
+            </section>
+
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

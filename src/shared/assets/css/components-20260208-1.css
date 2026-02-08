@@ -329,7 +329,11 @@ details.menu[open] .chev{ transform: rotate(90deg); }
   color: var(--muted);
   font-size: 12px;
   text-align: center;
-  background: rgba(0,0,0,0.12);
+  /* Keep the accent color only in the footer, so it doesn't "travel" with scroll */
+  background:
+    radial-gradient(900px 220px at 20% 120%, rgba(26,188,156,0.18), transparent 60%),
+    radial-gradient(700px 220px at 80% 120%, rgba(22,160,133,0.14), transparent 55%),
+    rgba(0,0,0,0.12);
 }
 
 code{
@@ -591,12 +595,23 @@ code{
   width:100%;
   height:auto;
   display:block;
+  /* Desktop cap */
   max-width: 520px;
   margin: 0 auto;
 }
 
 @media (max-width: 600px){
   .example-graph svg{
-    max-width: 420px;
+    /* Mobile: keep the graph readable without dominating the card */
+    max-width: 340px;
+    max-height: 220px;
+  }
+}
+
+
+@media (max-width: 420px){
+  .example-graph svg{
+    max-width: 300px;
+    max-height: 200px;
   }
 }
