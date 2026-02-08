@@ -5,10 +5,8 @@ body{
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
-  background:
-    radial-gradient(900px 600px at 20% 15%, rgba(26,188,156,0.18), transparent 60%),
-    radial-gradient(900px 600px at 80% 85%, rgba(22,160,133,0.14), transparent 55%),
-    var(--bg);
+  /* Single stable background so the teal accent does NOT appear as a moving band while scrolling. */
+  background: var(--bg);
 }
 
 .desktop-header{
@@ -20,7 +18,8 @@ body{
   margin: 8px 18px 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  /* Solid surface to avoid the "split gradient" look */
+  background: var(--panel-2);
   box-shadow: var(--shadow);
 }
 
@@ -35,7 +34,8 @@ body{
 aside, main{
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  /* Keep main and sidebar on the same surface color */
+  background: var(--panel-2);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
