@@ -1,0 +1,105 @@
+/* ============================
+   Base: graph figures
+   ============================ */
+
+.graph-figure{
+  margin: 12px 0 0;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.14);
+  overflow: hidden;         /* keep the diagram contained */
+  max-width: 500px;         /* site default (regular cards) */
+}
+
+.graph-figure svg{
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;        /* global cap (prevents excessive growth) */
+}
+
+.graph-figure figcaption{
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+
+/* ============================
+   Layout: two-column cards
+   ============================ */
+
+.cards-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 980px){
+  .cards-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================
+   Hamilton: clean override
+   Goals:
+   - figure fills the entire card (no 500px max-width)
+   - large graph, but NO vertical scrolling
+   - figcaption below the graph
+   ============================ */
+
+.card--hamilton .graph-figure--hamilton{
+  max-width: none;     /* cancel global max-width */
+  width: 100%;
+  margin: 12px 0 0;
+  display: block;      /* ensures SVG on top, caption below */
+}
+
+.card--hamilton .graph-figure--hamilton svg{
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+
+  /* safe height cap to avoid page overflow */
+  max-height: min(37vh, 400px);
+}
+
+/* shorter screens: reduce slightly */
+@media (max-height: 820px){
+  .card--hamilton .graph-figure--hamilton svg{
+    max-height: min(34vh, 360px);
+  }
+}
+
+/* (optional) if this class is used on the SVG */
+.graph-figure--hamilton .graph--hamilton{
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+
+/* ============================
+   (Optional) Fine label adjustments
+   Works only if <text> elements use
+   class="node-label" + data-node="..."
+   ============================ */
+
+.graph--hamilton .node-label{
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.graph--hamilton .node-label[data-node="Dubai"]             { transform: translate(14px,  6px); }
+.graph--hamilton .node-label[data-node="Toronto"]           { transform: translate(18px, 12px); }
+.graph--hamilton .node-label[data-node="Frankfurt"]         { transform: translate(-18px,  4px); }
+.graph--hamilton .node-label[data-node="Sydney"]            { transform: translate(-18px, 14px); }
+.graph--hamilton .node-label[data-node="São Paulo"]         { transform: translate(-10px, -6px); }
+.graph--hamilton .node-label[data-node="Cidade do México"]  { transform: translate(10px, -2px); }

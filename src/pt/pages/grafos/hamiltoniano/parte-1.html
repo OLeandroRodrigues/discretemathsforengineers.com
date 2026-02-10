@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Grafos → Representação Computacional · Parte 1 — Introdução</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltoniano · Parte 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Grafos → Hamiltoniano</h2>
+          <p>Parte 1 de 1 — Introdução</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Hamiltoniano</strong>
+            <span>Parte 1 de 1</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/pt/pages/grafos/hamiltoniano/parte-1.html">1</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--hamilton">
+                <h3>Problema — Volta ao redor do mundo</h3>
+
+                <p class="math-note">
+                  Em 1856, William Hamilton apresentou um famoso desafio geométrico: em um dodecaedro
+                  com 20 vértices, cada um associado a uma cidade diferente, deve-se traçar um percurso
+                  ao longo das arestas que passe por todas as cidades uma única vez, retornando ao
+                  vértice inicial.
+                </p>
+
+              <figure class="graph-figure graph-figure--hamilton">
+                <svg class="graph--hamilton"
+                    viewBox="120 70 480 380"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Grafo com 20 cidades (layout dodecaédrico estilizado) — nenhum vértice toca outro"
+                    preserveAspectRatio="xMidYMid meet"
+                    style="width:100%; height:auto; display:block;">
+
+                  <!-- EDGES -->
+                  <g fill="none"
+                    stroke="rgba(234,234,234,0.62)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <!-- Outer ring (O0..O9) -->
+                    <line x1="360.0" y1="110.0" x2="471.68" y2="138.65"/>
+                    <line x1="471.68" y1="138.65" x2="540.70" y2="213.65"/>
+                    <line x1="540.70" y1="213.65" x2="540.70" y2="306.35"/>
+                    <line x1="540.70" y1="306.35" x2="471.68" y2="381.35"/>
+                    <line x1="471.68" y1="381.35" x2="360.0" y2="410.0"/>
+                    <line x1="360.0" y1="410.0" x2="248.32" y2="381.35"/>
+                    <line x1="248.32" y1="381.35" x2="179.30" y2="306.35"/>
+                    <line x1="179.30" y1="306.35" x2="179.30" y2="213.65"/>
+                    <line x1="179.30" y1="213.65" x2="248.32" y2="138.65"/>
+                    <line x1="248.32" y1="138.65" x2="360.0" y2="110.0"/>
+
+                    <!-- Inner ring (I0..I9) -->
+                    <line x1="393.99" y1="179.16" x2="448.99" y2="210.04"/>
+                    <line x1="448.99" y1="210.04" x2="470.0" y2="260.0"/>
+                    <line x1="470.0" y1="260.0" x2="448.99" y2="309.96"/>
+                    <line x1="448.99" y1="309.96" x2="393.99" y2="340.84"/>
+                    <line x1="393.99" y1="340.84" x2="326.01" y2="340.84"/>
+                    <line x1="326.01" y1="340.84" x2="271.01" y2="309.96"/>
+                    <line x1="271.01" y1="309.96" x2="250.0" y2="260.0"/>
+                    <line x1="250.0" y1="260.0" x2="271.01" y2="210.04"/>
+                    <line x1="271.01" y1="210.04" x2="326.01" y2="179.16"/>
+                    <line x1="326.01" y1="179.16" x2="393.99" y2="179.16"/>
+
+                    <!-- Spokes (Oi -> Ii) -->
+                    <line x1="360.0" y1="110.0" x2="393.99" y2="179.16"/>
+                    <line x1="471.68" y1="138.65" x2="448.99" y2="210.04"/>
+                    <line x1="540.70" y1="213.65" x2="470.0" y2="260.0"/>
+                    <line x1="540.70" y1="306.35" x2="448.99" y2="309.96"/>
+                    <line x1="471.68" y1="381.35" x2="393.99" y2="340.84"/>
+                    <line x1="360.0" y1="410.0" x2="326.01" y2="340.84"/>
+                    <line x1="248.32" y1="381.35" x2="271.01" y2="309.96"/>
+                    <line x1="179.30" y1="306.35" x2="250.0" y2="260.0"/>
+                    <line x1="179.30" y1="213.65" x2="271.01" y2="210.04"/>
+                    <line x1="248.32" y1="138.65" x2="326.01" y2="179.16"/>
+                  </g>
+
+                  <!-- LABELS (halo + não captura clique) -->
+                  <g font-family="inherit"
+                    font-size="13"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.97)"
+                    stroke="rgba(0,0,0,0.55)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none">
+
+                    <!-- Outer labels -->
+                    <text x="360" y="92" text-anchor="middle">Nova York</text>
+                    <text x="471.68" y="120" text-anchor="middle">Londres</text>
+                    <text x="552" y="213.65" text-anchor="start">Paris</text>
+                    <text x="552" y="306.35" text-anchor="start">Frankfurt</text>
+                    <text x="471.68" y="405" text-anchor="middle">Dubai</text>
+                    <text x="360" y="434" text-anchor="middle">São Paulo</text>
+                    <text x="248.32" y="405" text-anchor="middle">Sydney</text>
+                    <text x="165" y="310" text-anchor="end">Chicago</text>
+
+                    <text x="165" y="217" text-anchor="end">
+                      <tspan x="165" dy="0">Los</tspan>
+                      <tspan x="165" dy="14">Angeles</tspan>
+                    </text>
+
+                    <text x="248.32" y="120" text-anchor="middle">
+                      <tspan x="248.32" dy="0">San Francisco</tspan>
+                    </text>
+
+                    <!-- Inner labels -->
+                    <text x="404" y="168" text-anchor="start">Tóquio</text>
+                    <text x="460" y="202" text-anchor="start">Seoul</text>
+                    <text x="482" y="260" text-anchor="start">Pequim</text>
+                    <text x="460" y="320" text-anchor="start">Xangai</text>
+                    <text x="404" y="356" text-anchor="start">Shenzhen</text>
+
+                    <text x="318" y="356" text-anchor="end">
+                      <tspan x="318" dy="0">Hong</tspan>
+                      <tspan x="318" dy="14">Kong</tspan>
+                    </text>
+
+                    <text x="258" y="322" text-anchor="end">Singapura</text>
+
+                    <text x="240" y="260" text-anchor="end">
+                      <tspan x="240" dy="0">Osaka</tspan>
+                      <tspan x="240" dy="14">/ Keihanshin</tspan>
+                    </text>
+
+                    <text x="262" y="200" text-anchor="end">Toronto</text>
+
+                    <text x="338" y="168" text-anchor="end">
+                      <tspan x="338" dy="0">Cidade do México</tspan>
+                    </text>
+                  </g>
+
+                  <!-- NODES (por último para ficar por cima do texto) -->
+                  <g fill="rgba(231,76,60,0.95)"
+                    stroke="rgba(234,234,234,0.90)"
+                    stroke-width="1.8">
+
+                    <!-- Outer nodes O0..O9 -->
+                    <circle cx="360.0" cy="110.0" r="10.5"><title>Nova York (EUA)</title></circle>
+                    <circle cx="471.68" cy="138.65" r="10.5"><title>Londres (Reino Unido)</title></circle>
+                    <circle cx="540.70" cy="213.65" r="10.5"><title>Paris (França)</title></circle>
+                    <circle cx="540.70" cy="306.35" r="10.5"><title>Frankfurt (Alemanha)</title></circle>
+                    <circle cx="471.68" cy="381.35" r="10.5"><title>Dubai (EAU)</title></circle>
+                    <circle cx="360.0" cy="410.0" r="10.5"><title>São Paulo (Brasil)</title></circle>
+                    <circle cx="248.32" cy="381.35" r="10.5"><title>Sydney (Austrália)</title></circle>
+                    <circle cx="179.30" cy="306.35" r="10.5"><title>Chicago (EUA)</title></circle>
+                    <circle cx="179.30" cy="213.65" r="10.5"><title>Los Angeles (EUA)</title></circle>
+                    <circle cx="248.32" cy="138.65" r="10.5"><title>San Francisco (EUA)</title></circle>
+
+                    <!-- Inner nodes I0..I9 -->
+                    <circle cx="393.99" cy="179.16" r="10.5"><title>Tóquio (Japão)</title></circle>
+                    <circle cx="448.99" cy="210.04" r="10.5"><title>Seoul (Coreia do Sul)</title></circle>
+                    <circle cx="470.0" cy="260.0" r="10.5"><title>Pequim (China)</title></circle>
+                    <circle cx="448.99" cy="309.96" r="10.5"><title>Xangai (China)</title></circle>
+                    <circle cx="393.99" cy="340.84" r="10.5"><title>Shenzhen (China)</title></circle>
+                    <circle cx="326.01" cy="340.84" r="10.5"><title>Hong Kong (China)</title></circle>
+                    <circle cx="271.01" cy="309.96" r="10.5"><title>Singapura (Singapura)</title></circle>
+                    <circle cx="250.0" cy="260.0" r="10.5"><title>Osaka/Keihanshin (Japão)</title></circle>
+                    <circle cx="271.01" cy="210.04" r="10.5"><title>Toronto (Canadá)</title></circle>
+                    <circle cx="326.01" cy="179.16" r="10.5"><title>Cidade do México (México)</title></circle>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  Cada vértice representa uma cidade; as arestas representam os caminhos permitidos.
+                  Um <strong>ciclo hamiltoniano</strong> visita todas as cidades exatamente uma vez e retorna ao início.
+                </figcaption>
+              </figure>
+              </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
