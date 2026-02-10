@@ -200,6 +200,51 @@
                 </figcaption>
               </figure>
             </section>
+            <section class="card">
+                <h3>Why is the problem difficult in practice?</h3>
+
+                <p class="math-note">
+                  At first glance, the Hamiltonian cycle problem seems simple: find a path that
+                  visits each vertex exactly once and returns to the starting point. In practice,
+                  however, this problem quickly becomes computationally difficult.
+                </p>
+
+                <p class="math-note">
+                  The main difficulty lies in the fact that no efficient algorithm is known that
+                  solves the Hamiltonian cycle problem for all graphs. The number of possible orders
+                  in which the vertices can be visited grows factorially: for a graph with
+                  <span class="math">\(n\)</span> vertices, there are up to
+                  <span class="math">\(n!\)</span> permutations to consider in the worst case.
+                </p>
+
+                <p class="math-note">
+                  Even when using pruning techniques, backtracking, and heuristics, the search space
+                  grows explosively. A graph with only 20 vertices already has more than
+                  <span class="math">\(2.4 \times 10^{18}\)</span> possible visiting sequences,
+                  which makes any brute-force approach infeasible.
+                </p>
+
+                <p class="math-note">
+                  This combinatorial explosion explains why Hamiltonian problems play a central role
+                  in computational complexity theory, serving as classical examples of
+                  <span class="math">NP</span>-complete problems. Verifying whether a given path is
+                  Hamiltonian is easy; finding one, on the other hand, may require exploring an
+                  exponential number of possibilities.
+                </p>
+
+                <p class="math-note">
+                  In practice, this means that exact solutions are only feasible for small or highly
+                  structured graphs. For larger instances, algorithms rely on heuristics,
+                  approximations, or problem-specific knowledge, sacrificing absolute guarantees of
+                  efficiency.
+                </p>
+
+                <div class="note" style="margin-top:10px;">
+                  <strong>Summary:</strong>
+                  checking is easy, finding is hard.
+                </div>
+              </section>
+
           </div>
         </article>
       </div>

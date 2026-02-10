@@ -207,7 +207,48 @@
                 </figcaption>
               </figure>
               </section>
+              <section class="card">
+                <h3>Por que o problema é difícil na prática?</h3>
 
+                <p class="math-note">
+                  À primeira vista, o problema do ciclo hamiltoniano parece simples: encontrar um percurso que
+                  visite cada vértice exatamente uma vez e retorne ao ponto inicial. Na prática, porém, esse
+                  problema se torna computacionalmente difícil.
+                </p>
+
+                <p class="math-note">
+                  A principal dificuldade está no fato de que não se conhece nenhum algoritmo eficiente que
+                  resolva o problema do ciclo hamiltoniano para todos os grafos. O número de possíveis ordens
+                  em que os vértices podem ser visitados cresce de forma fatorial: para um grafo com
+                  <span class="math">\(n\)</span> vértices, existem até <span class="math">\(n!\)</span> permutações a serem consideradas
+                  no pior caso.
+                </p>
+
+                <p class="math-note">
+                  Mesmo utilizando técnicas de poda, backtracking e heurísticas, o espaço de busca cresce de
+                  forma explosiva. Um grafo com apenas 20 vértices já possui mais de
+                  <span class="math">\(2{,}4 \times 10^{18}\)</span> possíveis sequências de visita, o que torna inviável qualquer
+                  abordagem por força bruta.
+                </p>
+
+                <p class="math-note">
+                  Essa explosão combinatória explica por que problemas hamiltonianos ocupam um papel central na
+                  teoria da complexidade computacional, sendo exemplos clássicos de problemas
+                  <span class="math">NP</span>-completos. Verificar se um percurso é hamiltoniano é fácil; encontrar um,
+                  por outro lado, pode exigir a exploração de um número exponencial de possibilidades.
+                </p>
+
+                <p class="math-note">
+                  Na prática, isso significa que soluções exatas só são viáveis para grafos pequenos ou muito
+                  estruturados. Para instâncias maiores, algoritmos recorrem a heurísticas, aproximações ou
+                  conhecimento específico do problema, abrindo mão de garantias absolutas de eficiência.
+                </p>
+
+                <div class="note" style="margin-top:10px;">
+                  <strong>Resumo:</strong>
+                  verificar é fácil, encontrar é difícil.
+                </div>
+              </section>
           </div>
         </article>
       </div>
