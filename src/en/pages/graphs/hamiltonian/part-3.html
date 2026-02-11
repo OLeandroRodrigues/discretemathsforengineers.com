@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graphs → Hamiltonian · Part 3 — Necessary Conditions</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graphs</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltonian · Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graphs → Hamiltonian</h2>
+          <p>Part 3 of 4 — Necessary Conditions</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Hamiltonian</strong>
+            <span>Part 3 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/hamiltonian/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/hamiltonian/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/graphs/hamiltonian/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+              <!-- Card 1 -->
+              <section class="card">
+                <h3>Necessary Conditions</h3>
+
+                <p class="math-note">
+                  The conditions below are <strong>necessary</strong> for a graph to have a
+                  <strong>Hamiltonian cycle</strong>. That is: if any of them fails, then
+                  a Hamiltonian cycle <strong>does not exist</strong>.
+                </p>
+
+                <ul class="math-list" style="margin-top:10px;">
+                  <li>
+                    <strong>No leaf vertex:</strong> every vertex must have degree
+                    <span class="math">\( \deg(v) \ge 2 \)</span>.
+                  </li>
+                  <li>
+                    <strong>Connected graph:</strong> it must be possible to reach any vertex from any other vertex.
+                  </li>
+                  <li>
+                    <strong>No forced cut vertex:</strong> if removing a vertex disconnects the graph,
+                    that vertex would be a bottleneck that a cycle cannot bypass.
+                  </li>
+                </ul>
+
+                <div class="note" style="margin-top:10px;">
+                  <strong>Important:</strong> “necessary” does not mean “sufficient”.
+                  Even if all the conditions above are satisfied, a Hamiltonian cycle may still not exist.
+                </div>
+              </section>
+
+              <!-- Card 2 -->
+              <section class="card">
+                <h3>Examples</h3>
+
+                <p class="math-note">
+                  Here are two quick counterexamples that violate necessary conditions and therefore
+                  <strong>cannot</strong> have a Hamiltonian cycle.
+                </p>
+
+                <div class="example-grid" style="margin-top:10px;">
+                  <!-- Example A: leaf vertex -->
+                  <div class="graph-figure" style="max-width:none; margin:0;">
+                    <p class="math-note" style="margin:0 0 8px;">
+                      <strong>Example A — Vertex with degree 1</strong>
+                    </p>
+
+                    <svg viewBox="0 0 360 220"
+                        xmlns="http://www.w3.org/2000/svg"
+                        role="img"
+                        aria-label="Example with a leaf vertex (degree 1), so there is no Hamiltonian cycle"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="width:100%; height:auto; display:block;">
+
+                      <!-- EDGES -->
+                      <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+                        <!-- Straight line F -> B -> A -> D -->
+                        <line x1="40"  y1="110" x2="120" y2="110" />
+                        <line x1="120" y1="110" x2="200" y2="110" />
+                        <line x1="200" y1="110" x2="280" y2="110" />
+
+                        <!-- Other connections -->
+                        <line x1="200" y1="110" x2="280" y2="60" />
+                        <line x1="200" y1="110" x2="120" y2="160" />
+                      </g>
+
+                      <!-- NODES -->
+                      <g fill="rgba(231,76,60,0.95)" stroke="rgba(234,234,234,0.9)" stroke-width="2">
+                        <circle cx="40"  cy="110" r="10"/>
+                        <circle cx="120" cy="110" r="10"/>
+                        <circle cx="200" cy="110" r="10"/>
+                        <circle cx="280" cy="110" r="10"/>
+                        <circle cx="280" cy="60"  r="10"/>
+                        <circle cx="120" cy="160" r="10"/>
+                      </g>
+
+                      <!-- LABELS -->
+                      <g font-family="inherit" font-size="14" font-weight="800"
+                        fill="rgba(234,234,234,0.95)" text-anchor="middle">
+                        <text x="40"  y="95">F</text>
+                        <text x="120" y="95">B</text>
+                        <text x="200" y="95">A</text>
+                        <text x="280" y="95">D</text>
+                        <text x="280" y="45">C</text>
+                        <text x="120" y="185">E</text>
+                      </g>
+                    </svg>
+
+                    <div class="note" style="margin-top:10px;">
+                      Vertex <strong>F</strong> has degree 1, so a Hamiltonian <strong>cycle</strong> cannot exist.
+                    </div>
+                  </div>
+
+                  <!-- Example B: disconnected graph -->
+                  <div class="graph-figure" style="max-width:none; margin:0;">
+                    <p class="math-note" style="margin:0 0 8px;">
+                      <strong>Example B — Disconnected graph</strong>
+                    </p>
+
+                    <svg viewBox="0 0 360 220"
+                        xmlns="http://www.w3.org/2000/svg"
+                        role="img"
+                        aria-label="Example of a disconnected graph, so there is no Hamiltonian cycle"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="width:100%; height:auto; display:block;">
+
+                      <!-- EDGES -->
+                      <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+                        <!-- component 1: triangle -->
+                        <line x1="90" y1="70" x2="160" y2="40"/>
+                        <line x1="160" y1="40" x2="170" y2="110"/>
+                        <line x1="170" y1="110" x2="90" y2="70"/>
+
+                        <!-- component 2: path -->
+                        <line x1="240" y1="70" x2="300" y2="70"/>
+                        <line x1="300" y1="70" x2="330" y2="120"/>
+                      </g>
+
+                      <!-- NODES -->
+                      <g fill="rgba(231,76,60,0.95)" stroke="rgba(234,234,234,0.9)" stroke-width="2">
+                        <circle cx="90"  cy="70"  r="10"/>
+                        <circle cx="160" cy="40"  r="10"/>
+                        <circle cx="170" cy="110" r="10"/>
+                        <circle cx="240" cy="70"  r="10"/>
+                        <circle cx="300" cy="70"  r="10"/>
+                        <circle cx="330" cy="120" r="10"/>
+                      </g>
+
+                      <!-- LABELS -->
+                      <g font-family="inherit" font-size="14" font-weight="800"
+                        fill="rgba(234,234,234,0.95)" text-anchor="middle">
+                        <text x="90"  y="55">A</text>
+                        <text x="160" y="25">B</text>
+                        <text x="170" y="135">C</text>
+
+                        <text x="240" y="55">D</text>
+                        <text x="300" y="55">E</text>
+                        <text x="330" y="145">F</text>
+                      </g>
+                    </svg>
+
+                    <div class="note" style="margin-top:10px;">
+                      The graph has <strong>two components</strong>. Since it is not connected,
+                      a Hamiltonian cycle cannot exist.
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

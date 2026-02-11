@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Grafos → Hamiltoniano · Parte 4 — Condições Suficientes</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltoniano · Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Grafos → Hamiltoniano</h2>
+          <p>Parte 4 de 4 — Condições Suficientes</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Hamiltoniano</strong>
+            <span>Parte 4 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/hamiltoniano/parte-3.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/grafos/hamiltoniano/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <!-- Card 1 — Dirac -->
+            <section class="card">
+              <h3>Teorema de Dirac</h3>
+
+              <p class="math-note">
+                Seja <span class="math">\(G\)</span> um grafo simples com
+                <span class="math">\(n \ge 3\)</span> vértices.
+                Se todo vértice satisfaz
+                <span class="math">\( \ grau(v) \ge \frac{n}{2} \)</span>,
+                então <span class="math">\(G\)</span> possui um
+                <strong>ciclo hamiltoniano</strong>.
+              </p>
+
+              <div class="math-block" style="margin-top:10px;">
+                \[
+                  \text{Se } \ grau(v) \ge \frac{n}{2} \text{ para todo } v \in V,
+                  \text{ então } G \text{ é hamiltoniano.}
+                \]
+              </div>
+
+              <p class="math-note" style="margin-top:10px;">
+                Intuição: se cada vértice está conectado a pelo menos metade do grafo,
+                há conectividade suficiente para “costurar” um ciclo passando por todos os vértices.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Importante:</strong>
+                Essa é uma condição <strong>suficiente</strong>, não necessária.
+                Um grafo pode ser hamiltoniano mesmo sem satisfazer essa desigualdade.
+              </div>
+            </section>
+
+
+            <!-- Card 2 — Ore -->
+            <section class="card">
+              <h3>Teorema de Ore</h3>
+
+              <p class="math-note">
+                Seja <span class="math">\(G\)</span> um grafo simples com
+                <span class="math">\(n \ge 3\)</span> vértices.
+                Se, para todo par de vértices não adjacentes
+                <span class="math">\(u\)</span> e <span class="math">\(v\)</span>,
+                vale
+                <span class="math">\( \ grau(u) + \ grau(v) \ge n \)</span>, <br/>
+                então <span class="math">\(G\)</span> possui um
+                <strong>ciclo hamiltoniano</strong>.
+              </p>
+
+              <div class="math-block math-block--ore" style="margin-top:10px;">
+                \[
+                    \begin{aligned}
+                    \text{Se } \ grau(u) + \ grau(v) \ge n 
+                    &\text{ para todo par não adjacente } (u,v), \\
+                    &\text{ então } G \text{ é hamiltoniano.}
+                    \end{aligned}
+                    \]
+              </div>
+
+              <p class="math-note" style="margin-top:10px;">
+                Intuição: mesmo que dois vértices não estejam ligados diretamente,
+                a soma dos seus graus garante conectividade suficiente no restante do grafo.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                O Teorema de Ore generaliza o de Dirac.
+                Se a condição de Dirac é satisfeita,
+                então a condição de Ore também é satisfeita.
+              </div>
+            </section>
+
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

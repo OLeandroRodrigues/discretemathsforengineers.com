@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Grafos → Hamiltoniano · Parte 3 — Condições Necessárias</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltoniano · Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Grafos → Hamiltoniano</h2>
+          <p>Parte 3 de 4 — Condições Necessárias</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Hamiltoniano</strong>
+            <span>Parte 3 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/hamiltoniano/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/hamiltoniano/parte-4.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/grafos/hamiltoniano/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+              <!-- Card 1 -->
+              <section class="card">
+                <h3>Condições Necessárias</h3>
+
+                <p class="math-note">
+                  As condições abaixo são <strong>necessárias</strong> para um grafo possuir um
+                  <strong>ciclo hamiltoniano</strong>. Ou seja: se alguma delas falhar, então
+                  <strong>não existe</strong> ciclo hamiltoniano.
+                </p>
+
+                <ul class="math-list" style="margin-top:10px;">
+                  <li>
+                    <strong>Sem vértice folha:</strong> todo vértice deve ter grau
+                    <span class="math">\( \text{grau}(v) \ge 2 \)</span>.
+                  </li>
+                  <li>
+                    <strong>Grafo conexo:</strong> é preciso conseguir alcançar qualquer vértice a partir de qualquer outro.
+                  </li>
+                  <li>
+                    <strong>Sem “vértice de corte” forçado:</strong> se remover um vértice e o grafo desconecta,
+                    esse vértice seria um gargalo difícil de contornar num ciclo.
+                  </li>
+                </ul>
+
+                <div class="note" style="margin-top:10px;">
+                  <strong>Importante:</strong> “necessária” não quer dizer “suficiente”.
+                  Mesmo se todas as condições acima forem verdadeiras, ainda pode não existir ciclo hamiltoniano.
+                </div>
+              </section>
+
+              <!-- Card 2 -->
+              <section class="card">
+                <h3>Exemplos</h3>
+
+                <p class="math-note">
+                  Aqui vão dois contraexemplos rápidos que quebram condições necessárias e, por isso,
+                  <strong>não</strong> podem ter ciclo hamiltoniano.
+                </p>
+
+                <div class="example-grid" style="margin-top:10px;">
+                  <!-- Example A: leaf vertex -->
+                  <div class="graph-figure" style="max-width:none; margin:0;">
+                    <p class="math-note" style="margin:0 0 8px;">
+                      <strong>Exemplo A — Vértice com grau 1</strong>
+                    </p>
+
+                    <svg viewBox="0 0 360 220"
+                        xmlns="http://www.w3.org/2000/svg"
+                        role="img"
+                        aria-label="Exemplo com vértice folha (grau 1), logo não há ciclo hamiltoniano"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="width:100%; height:auto; display:block;">
+
+                      <!-- EDGES -->
+                      <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+                        <!-- Linha reta F -> B -> A -> D -->
+                        <line x1="40"  y1="110" x2="120" y2="110" />
+                        <line x1="120" y1="110" x2="200" y2="110" />
+                        <line x1="200" y1="110" x2="280" y2="110" />
+
+                        <!-- Outras conexões -->
+                        <line x1="200" y1="110" x2="280" y2="60" />
+                        <line x1="200" y1="110" x2="120" y2="160" />
+                      </g>
+
+                      <!-- NODES -->
+                      <g fill="rgba(231,76,60,0.95)" stroke="rgba(234,234,234,0.9)" stroke-width="2">
+                        <circle cx="40"  cy="110" r="10"/><!-- F -->
+                        <circle cx="120" cy="110" r="10"/><!-- B -->
+                        <circle cx="200" cy="110" r="10"/><!-- A -->
+                        <circle cx="280" cy="110" r="10"/><!-- D -->
+                        <circle cx="280" cy="60"  r="10"/><!-- C -->
+                        <circle cx="120" cy="160" r="10"/><!-- E -->
+                      </g>
+
+                      <!-- LABELS -->
+                      <g font-family="inherit" font-size="14" font-weight="800"
+                        fill="rgba(234,234,234,0.95)" text-anchor="middle">
+                        <text x="40"  y="95">F</text>
+                        <text x="120" y="95">B</text>
+                        <text x="200" y="95">A</text>
+                        <text x="280" y="95">D</text>
+                        <text x="280" y="45">C</text>
+                        <text x="120" y="185">E</text>
+                      </g>
+                    </svg>
+
+                    <div class="note" style="margin-top:10px;">
+                      O vértice <strong>F</strong> tem grau 1, então não pode existir
+                      <strong>ciclo</strong> hamiltoniano.
+                    </div>
+                  </div>
+
+                  <!-- Example B: disconnected graph -->
+                  <div class="graph-figure" style="max-width:none; margin:0;">
+                    <p class="math-note" style="margin:0 0 8px;">
+                      <strong>Exemplo B — Grafo desconexo</strong>
+                    </p>
+
+                    <svg viewBox="0 0 360 220"
+                        xmlns="http://www.w3.org/2000/svg"
+                        role="img"
+                        aria-label="Exemplo de grafo desconexo, logo não há ciclo hamiltoniano"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="width:100%; height:auto; display:block;">
+
+                      <!-- EDGES -->
+                      <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+                        <!-- componente 1: triângulo -->
+                        <line x1="90" y1="70" x2="160" y2="40"/>
+                        <line x1="160" y1="40" x2="170" y2="110"/>
+                        <line x1="170" y1="110" x2="90" y2="70"/>
+
+                        <!-- componente 2: caminho -->
+                        <line x1="240" y1="70" x2="300" y2="70"/>
+                        <line x1="300" y1="70" x2="330" y2="120"/>
+                      </g>
+
+                      <!-- NODES -->
+                      <g fill="rgba(231,76,60,0.95)" stroke="rgba(234,234,234,0.9)" stroke-width="2">
+                        <!-- comp 1 -->
+                        <circle cx="90"  cy="70"  r="10"/><!-- A -->
+                        <circle cx="160" cy="40"  r="10"/><!-- B -->
+                        <circle cx="170" cy="110" r="10"/><!-- C -->
+                        <!-- comp 2 -->
+                        <circle cx="240" cy="70"  r="10"/><!-- D -->
+                        <circle cx="300" cy="70"  r="10"/><!-- E -->
+                        <circle cx="330" cy="120" r="10"/><!-- F -->
+                      </g>
+
+                      <!-- LABELS -->
+                      <g font-family="inherit" font-size="14" font-weight="800"
+                        fill="rgba(234,234,234,0.95)" text-anchor="middle">
+                        <text x="90"  y="55">A</text>
+                        <text x="160" y="25">B</text>
+                        <text x="170" y="135">C</text>
+
+                        <text x="240" y="55">D</text>
+                        <text x="300" y="55">E</text>
+                        <text x="330" y="145">F</text>
+                      </g>
+                    </svg>
+
+                    <div class="note" style="margin-top:10px;">
+                      O grafo tem <strong>duas componentes</strong>. Como não é conexo, não pode existir
+                      ciclo hamiltoniano.
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
