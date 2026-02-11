@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graphs → Hamiltonian · Part 4 — Sufficient Conditions</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graphs</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltonian · Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graphs → Hamiltonian</h2>
+          <p>Part 4 of 4 — Sufficient Conditions</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Hamiltonian</strong>
+            <span>Part 4 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/hamiltonian/part-3.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/hamiltonian/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/graphs/hamiltonian/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+              <!-- Card 1 — Dirac -->
+              <section class="card">
+                <h3>Dirac's Theorem</h3>
+
+                <p class="math-note">
+                  Let <span class="math">\(G\)</span> be a simple graph with
+                  <span class="math">\(n \ge 3\)</span> vertices.
+                  If every vertex satisfies
+                  <span class="math">\( \deg(v) \ge \frac{n}{2} \)</span>,
+                  then <span class="math">\(G\)</span> has a
+                  <strong>Hamiltonian cycle</strong>.
+                </p>
+
+                <div class="math-block" style="margin-top:10px;">
+                  \[
+                    \text{If } \deg(v) \ge \frac{n}{2} \text{ for all } v \in V,
+                    \text{ then } G \text{ is Hamiltonian.}
+                  \]
+                </div>
+
+                <p class="math-note" style="margin-top:10px;">
+                  Intuition: if each vertex is connected to at least half of the graph,
+                  there is enough connectivity to “stitch together” a cycle passing through all vertices.
+                </p>
+
+                <div class="note" style="margin-top:10px;">
+                  <strong>Important:</strong>
+                  This is a <strong>sufficient</strong> condition, not a necessary one.
+                  A graph may be Hamiltonian even if it does not satisfy this inequality.
+                </div>
+              </section>
+
+
+              <!-- Card 2 — Ore -->
+              <section class="card">
+                <h3>Ore's Theorem</h3>
+
+                <p class="math-note">
+                  Let <span class="math">\(G\)</span> be a simple graph with
+                  <span class="math">\(n \ge 3\)</span> vertices.
+                  If, for every pair of non-adjacent vertices
+                  <span class="math">\(u\)</span> and <span class="math">\(v\)</span>,
+                  we have
+                  <span class="math">\( \deg(u) + \deg(v) \ge n \)</span>, <br/>
+                  then <span class="math">\(G\)</span> has a
+                  <strong>Hamiltonian cycle</strong>.
+                </p>
+
+                <div class="math-block math-block--ore" style="margin-top:10px;">
+                  \[
+                    \begin{aligned}
+                    \text{If } \deg(u) + \deg(v) \ge n 
+                    &\text{ for every non-adjacent pair } (u,v), \\
+                    &\text{ then } G \text{ is Hamiltonian.}
+                    \end{aligned}
+                  \]
+                </div>
+
+                <p class="math-note" style="margin-top:10px;">
+                  Intuition: even if two vertices are not directly connected,
+                  the sum of their degrees guarantees sufficient connectivity in the rest of the graph.
+                </p>
+
+                <div class="note" style="margin-top:10px;">
+                  Ore's Theorem generalizes Dirac's Theorem.
+                  If Dirac’s condition is satisfied,
+                  then Ore’s condition is also satisfied.
+                </div>
+              </section>
+            </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

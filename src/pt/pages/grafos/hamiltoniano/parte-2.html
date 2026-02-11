@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Grafos → Hamiltoniano · Parte 2 — Definições e Exemplos</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Hamiltoniano · Parte 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Grafos → Hamiltoniano</h2>
+          <p>Parte 2 de 4 — Definições e Exemplos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Hamiltoniano</strong>
+            <span>Parte 2 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/hamiltoniano/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/hamiltoniano/parte-3.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/grafos/hamiltoniano/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/hamiltoniano/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <!-- Card 1: Definition -->
+            <section class="card">
+              <h3>Definição</h3>
+
+              <p class="math-note">
+                Um <strong>caminho hamiltoniano</strong> é um caminho que visita <strong>todos os vértices</strong>
+                de um grafo <strong>exatamente uma vez</strong>.
+              </p>
+
+              <p class="math-note">
+                Um <strong>ciclo hamiltoniano</strong> é um caminho hamiltoniano que, além disso,
+                <strong>retorna ao vértice inicial</strong>, formando um ciclo.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong><br />
+                Caminho hamiltoniano = visita todos os vértices uma vez.<br />
+                Ciclo hamiltoniano = caminho hamiltoniano + volta ao início.
+              </div>
+            </section>
+
+            <!-- Card 2: Examples -->
+            <section class="card">
+              <h3>Exemplos</h3>
+
+              <p class="math-note">
+                Abaixo, dois exemplos típicos: um grafo que <strong>tem</strong> ciclo hamiltoniano e outro
+                que <strong>não tem</strong>.
+              </p>
+
+              <div class="example-grid" style="margin-top:10px;">
+                <!-- Example A: Hamiltonian -->
+                <div class="graph-figure" style="max-width:none; margin:0;">
+                  <p class="math-note" style="margin:0 0 8px;"><strong>Exemplo A — Tem ciclo hamiltoniano</strong></p>
+
+                  <svg viewBox="0 0 360 220"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                      aria-label="Exemplo de grafo com ciclo hamiltoniano"
+                      preserveAspectRatio="xMidYMid meet"
+                      style="width:100%; height:auto; display:block;">
+
+                    <!-- Edges -->
+                    <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+                      <line x1="70"  y1="60"  x2="290" y2="60" />
+                      <line x1="290" y1="60"  x2="290" y2="170"/>
+                      <line x1="290" y1="170" x2="70"  y2="170"/>
+                      <line x1="70"  y1="170" x2="70"  y2="60" />
+
+                      <!-- diagonal (extra edge, still Hamiltonian) -->
+                      <line x1="70"  y1="60"  x2="290" y2="170"/>
+                    </g>
+
+                    <!-- Suggested Hamiltonian cycle highlight (square) -->
+                    <g fill="none" stroke="rgba(26,188,156,0.85)" stroke-width="4" stroke-linecap="round">
+                      <line x1="70"  y1="60"  x2="290" y2="60" />
+                      <line x1="290" y1="60"  x2="290" y2="170"/>
+                      <line x1="290" y1="170" x2="70"  y2="170"/>
+                      <line x1="70"  y1="170" x2="70"  y2="60" />
+                    </g>
+
+                    <!-- Nodes -->
+                    <g fill="rgba(231,76,60,0.95)" stroke="rgba(234,234,234,0.9)" stroke-width="2">
+                      <circle cx="70"  cy="60"  r="10"/><circle cx="290" cy="60"  r="10"/>
+                      <circle cx="290" cy="170" r="10"/><circle cx="70"  cy="170" r="10"/>
+                    </g>
+
+                    <!-- Labels -->
+                    <g font-family="inherit" font-size="14" font-weight="800" fill="rgba(234,234,234,0.95)" text-anchor="middle">
+                      <text x="70"  y="40">A</text>
+                      <text x="290" y="40">B</text>
+                      <text x="290" y="195">C</text>
+                      <text x="70"  y="195">D</text>
+                    </g>
+                  </svg>
+
+                  <div class="note" style="margin-top:10px;">
+                    Um ciclo possível: <strong>A → B → C → D → A</strong>.
+                  </div>
+                </div>
+
+                <!-- Example B: Not Hamiltonian -->
+                <div class="graph-figure" style="max-width:none; margin:0;">
+                  <p class="math-note" style="margin:0 0 8px;"><strong>Exemplo B — Não tem ciclo hamiltoniano</strong></p>
+
+                  <svg viewBox="0 0 360 220"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="xMidYMid meet"
+                    style="width:100%; height:auto; display:block;">
+
+                  <!-- EDGES -->
+                  <g fill="none" stroke="rgba(234,234,234,0.65)" stroke-width="3" stroke-linecap="round">
+
+                    <!-- Linha reta F -> B -> A -> D -->
+                    <line x1="40"  y1="110" x2="120" y2="110" />
+                    <line x1="120" y1="110" x2="200" y2="110" />
+                    <line x1="200" y1="110" x2="280" y2="110" />
+
+                    <!-- Outras conexões -->
+                    <line x1="200" y1="110" x2="280" y2="60" />
+                    <line x1="200" y1="110" x2="120" y2="160" />
+                  </g>
+
+                  <!-- NODES -->
+                  <g fill="rgba(231,76,60,0.95)"
+                    stroke="rgba(234,234,234,0.9)"
+                    stroke-width="2">
+
+                    <circle cx="40"  cy="110" r="10" />  <!-- F -->
+                    <circle cx="120" cy="110" r="10" />  <!-- B -->
+                    <circle cx="200" cy="110" r="10" />  <!-- A -->
+                    <circle cx="280" cy="110" r="10" />  <!-- D -->
+
+                    <circle cx="280" cy="60"  r="10" />  <!-- C -->
+                    <circle cx="120" cy="160" r="10" />  <!-- E -->
+                  </g>
+
+                  <!-- LABELS -->
+                  <g font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.95)"
+                    text-anchor="middle">
+
+                    <text x="40"  y="95">F</text>
+                    <text x="120" y="95">B</text>
+                    <text x="200" y="95">A</text>
+                    <text x="280" y="95">D</text>
+
+                    <text x="280" y="45">C</text>
+                    <text x="120" y="185">E</text>
+                  </g>
+                </svg>
+
+
+                  <div class="note" style="margin-top:10px;">
+                    O vértice <strong>F</strong> tem grau 1, então não pode existir <strong>ciclo</strong> hamiltoniano.
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
