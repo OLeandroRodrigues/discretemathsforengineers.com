@@ -106,9 +106,6 @@
 /* ============================
    Sidebar navigation
    ============================ */
-
-/* cuidado: "nav" global pode afetar outros navs.
-   Se possível, troque por .sidebar nav */
 nav{ padding:8px; overflow:auto; }
 
 .nav-section{ margin:6px 0 10px; }
@@ -249,6 +246,30 @@ details.menu[open] .chev{ transform:rotate(90deg); }
   opacity:.75;
   color:var(--muted);
 }
+
+details.menu > .submenu {
+  display: none;
+}
+
+details.menu[open] > .submenu {
+  display: grid;
+}
+
+summary.menu-title { position: relative; z-index: 1; }
+details.menu[open] > .submenu { position: relative; z-index: 2; }
+
+html.nav-preload details.menu,
+html.nav-preload summary.menu-title,
+html.nav-preload .submenu,
+html.nav-preload .submenu a,
+html.nav-preload .chev {
+  transition: none !important;
+}
+
+html.nav-preload nav[aria-label="Main navigation"] {
+  visibility: hidden; 
+}
+
 
 .sidebar-footer{
   margin-top:auto;
