@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 1 — Graph Model &amp; Problem Setting</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1 — Graph Model &amp; Problem Setting</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Breadth-First Search (BFS)</h2>
+          <p>Part 1 — Graph Model &amp; Problem Setting</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Breadth-First Search (BFS)</strong>
+            <span>Part 1 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">← Index</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Overview</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
+          <a class="pill disabled" aria-disabled="true">2</a>
+          <a class="pill disabled" aria-disabled="true">3</a>
+          <a class="pill disabled" aria-disabled="true">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <section class="card" id="bfs-part1-model">
+              <h3>Graph Model &amp; Problem Setting</h3>
+              <hr class="soft" />
+
+              <h4>1. Why Start With the Model?</h4>
+
+              <p>
+                Before discussing algorithms, we must define <strong>precisely</strong> what problem we are solving.
+              </p>
+
+              <p>
+                Breadth-First Search is not <q>just a traversal technique</q>.<br />
+                It is a <strong>graph-theoretic shortest-path</strong> algorithm for a specific mathematical structure.
+              </p>
+
+              <p>So we begin with the object:</p>
+
+              <div class="math-block" role="math" aria-label="G equals (V, E)">
+                <span class="math">G = (V, E)</span>
+              </div>
+
+              <p>Where:</p>
+
+              <ul class="bullets">
+                <li><span class="math">V</span> = set of vertices</li>
+                <li><span class="math">E ⊆ V × V</span> = set of edges</li>
+              </ul>
+
+              <p class="note">
+                This is the formal foundation used in <em>Introduction to Algorithms</em>.
+              </p>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
