@@ -97,6 +97,227 @@
               </p>
             </section>
 
+            <!-- Card 2 -->
+            <section class="card" id="bfs-part1-directed-undirected">
+              <h4>2. Directed and Undirected Graphs</h4>
+
+              <p class="math-note">
+                We distinguish two fundamental models.
+              </p>
+
+              <h5>Directed Graph (Digraph)</h5>
+
+              <div class="math-block" role="math" aria-label="E subset of V times V">
+                <span class="math">E ⊆ V × V</span>
+              </div>
+
+              <p>
+                Edges have orientation:
+                if <span class="math">(u, v) ∈ E</span>, you may travel from <span class="math">u</span> to
+                <span class="math">v</span>, but not necessarily from <span class="math">v</span> to
+                <span class="math">u</span>.
+              </p>
+
+              <h5>Undirected Graph</h5>
+
+              <div class="math-block" role="math" aria-label="E subset of set of unordered pairs">
+                <span class="math">E ⊆ {{u, v} ∣ u, v ∈ V}</span>
+              </div>
+
+              <p>
+                Edges are symmetric:
+                if <span class="math">u</span> is adjacent to <span class="math">v</span>, then
+                <span class="math">v</span> is adjacent to <span class="math">u</span>.
+              </p>
+
+              <p class="note">
+                BFS works for both models.
+              </p>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card" id="bfs-part1-representation">
+              <h4>3. Graph Representation</h4>
+
+              <p class="math-note">
+                An algorithm must operate on a data representation of <span class="math">G</span>.
+              </p>
+
+              <h5>3.1 Adjacency List (Preferred)</h5>
+
+              <p>Each vertex stores a list of its neighbors:</p>
+
+              <div class="math-block" role="math" aria-label="Adjacency list definition">
+                <span class="math">Adj[u] = { v ∈ V ∣ (u, v) ∈ E }</span>
+              </div>
+
+              <p>
+                This is the standard representation in CLRS because it yields
+                <span class="math">O(V + E)</span> time complexity for BFS.
+              </p>
+
+              <h5>3.2 Adjacency Matrix</h5>
+
+              <p>
+                A matrix <span class="math">A ∈ {0, 1}<sup>|V|×|V|</sup></span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Adjacency matrix definition">
+                <span class="math">
+                  A[u, v] =
+                  { 1 if (u, v) ∈ E; 0 otherwise }
+                </span>
+              </div>
+
+              <p>
+                This representation leads to <span class="math">O(V<sup>2</sup>)</span> time complexity for traversal.
+              </p>
+
+              <p class="note">
+                For sparse graphs (common in engineering systems), adjacency lists are superior.
+              </p>
+            </section>
+
+            <!-- Card 4 -->
+            <section class="card" id="bfs-part1-problem">
+              <h4>4. The Problem BFS Solves</h4>
+
+              <p>
+                Let <span class="math">s ∈ V</span> be a distinguished source vertex.
+              </p>
+
+              <p>We want to compute:</p>
+
+              <h5>4.1 Reachability</h5>
+
+              <p>
+                Which vertices are reachable from <span class="math">s</span>?
+              </p>
+
+              <div class="math-block" role="math" aria-label="Reachability definition">
+                <span class="math">Reach(s) = { v ∈ V ∣ ∃ path from s to v }</span>
+              </div>
+
+              <h5>4.2 Shortest Path Distance (Unweighted Graphs)</h5>
+
+              <p>
+                Define <span class="math">δ(s, v)</span> as the minimum number of edges in any path from
+                <span class="math">s</span> to <span class="math">v</span>.
+                This is called the graph distance.
+              </p>
+
+              <p>
+                BFS computes <span class="math">d[v] = δ(s, v)</span> for all reachable vertices.
+              </p>
+
+              <div class="note">
+                <strong>Important:</strong> BFS does <strong>not</strong> minimize weights.
+                It minimizes the number of edges. That is why it works only for <em>unweighted</em> graphs.
+              </div>
+            </section>
+
+            <!-- Card 5 -->
+            <section class="card" id="bfs-part1-paths">
+              <h4>5. Paths — Formal Definition</h4>
+
+              <p>
+                A path of length <span class="math">k</span> is a sequence
+                <span class="math">v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub></span>
+                such that
+                <span class="math">(v<sub>i−1</sub>, v<sub>i</sub>) ∈ E</span>
+                for all <span class="math">i = 1, …, k</span>.
+              </p>
+
+              <p>
+                The length of the path is <span class="math">k</span>.
+              </p>
+
+              <p class="math-note">
+                Shortest path problem: <span class="math">min k</span>, subject to the existence of such a sequence.
+              </p>
+            </section>
+
+            <!-- Card 6 -->
+            <section class="card" id="bfs-part1-layers">
+              <h4>6. Layer Structure — A Preview of BFS Geometry</h4>
+
+              <p class="math-note">
+                Although we have not defined the algorithm yet, we introduce a structural idea.
+              </p>
+
+              <p>Define distance layers:</p>
+
+              <div class="math-block" role="math" aria-label="Layer sets definition">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <ul class="bullets">
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = neighbors of <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vertices at distance 2</li>
+                <li>etc.</li>
+              </ul>
+
+              <p>
+                These layers partition the reachable subgraph.
+                BFS will explore vertices <strong>exactly</strong> in this layered order.
+              </p>
+
+              <p class="note">
+                This layered structure is the geometric heart of the algorithm.
+              </p>
+            </section>
+
+            <!-- Card 7 -->
+            <section class="card" id="bfs-part1-objective">
+              <h4>7. The BFS Objective (Precise Statement)</h4>
+
+              <p>
+                Given a graph <span class="math">G = (V, E)</span> and a source <span class="math">s ∈ V</span>,
+                compute:
+              </p>
+
+              <ul class="bullets">
+                <li>
+                  The distance function <span class="math">d : V → N ∪ {∞}</span>
+                </li>
+                <li>
+                  A predecessor function <span class="math">π : V → V ∪ {NIL}</span>
+                </li>
+              </ul>
+
+              <p>such that:</p>
+
+              <ul class="bullets">
+                <li><span class="math">d[v] = δ(s, v)</span></li>
+                <li>The predecessor pointers form a shortest-path tree rooted at <span class="math">s</span></li>
+              </ul>
+            </section>
+
+            <!-- Card 8 -->
+            <section class="card" id="bfs-part1-why-matters">
+              <h4>8. Why This Matters in Engineering</h4>
+
+              <p>BFS appears in:</p>
+
+              <ul class="bullets">
+                <li>Network routing (unweighted hops)</li>
+                <li>Social network distance</li>
+                <li>Web crawling</li>
+                <li>Dependency resolution</li>
+                <li>Connectivity analysis</li>
+                <li>Bipartite testing</li>
+              </ul>
+
+              <p class="math-note">
+                In discrete mathematics terms: BFS constructs the metric structure induced by edge-count distance.
+              </p>
+
+              <p class="note">
+                This is not just traversal. It is the construction of a shortest-path metric space over <span class="math">G</span>.
+              </p>
+            </section>
+
           </div>
         </article>
       </div>
