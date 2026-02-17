@@ -98,6 +98,227 @@
               </p>
             </section>
 
+            <!-- Card 2 -->
+            <section class="card" id="bfs-part1-directed-undirected">
+              <h4>2. Grafos orientados e não orientados</h4>
+
+              <p class="math-note">
+                Distinguimos dois modelos fundamentais.
+              </p>
+
+              <h5>Grafo orientado (dígrafo)</h5>
+
+              <div class="math-block" role="math" aria-label="E subconjunto de V vezes V">
+                <span class="math">E ⊆ V × V</span>
+              </div>
+
+              <p>
+                As arestas têm orientação:
+                se <span class="math">(u, v) ∈ E</span>, você pode ir de <span class="math">u</span> para
+                <span class="math">v</span>, mas não necessariamente de <span class="math">v</span> para
+                <span class="math">u</span>.
+              </p>
+
+              <h5>Grafo não orientado</h5>
+
+              <div class="math-block" role="math" aria-label="E subconjunto do conjunto de pares não ordenados">
+                <span class="math">E ⊆ {{u, v} ∣ u, v ∈ V}</span>
+              </div>
+
+              <p>
+                As arestas são simétricas:
+                se <span class="math">u</span> é adjacente a <span class="math">v</span>, então
+                <span class="math">v</span> é adjacente a <span class="math">u</span>.
+              </p>
+
+              <p class="note">
+                A BFS funciona em ambos os modelos.
+              </p>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card" id="bfs-part1-representation">
+              <h4>3. Representação do grafo</h4>
+
+              <p class="math-note">
+                Um algoritmo precisa operar sobre uma representação de dados de <span class="math">G</span>.
+              </p>
+
+              <h5>3.1 Lista de adjacência (recomendada)</h5>
+
+              <p>Cada vértice armazena uma lista de seus vizinhos:</p>
+
+              <div class="math-block" role="math" aria-label="Definição de lista de adjacência">
+                <span class="math">Adj[u] = { v ∈ V ∣ (u, v) ∈ E }</span>
+              </div>
+
+              <p>
+                Esta é a representação padrão no CLRS porque ela resulta em complexidade de tempo
+                <span class="math">O(V + E)</span> para a BFS.
+              </p>
+
+              <h5>3.2 Matriz de adjacência</h5>
+
+              <p>
+                Uma matriz <span class="math">A ∈ {0, 1}<sup>|V|×|V|</sup></span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de matriz de adjacência">
+                <span class="math">
+                  A[u, v] =
+                  { 1 se (u, v) ∈ E; 0 caso contrário }
+                </span>
+              </div>
+
+              <p>
+                Essa representação leva a complexidade <span class="math">O(V<sup>2</sup>)</span> para o percurso.
+              </p>
+
+              <p class="note">
+                Para grafos esparsos (comuns em sistemas de engenharia), listas de adjacência são superiores.
+              </p>
+            </section>
+
+            <!-- Card 4 -->
+            <section class="card" id="bfs-part1-problem">
+              <h4>4. O problema que a BFS resolve</h4>
+
+              <p>
+                Seja <span class="math">s ∈ V</span> um vértice de origem (fonte) distinguido.
+              </p>
+
+              <p>Queremos calcular:</p>
+
+              <h5>4.1 Atingibilidade</h5>
+
+              <p>
+                Quais vértices são alcançáveis a partir de <span class="math">s</span>?
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de atingibilidade">
+                <span class="math">Reach(s) = { v ∈ V ∣ ∃ caminho de s até v }</span>
+              </div>
+
+              <h5>4.2 Distância de caminho mínimo (grafos não ponderados)</h5>
+
+              <p>
+                Defina <span class="math">δ(s, v)</span> como o número mínimo de arestas em qualquer caminho de
+                <span class="math">s</span> até <span class="math">v</span>.
+                Isso é chamado de distância no grafo.
+              </p>
+
+              <p>
+                A BFS computa <span class="math">d[v] = δ(s, v)</span> para todos os vértices alcançáveis.
+              </p>
+
+              <div class="note">
+                <strong>Importante:</strong> a BFS <strong>não</strong> minimiza pesos.
+                Ela minimiza o número de arestas. Por isso, ela funciona apenas para grafos <em>não ponderados</em>.
+              </div>
+            </section>
+
+            <!-- Card 5 -->
+            <section class="card" id="bfs-part1-paths">
+              <h4>5. Caminhos — definição formal</h4>
+
+              <p>
+                Um caminho de comprimento <span class="math">k</span> é uma sequência
+                <span class="math">v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub></span>
+                tal que
+                <span class="math">(v<sub>i−1</sub>, v<sub>i</sub>) ∈ E</span>
+                para todo <span class="math">i = 1, …, k</span>.
+              </p>
+
+              <p>
+                O comprimento do caminho é <span class="math">k</span>.
+              </p>
+
+              <p class="math-note">
+                Problema de caminho mínimo: <span class="math">min k</span>, sujeito à existência de tal sequência.
+              </p>
+            </section>
+
+            <!-- Card 6 -->
+            <section class="card" id="bfs-part1-layers">
+              <h4>6. Estrutura em camadas — uma prévia da geometria da BFS</h4>
+
+              <p class="math-note">
+                Embora ainda não tenhamos definido o algoritmo, introduzimos uma ideia estrutural.
+              </p>
+
+              <p>Defina as camadas por distância:</p>
+
+              <div class="math-block" role="math" aria-label="Definição dos conjuntos de camadas">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <ul class="bullets">
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = vizinhos de <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vértices a distância 2</li>
+                <li>etc.</li>
+              </ul>
+
+              <p>
+                Essas camadas particionam o subgrafo alcançável.
+                A BFS explorará os vértices <strong>exatamente</strong> nessa ordem por camadas.
+              </p>
+
+              <p class="note">
+                Essa estrutura em camadas é o coração geométrico do algoritmo.
+              </p>
+            </section>
+
+            <!-- Card 7 -->
+            <section class="card" id="bfs-part1-objective">
+              <h4>7. Objetivo da BFS (enunciado preciso)</h4>
+
+              <p>
+                Dado um grafo <span class="math">G = (V, E)</span> e uma origem <span class="math">s ∈ V</span>,
+                compute:
+              </p>
+
+              <ul class="bullets">
+                <li>
+                  A função distância <span class="math">d : V → N ∪ {∞}</span>
+                </li>
+                <li>
+                  Uma função predecessor <span class="math">π : V → V ∪ {NIL}</span>
+                </li>
+              </ul>
+
+              <p>tal que:</p>
+
+              <ul class="bullets">
+                <li><span class="math">d[v] = δ(s, v)</span></li>
+                <li>Os ponteiros de predecessor formam uma árvore de caminhos mínimos enraizada em <span class="math">s</span></li>
+              </ul>
+            </section>
+
+            <!-- Card 8 -->
+            <section class="card" id="bfs-part1-why-matters">
+              <h4>8. Por que isso importa em engenharia</h4>
+
+              <p>A BFS aparece em:</p>
+
+              <ul class="bullets">
+                <li>Roteamento em redes (saltos não ponderados)</li>
+                <li>Distância em redes sociais</li>
+                <li>Rastreamento/crawling na web</li>
+                <li>Resolução de dependências</li>
+                <li>Análise de conectividade</li>
+                <li>Teste de bipartição</li>
+              </ul>
+
+              <p class="math-note">
+                Em termos de matemática discreta: a BFS constrói a estrutura métrica induzida pela distância por número de arestas.
+              </p>
+
+              <p class="note">
+                Isso não é apenas um percurso. É a construção de um espaço métrico de caminhos mínimos sobre <span class="math">G</span>.
+              </p>
+            </section>
+
           </div>
         </article>
       </div>
