@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 2 — A Ideia Central</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2 — A Ideia Central</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 2 — A Ideia Central da BFS</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 2 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
+          <a class="pill disabled" aria-disabled="true">3</a>
+          <a class="pill disabled" aria-disabled="true">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card" id="bfs-part2-core-idea">
+              <h3>A Ideia Central da BFS</h3>
+              <hr class="soft" />
+
+              <h4>Intuição</h4>
+
+              <p class="math-note">
+                A BFS explora o grafo em camadas.
+              </p>
+
+              <h4>Conceitos-chave</h4>
+
+              <ul class="bullets">
+                <li>
+                  Conjuntos de níveis
+                  <span class="math">L<sub>0</sub>, L<sub>1</sub>, L<sub>2</sub>, …</span>
+                </li>
+                <li>Expansão em frente de onda</li>
+                <li>Disciplina FIFO (fila)</li>
+              </ul>
+
+              <div class="note" style="margin-top:12px;">
+                <strong>Intuição de engenharia:</strong>
+                A BFS é um algoritmo de caminho mínimo para grafos não ponderados.
+              </div>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
