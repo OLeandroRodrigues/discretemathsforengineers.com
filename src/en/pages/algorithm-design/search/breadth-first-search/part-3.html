@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 3 — Graph Representation</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3 — Graph Representation</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Breadth-First Search (BFS)</h2>
+          <p>Part 3 — Graph Representation</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Breadth-First Search (BFS)</strong>
+            <span>Part 3 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
+          <a class="pill disabled" aria-disabled="true">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <section class="card" id="bfs-part3-representation-1">
+              <h3>3. Graph Representation</h3>
+              <hr class="soft" />
+
+              <p>
+                An algorithm must operate on a data representation of
+                <span class="math">G</span>.
+              </p>
+
+              <h4>3.1 Adjacency List (Preferred)</h4>
+
+              <p>
+                Each vertex stores a list of its neighbors:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Adjacency list definition">
+                <span class="math">
+                  Adj[u] = { v ∈ V ∣ (u, v) ∈ E }
+                </span>
+              </div>
+
+              <p>
+                This is the standard representation in CLRS because it yields:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Time complexity O(V+E)">
+                <span class="math">O(V + E)</span>
+              </div>
+
+              <p>
+                time complexity for BFS.
+              </p>
+             </section>
+             <section class="card" id="bfs-part3-representation-2">
+              <h4>3.2 Adjacency Matrix</h4>
+
+              <p>
+                A matrix
+                <span class="math">A ∈ {0,1}<sup>|V|×|V|</sup></span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Adjacency matrix definition">
+                <span class="math">
+                  A[u, v] =
+                  { 1 if (u, v) ∈ E; 0 otherwise }
+                </span>
+              </div>
+
+              <p>
+                This representation leads to:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Time complexity O(V^2)">
+                <span class="math">O(V<sup>2</sup>)</span>
+              </div>
+
+              <p>
+                time complexity for traversal.
+              </p>
+
+              <div class="note">
+                <strong>Engineering insight:</strong>
+                For sparse graphs (common in engineering systems),
+                adjacency lists are superior.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

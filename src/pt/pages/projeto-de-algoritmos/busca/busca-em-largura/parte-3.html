@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 3 — Representação de Grafos</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3 — Representação de Grafos</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 3 — Representação de Grafos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 3 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
+          <a class="pill disabled" aria-disabled="true">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <section class="card" id="bfs-part3-representation-1">
+              <h3>3. Representação de Grafos</h3>
+              <hr class="soft" />
+
+              <p>
+                Um algoritmo deve operar sobre uma representação de dados de
+                <span class="math">G</span>.
+              </p>
+
+              <h4>3.1 Lista de Adjacência (Recomendada)</h4>
+
+              <p>
+                Cada vértice armazena uma lista de seus vizinhos:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de lista de adjacência">
+                <span class="math">
+                  Adj[u] = { v ∈ V ∣ (u, v) ∈ E }
+                </span>
+              </div>
+
+              <p>
+                Esta é a representação padrão no CLRS porque ela produz:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Complexidade O(V+E)">
+                <span class="math">O(V + E)</span>
+              </div>
+
+              <p>
+                de complexidade de tempo para a BFS.
+              </p>
+            </section>
+
+            <section class="card" id="bfs-part3-representation-2">
+              <h4>3.2 Matriz de Adjacência</h4>
+
+              <p>
+                Uma matriz
+                <span class="math">A ∈ {0,1}<sup>|V|×|V|</sup></span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de matriz de adjacência">
+                <span class="math">
+                  A[u, v] =
+                  { 1 se (u, v) ∈ E; 0 caso contrário }
+                </span>
+              </div>
+
+              <p>
+                Essa representação leva a:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Complexidade O(V^2)">
+                <span class="math">O(V<sup>2</sup>)</span>
+              </div>
+
+              <p>
+                de complexidade para o percurso.
+              </p>
+
+              <div class="note">
+                <strong>Intuição de engenharia:</strong>
+                Para grafos esparsos (comuns em sistemas de engenharia),
+                listas de adjacência são superiores.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
