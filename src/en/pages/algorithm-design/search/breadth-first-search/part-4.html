@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 4 — The Problem BFS Solves</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4 — The Problem BFS Solves</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Breadth-First Search (BFS)</h2>
+          <p>Part 4 — The Problem BFS Solves</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Breadth-First Search (BFS)</strong>
+            <span>Part 4 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <section class="card" id="bfs-part4-problem">
+              <h3>4. The Problem BFS Solves</h3>
+              <hr class="soft" />
+
+              <p>
+                Let <span class="math">s ∈ V</span> be a distinguished source vertex.
+              </p>
+
+              <p>
+                We want to compute:
+              </p>
+
+              <h4>4.1 Reachability</h4>
+
+              <p>
+                Which vertices are reachable from <span class="math">s</span>?
+              </p>
+
+              <div class="math-block" role="math" aria-label="Reachability definition">
+                <span class="math">
+                  Reach(s) = { v ∈ V ∣ ∃ path from s to v }
+                </span>
+              </div>
+
+              <h4>4.2 Shortest Path Distance (Unweighted Graphs)</h4>
+
+              <p>
+                Define
+                <span class="math">δ(s, v)</span>
+                as the minimum number of edges in any path from
+                <span class="math">s</span> to
+                <span class="math">v</span>.
+              </p>
+
+              <p>
+                This quantity is called the <strong>graph distance</strong>.
+              </p>
+
+              <p>
+                BFS computes:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Distance definition">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <p>
+                for all reachable vertices.
+              </p>
+
+              <div class="note">
+                <strong>Important:</strong>
+                BFS does <strong>not</strong> minimize weights.
+                It minimizes the number of edges.
+                That is why it works only for <em>unweighted graphs</em>.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+</body>
+</html>
