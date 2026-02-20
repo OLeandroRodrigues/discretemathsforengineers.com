@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 4 — O Problema que a BFS Resolve</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4 — O Problema que a BFS Resolve</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 4 — O Problema que a BFS Resolve</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 4 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-4.html">4</a>
+          <a class="pill disabled" aria-disabled="true">5</a>
+          <a class="pill disabled" aria-disabled="true">6</a>
+          <a class="pill disabled" aria-disabled="true">7</a>
+          <a class="pill disabled" aria-disabled="true">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <section class="card" id="bfs-part4-problem">
+              <h3>4. O Problema que a BFS Resolve</h3>
+              <hr class="soft" />
+
+              <p>
+                Seja <span class="math">s ∈ V</span> um vértice fonte distinguido.
+              </p>
+
+              <p>
+                Queremos calcular:
+              </p>
+
+              <h4>4.1 Alcance (Reachability)</h4>
+
+              <p>
+                Quais vértices são alcançáveis a partir de <span class="math">s</span>?
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de alcance">
+                <span class="math">
+                  Reach(s) = { v ∈ V ∣ ∃ caminho de s até v }
+                </span>
+              </div>
+
+              <h4>4.2 Distância de Caminho Mínimo (Grafos Não Ponderados)</h4>
+
+              <p>
+                Defina
+                <span class="math">δ(s, v)</span>
+                como o número mínimo de arestas em qualquer caminho de
+                <span class="math">s</span> até
+                <span class="math">v</span>.
+              </p>
+
+              <p>
+                Essa quantidade é chamada de <strong>distância no grafo</strong>.
+              </p>
+
+              <p>
+                A BFS calcula:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição de distância">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <p>
+                para todos os vértices alcançáveis.
+              </p>
+
+              <div class="note">
+                <strong>Importante:</strong>
+                A BFS <strong>não</strong> minimiza pesos.
+                Ela minimiza o número de arestas.
+                Por isso funciona apenas para <em>grafos não ponderados</em>.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+</body>
+</html>
