@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 2 — The Core Idea</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 6 — Layer Structure</title>
   {{> head}}
 </head>
 
@@ -11,6 +11,7 @@
   <div class="app">
     {{> sidebar}}
     <main>
+
       <!-- Breadcrumb -->
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/en/index.html">Home</a>
@@ -21,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 2 — The Core Idea</span>
+        <span class="current">Part 6 — Layer Structure</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 2 — The Core Idea of BFS</p>
+          <p>Part 6 — Layer Structure (A Preview of BFS Geometry)</p>
         </div>
       </div>
 
@@ -37,23 +38,23 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Series: Breadth-First Search (BFS)</strong>
-            <span>Part 2 of 8</span>
+            <span>Part 6 of 8</span>
           </div>
 
           <div class="series-actions">
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">← Previous</a>
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">Next →</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">Next →</a>
           </div>
         </div>
 
         <div class="pill-row">
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Overview</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
-          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">5</a>
-          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">6</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">6</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">7</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-8.html">8</a>
         </div>
@@ -64,32 +65,40 @@
         <article class="prose">
           <div class="cards-stack">
 
-            <!-- Card 1 -->
-            <section class="card" id="bfs-part2-core-idea">
-              <h3>The Core Idea of BFS</h3>
+            <section class="card" id="bfs-part6-layers">
+              <h3>6. Layer Structure — A Preview of BFS Geometry</h3>
               <hr class="soft" />
 
-              <h4>Intuition</h4>
-
               <p class="math-note">
-                BFS explores the graph in layers.
+                Although we have not defined the algorithm yet, we introduce a structural idea.
               </p>
 
-              <h4>Key concepts</h4>
+              <p>
+                Define distance layers:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Layer sets definition">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <p>Then:</p>
 
               <ul class="bullets">
-                <li>
-                  Level sets
-                  <span class="math">L<sub>0</sub>, L<sub>1</sub>, L<sub>2</sub>, …</span>
-                </li>
-                <li>Wavefront expansion</li>
-                <li>FIFO discipline (queue)</li>
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = neighbors of <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vertices at distance 2</li>
+                <li>etc.</li>
               </ul>
 
-              <div class="note" style="margin-top:12px;">
-                <strong>Engineering insight:</strong>
-                BFS is a shortest-path algorithm for unweighted graphs.
-              </div>
+              <p>
+                These layers partition the reachable subgraph.
+                BFS will explore vertices <strong>exactly</strong> in this layered order.
+              </p>
+
+              <p class="note">
+                This layered structure is the geometric heart of the algorithm.
+              </p>
+
             </section>
 
           </div>
@@ -97,6 +106,7 @@
       </div>
 
       {{> main-footer}}
+
     </main>
   </div>
 </body>

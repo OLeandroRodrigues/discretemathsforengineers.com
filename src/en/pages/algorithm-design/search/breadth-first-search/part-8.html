@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 2 — The Core Idea</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 8 — Why This Matters in Engineering</title>
   {{> head}}
 </head>
 
@@ -11,6 +11,7 @@
   <div class="app">
     {{> sidebar}}
     <main>
+
       <!-- Breadcrumb -->
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/en/index.html">Home</a>
@@ -21,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 2 — The Core Idea</span>
+        <span class="current">Part 8 — Why This Matters in Engineering</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 2 — The Core Idea of BFS</p>
+          <p>Part 8 — Why This Matters in Engineering</p>
         </div>
       </div>
 
@@ -37,25 +38,25 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Series: Breadth-First Search (BFS)</strong>
-            <span>Part 2 of 8</span>
+            <span>Part 8 of 8</span>
           </div>
 
           <div class="series-actions">
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">← Previous</a>
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">Next →</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Finish →</a>
           </div>
         </div>
 
         <div class="pill-row">
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Overview</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
-          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">5</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">6</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">7</a>
-          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-8.html">8</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-8.html">8</a>
         </div>
       </div>
 
@@ -64,32 +65,29 @@
         <article class="prose">
           <div class="cards-stack">
 
-            <!-- Card 1 -->
-            <section class="card" id="bfs-part2-core-idea">
-              <h3>The Core Idea of BFS</h3>
+            <section class="card" id="bfs-part8-why-matters">
+              <h3>8. Why This Matters in Engineering</h3>
               <hr class="soft" />
 
-              <h4>Intuition</h4>
-
-              <p class="math-note">
-                BFS explores the graph in layers.
-              </p>
-
-              <h4>Key concepts</h4>
+              <p>BFS appears in:</p>
 
               <ul class="bullets">
-                <li>
-                  Level sets
-                  <span class="math">L<sub>0</sub>, L<sub>1</sub>, L<sub>2</sub>, …</span>
-                </li>
-                <li>Wavefront expansion</li>
-                <li>FIFO discipline (queue)</li>
+                <li>Network routing (unweighted hops)</li>
+                <li>Social network distance</li>
+                <li>Web crawling</li>
+                <li>Dependency resolution</li>
+                <li>Connectivity analysis</li>
+                <li>Bipartite testing</li>
               </ul>
 
-              <div class="note" style="margin-top:12px;">
-                <strong>Engineering insight:</strong>
-                BFS is a shortest-path algorithm for unweighted graphs.
-              </div>
+              <p class="math-note">
+                In discrete mathematics terms: BFS constructs the metric structure induced by edge-count distance.
+              </p>
+
+              <p class="note">
+                This is not just traversal. It is the construction of a shortest-path metric space over <span class="math">G</span>.
+              </p>
+
             </section>
 
           </div>
@@ -97,6 +95,7 @@
       </div>
 
       {{> main-footer}}
+
     </main>
   </div>
 </body>
