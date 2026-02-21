@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 6 — Estrutura em Camadas</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 6 — Estrutura em Camadas</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 6 — Estrutura em Camadas (Uma Prévia da Geometria da BFS)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 6 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-5.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-5.html">5</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-8.html">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <section class="card" id="bfs-part6-layers">
+              <h3>6. Estrutura em Camadas — Uma Prévia da Geometria da BFS</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                Embora ainda não tenhamos definido formalmente o algoritmo, já podemos introduzir uma ideia estrutural.
+              </p>
+
+              <p>
+                Definimos as camadas de distância:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Definição das camadas">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <p>Então:</p>
+
+              <ul class="bullets">
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = vizinhos de <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vértices a distância 2</li>
+                <li>etc.</li>
+              </ul>
+
+              <p>
+                Essas camadas particionam o subgrafo alcançável.
+                A BFS explora os vértices <strong>exatamente</strong> nessa ordem em camadas.
+              </p>
+
+              <p class="note">
+                Essa estrutura em camadas é o coração geométrico do algoritmo.
+              </p>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+</body>
+</html>

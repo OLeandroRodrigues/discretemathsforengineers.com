@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 4 — The Problem BFS Solves</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 5 — Paths (Formal Definition)</title>
   {{> head}}
 </head>
 
@@ -22,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 4 — The Problem BFS Solves</span>
+        <span class="current">Part 5 — Paths (Formal Definition)</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 4 — The Problem BFS Solves</p>
+          <p>Part 5 — Paths (Formal Definition)</p>
         </div>
       </div>
 
@@ -38,12 +38,12 @@
         <div class="series-meta">
           <div class="series-title">
             <strong>Series: Breadth-First Search (BFS)</strong>
-            <span>Part 4 of 8</span>
+            <span>Part 5 of 8</span>
           </div>
 
           <div class="series-actions">
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">← Previous</a>
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">Next →</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">Next →</a>
           </div>
         </div>
 
@@ -52,8 +52,8 @@
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
-          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
-          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">5</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">6</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">7</a>
           <a class="pill" href="/en/pages/algorithm-design/search/breadth-first-search/part-8.html">8</a>
@@ -63,67 +63,39 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-grid">
+          <div class="cards-stack">
 
-            <section class="card" id="bfs-part4-problem-1">
-              <h3>4. The Problem BFS Solves</h3>
+            <section class="card" id="bfs-part5-paths">
+              <h3>5. Paths — Formal Definition</h3>
               <hr class="soft" />
 
               <p>
-                Let <span class="math">s ∈ V</span> be a distinguished source vertex.
+                A path of length <span class="math">k</span> is a sequence:
               </p>
 
-              <p>
-                We want to compute:
-              </p>
-
-              <h4>4.1 Reachability</h4>
-
-              <p>
-                Which vertices are reachable from <span class="math">s</span>?
-              </p>
-
-              <div class="math-block" role="math" aria-label="Reachability definition">
-                <span class="math">
-                  Reach(s) = { v ∈ V ∣ ∃ path from s to v }
-                </span>
-              </div>
-
-            </section>
-            <section class="card" id="bfs-part4-problem-2">
-              <h4>4.2 Shortest Path Distance (Unweighted Graphs)</h4>
-
-              <p>
-                Define
-                <span class="math">δ(s, v)</span>
-                as the minimum number of edges in any path from
-                <span class="math">s</span> to
-                <span class="math">v</span>.
-              </p>
-
-              <p>
-                This quantity is called the <strong>graph distance</strong>.
-              </p>
-
-              <p>
-                BFS computes:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Distance definition">
-                <span class="math">d[v] = δ(s, v)</span>
+              <div class="math-block" role="math" aria-label="Path sequence definition">
+                <span class="math">v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub></span>
               </div>
 
               <p>
-                for all reachable vertices.
+                such that:
               </p>
 
-              <div class="note">
-                <strong>Important:</strong>
-                BFS does <strong>not</strong> minimize weights.
-                It minimizes the number of edges.
-                That is why it works only for <em>unweighted graphs</em>.
+              <div class="math-block" role="math" aria-label="Path edge condition">
+                <span class="math">(v<sub>i−1</sub>, v<sub>i</sub>) ∈ E</span>
               </div>
 
+              <p>
+                for all <span class="math">i = 1, …, k</span>.
+              </p>
+
+              <p>
+                The length of the path is <span class="math">k</span>.
+              </p>
+
+              <p class="math-note">
+                Shortest path problem: <span class="math">min k</span>, subject to the existence of such a sequence.
+              </p>
             </section>
 
           </div>

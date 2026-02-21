@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 7 — O Objetivo da BFS</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 7 — O Objetivo da BFS</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 7 — O Objetivo da BFS (Enunciado Preciso)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 7 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-6.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-8.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-6.html">6</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-8.html">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <section class="card" id="bfs-part7-objective">
+              <h3>7. O Objetivo da BFS (Enunciado Preciso)</h3>
+              <hr class="soft" />
+
+              <p>
+                Dado um grafo <span class="math">G = (V, E)</span> e uma fonte <span class="math">s ∈ V</span>,
+                queremos calcular:
+              </p>
+
+              <ul class="bullets">
+                <li>
+                  A função distância <span class="math">d : V → N ∪ {∞}</span>
+                </li>
+                <li>
+                  A função predecessora <span class="math">π : V → V ∪ {NIL}</span>
+                </li>
+              </ul>
+
+              <p>tais que:</p>
+
+              <ul class="bullets">
+                <li><span class="math">d[v] = δ(s, v)</span></li>
+                <li>
+                  Os ponteiros predecessores formam uma árvore de menor caminho
+                  enraizada em <span class="math">s</span>
+                </li>
+              </ul>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+</body>
+</html>
