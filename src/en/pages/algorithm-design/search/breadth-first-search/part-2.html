@@ -28,7 +28,7 @@
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 2 — The Core Idea of BFS</p>
+          <p>Part 2 — The Core Idea (Layers + Queue)</p>
         </div>
       </div>
 
@@ -65,31 +65,181 @@
           <div class="cards-stack">
 
             <!-- Card 1 -->
-            <section class="card" id="bfs-part2-core-idea">
+            <section class="card" id="bfs-part2-big-picture">
               <h3>The Core Idea of BFS</h3>
               <hr class="soft" />
 
-              <h4>Intuition</h4>
-
               <p class="math-note">
-                BFS explores the graph in layers.
+                Before writing code, we must understand the geometry of the algorithm.
               </p>
 
-              <h4>Key concepts</h4>
+              <p>
+                Breadth-First Search is not simply <q>visiting neighbors</q>.
+              </p>
+
+              <p>
+                It is the systematic exploration of a graph in <strong>distance layers</strong>.
+              </p>
+
+              <p>
+                BFS expands outward from a source vertex like a <strong>wave</strong>.
+              </p>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card" id="bfs-part2-layers">
+              <h3>Distance Layers</h3>
+              <hr class="soft" />
+
+              <p>
+                Let <span class="math">G = (V, E)</span> and let <span class="math">s ∈ V</span> be a source vertex.
+              </p>
+
+              <p>
+                Define the distance function <span class="math">δ(s, v)</span> as the minimum number of edges
+                in any path from <span class="math">s</span> to <span class="math">v</span>.
+              </p>
+
+              <p>Now define the layers:</p>
+
+              <div class="math-block" role="math" aria-label="Layer definition">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <p>
+                These sets partition the reachable vertices:
+              </p>
 
               <ul class="bullets">
-                <li>
-                  Level sets
-                  <span class="math">L<sub>0</sub>, L<sub>1</sub>, L<sub>2</sub>, …</span>
-                </li>
-                <li>Wavefront expansion</li>
-                <li>FIFO discipline (queue)</li>
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = neighbors of <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vertices at distance 2</li>
+                <li><span class="math">L<sub>3</sub></span>, and so on</li>
               </ul>
 
-              <div class="note" style="margin-top:12px;">
-                <strong>Engineering insight:</strong>
-                BFS is a shortest-path algorithm for unweighted graphs.
+              <p class="note">
+                This layered structure is the geometric heart of BFS.
+              </p>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card" id="bfs-part2-why-layers">
+              <h3>Why Layers Matter</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                BFS guarantees: if a vertex is discovered in layer <span class="math">L<sub>i</sub></span>,
+                then no shorter path to that vertex exists.
+              </p>
+
+              <p><strong>Why?</strong></p>
+
+              <p>
+                Because BFS explores all vertices at distance <span class="math">i</span>
+                before exploring any vertex at distance <span class="math">i + 1</span>.
+              </p>
+
+              <p class="note">
+                This is not accidental. It is enforced by the queue.
+              </p>
+            </section>
+
+            <!-- Card 4 -->
+            <section class="card" id="bfs-part2-queue">
+              <h3>The Queue Discipline</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                BFS uses a queue.
+              </p>
+
+              <p>
+                Queue = <strong>First In, First Out (FIFO)</strong>.
+              </p>
+
+              <ul class="bullets">
+                <li>Vertices are enqueued when discovered.</li>
+                <li>Vertices are dequeued in the same order they were inserted.</li>
+              </ul>
+
+              <p class="note">
+                This simple rule forces the algorithm to respect layers.
+              </p>
+            </section>
+
+            <!-- Card 5 -->
+            <section class="card" id="bfs-part2-wavefront">
+              <h3>The Wavefront Interpretation</h3>
+              <hr class="soft" />
+
+              <p>
+                Think of BFS as a wave expanding from <span class="math">s</span>.
+              </p>
+
+              <p>
+                At step <span class="math">i</span>:
+              </p>
+
+              <ul class="bullets">
+                <li>All vertices in <span class="math">L<sub>i</sub></span> are processed.</li>
+                <li>Their undiscovered neighbors become <span class="math">L<sub>i+1</sub></span>.</li>
+              </ul>
+
+              <p class="math-note">
+                The frontier between explored and unexplored vertices is called the <strong>wavefront</strong>.
+              </p>
+
+              <p class="note">
+                This interpretation explains both correctness and optimality.
+              </p>
+            </section>
+
+            <!-- Card 6 -->
+            <section class="card" id="bfs-part2-engineering">
+              <h3>Engineering Interpretation</h3>
+              <hr class="soft" />
+
+              <p><strong>Why this works:</strong></p>
+
+              <ul class="bullets">
+                <li>Edges all have equal weight (unweighted graph).</li>
+                <li>Distance is measured by edge count.</li>
+                <li>FIFO ordering preserves shortest distance first.</li>
+              </ul>
+
+              <p>Therefore:</p>
+
+              <div class="math-block" role="math" aria-label="Distance equals delta">
+                <span class="math">d[v] = δ(s, v)</span>
               </div>
+
+              <p>
+                for every reachable vertex <span class="math">v</span>.
+              </p>
+
+              <div class="note">
+                <strong>Conclusion:</strong> BFS is a shortest-path algorithm for <em>unweighted</em> graphs.
+              </div>
+            </section>
+
+            <!-- Card 7 -->
+            <section class="card" id="bfs-part2-summary">
+              <h3>Conceptual Summary</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                The essence of BFS:
+              </p>
+
+              <div class="math-block" role="math" aria-label="BFS essence">
+                <span class="math">
+                  BFS = Layered geometry + FIFO discipline + Wavefront expansion
+                </span>
+              </div>
+
+              <p class="note">
+                It is not traversal by chance. It is traversal by metric structure.
+              </p>
             </section>
 
           </div>

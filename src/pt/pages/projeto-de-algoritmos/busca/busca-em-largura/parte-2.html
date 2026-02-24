@@ -15,11 +15,11 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
         <span class="current">Parte 2 — A Ideia Central</span>
       </nav>
@@ -28,7 +28,7 @@
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 2 — A Ideia Central da BFS</p>
+          <p>Parte 2 — A Ideia Central (Camadas + Fila)</p>
         </div>
       </div>
 
@@ -41,21 +41,21 @@
           </div>
 
           <div class="series-actions">
-            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">← Anterior</a>
-            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">Próxima →</a>
+            <a class="btn" href="/pt/pages/algorithm-design/search/breadth-first-search/part-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/algorithm-design/search/breadth-first-search/part-3.html">Próxima →</a>
           </div>
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
-          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-4.html">4</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-5.html">5</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-6.html">6</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">7</a>
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-8.html">8</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-1.html">1</a>
+          <a class="pill active" href="/pt/pages/algorithm-design/search/breadth-first-search/part-2.html">2</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-3.html">3</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-4.html">4</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-5.html">5</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-6.html">6</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-7.html">7</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/breadth-first-search/part-8.html">8</a>
         </div>
       </div>
 
@@ -65,31 +65,181 @@
           <div class="cards-stack">
 
             <!-- Card 1 -->
-            <section class="card" id="bfs-part2-core-idea">
+            <section class="card" id="bfs-part2-big-picture">
               <h3>A Ideia Central da BFS</h3>
               <hr class="soft" />
 
-              <h4>Intuição</h4>
-
               <p class="math-note">
-                A BFS explora o grafo em camadas.
+                Antes de escrever código, precisamos entender a geometria do algoritmo.
               </p>
 
-              <h4>Conceitos-chave</h4>
+              <p>
+                Busca em Largura não é simplesmente <q>visitar vizinhos</q>.
+              </p>
+
+              <p>
+                Ela é a exploração sistemática de um grafo em <strong>camadas de distância</strong>.
+              </p>
+
+              <p>
+                A BFS se expande a partir de um vértice fonte como uma <strong>onda</strong>.
+              </p>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card" id="bfs-part2-layers">
+              <h3>Camadas de Distância</h3>
+              <hr class="soft" />
+
+              <p>
+                Seja <span class="math">G = (V, E)</span> e seja <span class="math">s ∈ V</span> um vértice fonte.
+              </p>
+
+              <p>
+                Defina a função distância <span class="math">δ(s, v)</span> como o menor número de arestas
+                em qualquer caminho de <span class="math">s</span> até <span class="math">v</span>.
+              </p>
+
+              <p>Agora defina as camadas:</p>
+
+              <div class="math-block" role="math" aria-label="Definição das camadas">
+                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              </div>
+
+              <p>
+                Esses conjuntos particionam os vértices alcançáveis:
+              </p>
 
               <ul class="bullets">
-                <li>
-                  Conjuntos de níveis
-                  <span class="math">L<sub>0</sub>, L<sub>1</sub>, L<sub>2</sub>, …</span>
-                </li>
-                <li>Expansão em frente de onda</li>
-                <li>Disciplina FIFO (fila)</li>
+                <li><span class="math">L<sub>0</sub> = {s}</span></li>
+                <li><span class="math">L<sub>1</sub></span> = vizinhos de <span class="math">s</span></li>
+                <li><span class="math">L<sub>2</sub></span> = vértices a distância 2</li>
+                <li><span class="math">L<sub>3</sub></span>, e assim por diante</li>
               </ul>
 
-              <div class="note" style="margin-top:12px;">
-                <strong>Intuição de engenharia:</strong>
-                A BFS é um algoritmo de caminho mínimo para grafos não ponderados.
+              <p class="note">
+                Essa estrutura em camadas é o coração geométrico da BFS.
+              </p>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card" id="bfs-part2-why-layers">
+              <h3>Por que as Camadas Importam</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                A BFS garante: se um vértice é descoberto na camada <span class="math">L<sub>i</sub></span>,
+                então não existe caminho mais curto até esse vértice.
+              </p>
+
+              <p><strong>Por quê?</strong></p>
+
+              <p>
+                Porque a BFS explora todos os vértices a distância <span class="math">i</span>
+                antes de explorar qualquer vértice a distância <span class="math">i + 1</span>.
+              </p>
+
+              <p class="note">
+                Isso não é acidental. É imposto pela fila.
+              </p>
+            </section>
+
+            <!-- Card 4 -->
+            <section class="card" id="bfs-part2-queue">
+              <h3>A Disciplina da Fila</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                A BFS usa uma fila.
+              </p>
+
+              <p>
+                Fila = <strong>Primeiro a Entrar, Primeiro a Sair (FIFO)</strong>.
+              </p>
+
+              <ul class="bullets">
+                <li>Vértices são enfileirados quando descobertos.</li>
+                <li>Vértices são desenfileirados na mesma ordem em que foram inseridos.</li>
+              </ul>
+
+              <p class="note">
+                Essa regra simples força o algoritmo a respeitar as camadas.
+              </p>
+            </section>
+
+            <!-- Card 5 -->
+            <section class="card" id="bfs-part2-wavefront">
+              <h3>A Interpretação de Frente de Onda</h3>
+              <hr class="soft" />
+
+              <p>
+                Pense na BFS como uma onda se expandindo a partir de <span class="math">s</span>.
+              </p>
+
+              <p>
+                No passo <span class="math">i</span>:
+              </p>
+
+              <ul class="bullets">
+                <li>Todos os vértices em <span class="math">L<sub>i</sub></span> são processados.</li>
+                <li>Seus vizinhos ainda não descobertos tornam-se <span class="math">L<sub>i+1</sub></span>.</li>
+              </ul>
+
+              <p class="math-note">
+                A fronteira entre o conjunto explorado e o não explorado é chamada de <strong>frente de onda</strong>.
+              </p>
+
+              <p class="note">
+                Essa interpretação explica tanto a correção quanto a optimalidade.
+              </p>
+            </section>
+
+            <!-- Card 6 -->
+            <section class="card" id="bfs-part2-engineering">
+              <h3>Interpretação para Engenharia</h3>
+              <hr class="soft" />
+
+              <p><strong>Por que isso funciona:</strong></p>
+
+              <ul class="bullets">
+                <li>Todas as arestas têm o mesmo peso (grafo não ponderado).</li>
+                <li>A distância é medida pela contagem de arestas.</li>
+                <li>A ordem FIFO preserva primeiro as menores distâncias.</li>
+              </ul>
+
+              <p>Portanto:</p>
+
+              <div class="math-block" role="math" aria-label="Distância igual a delta">
+                <span class="math">d[v] = δ(s, v)</span>
               </div>
+
+              <p>
+                para todo vértice alcançável <span class="math">v</span>.
+              </p>
+
+              <div class="note">
+                <strong>Conclusão:</strong> a BFS é um algoritmo de caminho mínimo para grafos <em>não ponderados</em>.
+              </div>
+            </section>
+
+            <!-- Card 7 -->
+            <section class="card" id="bfs-part2-summary">
+              <h3>Resumo Conceitual</h3>
+              <hr class="soft" />
+
+              <p class="math-note">
+                A essência da BFS:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Essência da BFS">
+                <span class="math">
+                  BFS = Geometria em camadas + Disciplina FIFO + Expansão em frente de onda
+                </span>
+              </div>
+
+              <p class="note">
+                Não é travessia por acaso. É travessia por estrutura métrica.
+              </p>
             </section>
 
           </div>
