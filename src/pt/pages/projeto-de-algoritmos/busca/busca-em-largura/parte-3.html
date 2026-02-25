@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 3 — Representação de Grafos</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 3 — O Algoritmo (Pseudocódigo CLRS)</title>
   {{> head}}
 </head>
 
@@ -15,20 +15,20 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 3 — Representação de Grafos</span>
+        <span class="current">Parte 3 — O Algoritmo (Pseudocódigo CLRS)</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 3 — Representação de Grafos</p>
+          <p>Parte 3 — O Algoritmo (Pseudocódigo CLRS)</p>
         </div>
       </div>
 
@@ -64,73 +64,169 @@
         <article class="prose">
           <div class="cards-grid">
 
-            <section class="card" id="bfs-part3-representation-1">
-              <h3>3. Representação de Grafos</h3>
+            <!-- Roadmap -->
+            <section class="card" id="bfs-part3-roadmap">
+              <h3>3. O Algoritmo</h3>
               <hr class="soft" />
 
-              <p>
-                Um algoritmo deve operar sobre uma representação de dados de
-                <span class="math">G</span>.
-              </p>
-
-              <h4>3.1 Lista de Adjacência (Recomendada)</h4>
-
-              <p>
-                Cada vértice armazena uma lista de seus vizinhos:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Definição de lista de adjacência">
-                <span class="math">
-                  Adj[u] = { v ∈ V ∣ (u, v) ∈ E }
-                </span>
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Definir o modelo formal usado pelo BFS</li>
+                  <li>Especificar o estado armazenado em cada vértice</li>
+                  <li>Apresentar o pseudocódigo do CLRS</li>
+                  <li>Explicar por que os predecessores formam uma árvore</li>
+                  <li>Analisar a complexidade de tempo</li>
+                </ol>
               </div>
 
               <p>
-                Esta é a representação padrão no CLRS porque ela produz:
+                Nesta seção, formalizamos a <strong>Busca em Largura (BFS)</strong> utilizando a apresentação clássica do
+                <em>Introduction to Algorithms (CLRS)</em>.
               </p>
-
-              <div class="math-block" role="math" aria-label="Complexidade O(V+E)">
-                <span class="math">O(V + E)</span>
-              </div>
-
               <p>
-                de complexidade de tempo para a BFS.
+                Saímos da intuição e entramos na estrutura: estado preciso, passos precisos e garantias formais.
               </p>
             </section>
 
-            <section class="card" id="bfs-part3-representation-2">
-              <h4>3.2 Matriz de Adjacência</h4>
+            <!-- 3.1 -->
+            <section class="card" id="bfs-part3-1-objective">
+              <h4>3.1 Objetivo</h4>
+              <p>
+                Dado um grafo <span class="math">G</span> e um vértice fonte <span class="math">s</span>,
+                o BFS explora o grafo em <strong>ordem crescente de distância</strong> a partir de <span class="math">s</span>.
+              </p>
+              <p>
+                Em grafos não ponderados, isso significa que o BFS calcula as menores distâncias
+                (em número de arestas) de <span class="math">s</span> até cada vértice alcançável.
+              </p>
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="bfs-part3-2-model">
+              <h4>3.2 Modelo Formal</h4>
+
+              <p>Seja:</p>
+              <ul>
+                <li><span class="math">G = (V, E)</span> um grafo</li>
+                <li><span class="math">s ∈ V</span> o vértice fonte</li>
+              </ul>
+
+              <div class="note">
+                <strong>Hipótese:</strong>
+                O BFS utiliza lista de adjacência <span class="math">Adj[u]</span> para percorrer vizinhos eficientemente.
+              </div>
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="bfs-part3-3-vertex-state">
+              <h4>3.3 Estado dos Vértices</h4>
 
               <p>
-                Uma matriz
-                <span class="math">A ∈ {0,1}<sup>|V|×|V|</sup></span>:
+                Cada vértice <span class="math">v ∈ V</span> armazena:
               </p>
 
-              <div class="math-block" role="math" aria-label="Definição de matriz de adjacência">
-                <span class="math">
-                  A[u, v] =
-                  { 1 se (u, v) ∈ E; 0 caso contrário }
-                </span>
+              <ul>
+                <li><code>color[v]</code> → <span class="math">WHITE</span>, <span class="math">GRAY</span>, <span class="math">BLACK</span></li>
+                <li><code>d[v]</code> → distância a partir da fonte</li>
+                <li><code>π[v]</code> → predecessor</li>
+              </ul>
+
+              <p>
+                Essa coloração impõe estrutura e evita revisitar vértices.
+              </p>
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="bfs-part3-4-clrs-pseudocode">
+              <h4>3.4 Pseudocódigo CLRS — BFS</h4>
+
+<pre><code>BFS(G, s):
+
+    para cada vértice u em V[G]:
+        color[u] = WHITE
+        d[u] = ∞
+        π[u] = NIL
+
+    color[s] = GRAY
+    d[s] = 0
+    π[s] = NIL
+
+    Q = fila vazia
+    ENQUEUE(Q, s)
+
+    enquanto Q não estiver vazia:
+        u = DEQUEUE(Q)
+
+        para cada v em Adj[u]:
+            se color[v] == WHITE:
+                color[v] = GRAY
+                d[v] = d[u] + 1
+                π[v] = u
+                ENQUEUE(Q, v)
+
+        color[u] = BLACK</code></pre>
+
+              <div class="note">
+                <strong>Ideia central:</strong>
+                O BFS é guiado por FIFO. A fila força a exploração em camadas.
+              </div>
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card">
+              <h4>3.5 Garantias Estruturais</h4>
+
+              <ol>
+                <li>Os vértices são explorados em ordem crescente de distância.</li>
+                <li>A primeira vez que alcançamos um vértice, encontramos um caminho mínimo (em grafos não ponderados).</li>
+                <li>Os predecessores <span class="math">π[v]</span> formam uma árvore BFS.</li>
+              </ol>
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card">
+              <h4>3.6 Por que Isso Produz uma Árvore</h4>
+
+              <p>
+                Cada vértice (exceto a fonte) recebe exatamente um predecessor.
+              </p>
+
+              <ul>
+                <li>A relação de predecessores define uma árvore.</li>
+                <li>Se <span class="math">n</span> vértices são alcançáveis, a árvore BFS possui exatamente <span class="math">n − 1</span> arestas.</li>
+              </ul>
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card">
+              <h4>3.7 Complexidade de Tempo</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
               </div>
 
               <p>
-                Essa representação leva a:
+                Cada vértice é enfileirado no máximo uma vez.
+                Cada aresta é examinada no máximo duas vezes (caso não direcionado).
               </p>
+            </section>
 
-              <div class="math-block" role="math" aria-label="Complexidade O(V^2)">
-                <span class="math">O(V<sup>2</sup>)</span>
-              </div>
-
+            <!-- Transition -->
+            <section class="card full">
+              <h4>Próxima: Parte 4 —  Prova de Correção</h4>
               <p>
-                de complexidade para o percurso.
+                Agora que temos o algoritmo em forma precisa, o próximo passo é justificá-lo formalmente.
+                Na <strong>Parte 4</strong>, provaremos sua correção usando invariantes:
+                por que as distâncias são mínimas e por que a ordem de exploração é garantida.
               </p>
 
               <div class="note">
-                <strong>Intuição de engenharia:</strong>
-                Para grafos esparsos (comuns em sistemas de engenharia),
-                listas de adjacência são superiores.
+                <strong>Continuar:</strong>
+                <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-4.html">
+                  Parte 4 — Prova de Correção →
+                </a>
               </div>
-
             </section>
 
           </div>
