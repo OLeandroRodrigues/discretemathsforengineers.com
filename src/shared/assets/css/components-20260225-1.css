@@ -355,6 +355,25 @@ html.nav-preload nav[aria-label="Main navigation"] {
 }
 .cards-grid .card{ height:100%; }
 
+/* Full-width transition card (used for "Next Part") */
+.card.full {
+  grid-column: 1 / -1;   /* ocupa as duas colunas */
+  border-left: 4px solid #4da3ff;
+  padding-left: 1.25rem; /* pequeno respiro interno */
+}
+
+.card.full a,
+.card.full a:visited {
+  color: #4da3ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card.full a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 @media (max-width: 900px){
   .cards-grid{ grid-template-columns:1fr; }
 }
