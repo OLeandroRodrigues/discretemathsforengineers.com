@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 4 — O Problema que a BFS Resolve</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 4 — Prova de Correção</title>
   {{> head}}
 </head>
 
@@ -11,7 +11,6 @@
   <div class="app">
     {{> sidebar}}
     <main>
-
       <!-- Breadcrumb -->
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
@@ -22,14 +21,14 @@
         <span class="sep">›</span>
         <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 4 — O Problema que a BFS Resolve</span>
+        <span class="current">Parte 4 — Prova de Correção</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 4 — O Problema que a BFS Resolve</p>
+          <p>Parte 4 — Prova de Correção</p>
         </div>
       </div>
 
@@ -48,7 +47,7 @@
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
@@ -65,65 +64,287 @@
         <article class="prose">
           <div class="cards-grid">
 
-            <section class="card" id="bfs-part4-problem-1">
-              <h3>4. O Problema que a BFS Resolve</h3>
+            <!-- 4 (intro + roadmap) -->
+            <section class="card" id="bfs-part4-roadmap">
+              <h3>4. Prova de Correção</h3>
               <hr class="soft" />
 
-              <p>
-                Seja <span class="math">s ∈ V</span> um vértice fonte distinguido.
-              </p>
-
-              <p>
-                Queremos calcular:
-              </p>
-
-              <h4>4.1 Alcance (Reachability)</h4>
-
-              <p>
-                Quais vértices são alcançáveis a partir de <span class="math">s</span>?
-              </p>
-
-              <div class="math-block" role="math" aria-label="Definição de alcance">
-                <span class="math">
-                  Reach(s) = { v ∈ V ∣ ∃ caminho de s até v }
-                </span>
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Enunciar com precisão o objetivo da correção</li>
+                  <li>Introduzir o invariante central</li>
+                  <li>Provar que o BFS nunca subestima distâncias</li>
+                  <li>Usar FIFO para justificar a exploração em camadas</li>
+                  <li>Provar que a primeira descoberta produz um caminho mínimo</li>
+                  <li>Concluir que o BFS calcula distâncias de menores caminhos</li>
+                  <li>Mostrar que os ponteiros de predecessor formam uma árvore de menores caminhos</li>
+                  <li>Revisitar a complexidade de tempo</li>
+                  <li>Extrair o insight estrutural</li>
+                </ol>
               </div>
 
+              <p>
+                Esta parte formaliza o que afirmamos na Parte 3:
+                <strong>o BFS calcula distâncias de menores caminhos em grafos não ponderados</strong>.
+              </p>
+              <p>
+                A prova é estrutural. A fila não é um detalhe de implementação:
+                ela é a razão pela qual o argumento funciona.
+              </p>
             </section>
-            <section class="card" id="bfs-part4-problem-2">
-              <h4>4.2 Distância de Caminho Mínimo (Grafos Não Ponderados)</h4>
+
+            <!-- 4.1 -->
+            <section class="card" id="bfs-part4-1-what-to-prove">
+              <h4>4.1 O Que Deve Ser Provado</h4>
 
               <p>
-                Defina
-                <span class="math">δ(s, v)</span>
-                como o número mínimo de arestas em qualquer caminho de
-                <span class="math">s</span> até
-                <span class="math">v</span>.
+                Seja <span class="math">G = (V, E)</span> um grafo e <span class="math">s ∈ V</span> a fonte.
+                Defina <span class="math">δ(s, v)</span> como a verdadeira distância de menor caminho (número de arestas)
+                de <span class="math">s</span> até <span class="math">v</span>.
               </p>
 
               <p>
-                Essa quantidade é chamada de <strong>distância no grafo</strong>.
+                Devemos provar que o BFS calcula:
               </p>
 
-              <p>
-                A BFS calcula:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Definição de distância">
+              <div class="math-block" role="math" aria-label="Correctness statement d[v] equals delta(s,v)">
                 <span class="math">d[v] = δ(s, v)</span>
               </div>
 
               <p>
-                para todos os vértices alcançáveis.
+                para todo vértice <span class="math">v</span> alcançável a partir de <span class="math">s</span>.
               </p>
 
               <div class="note">
-                <strong>Importante:</strong>
-                A BFS <strong>não</strong> minimiza pesos.
-                Ela minimiza o número de arestas.
-                Por isso funciona apenas para <em>grafos não ponderados</em>.
+                <strong>Lembrete:</strong>
+                O BFS define distâncias apenas quando um vértice é descoberto pela primeira vez (WHITE → GRAY).
+              </div>
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bfs-part4-2-invariant">
+              <h4>4.2 Invariante Principal</h4>
+
+              <p>
+                A prova se apoia em um invariante central:
+              </p>
+
+              <div class="note">
+                <strong>Invariante:</strong>
+                Quando um vértice <span class="math">v</span> é descoberto pela primeira vez (colorido como GRAY),
+                sua distância satisfaz <span class="math">d[v] = δ(s, v)</span>.
               </div>
 
+              <p>
+                Intuitivamente: a primeira vez que alcançamos <span class="math">v</span>, nós o alcançamos pela camada mais curta.
+              </p>
+
+              <p>
+                Justificaremos isso usando a disciplina FIFO da fila (exploração em camadas).
+              </p>
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bfs-part4-3-lemma-never-underestimate">
+              <h4>4.3 Lema 1 — Distâncias Nunca Subestimam</h4>
+
+              <p>
+                <strong>Afirmação:</strong> Para todo vértice <span class="math">v</span>,
+                o BFS nunca subestima a distância verdadeira:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] >= delta(s,v)">
+                <span class="math">d[v] ≥ δ(s, v)</span>
+              </div>
+
+              <h5>Esboço da prova</h5>
+              <p>
+                O BFS só atribui <span class="math">d[v]</span> por meio de uma aresta <span class="math">(u, v) ∈ E</span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="distance update rule d[v] = d[u] + 1">
+                <span class="math">d[v] = d[u] + 1</span>
+              </div>
+
+              <p>
+                Qualquer caminho até <span class="math">v</span> passando por <span class="math">u</span> tem comprimento pelo menos
+                <span class="math">δ(s, u) + 1</span>, então atribuir <span class="math">d[u] + 1</span> não pode ser menor do que
+                o ótimo verdadeiro. Portanto, o BFS não produz distâncias menores do que a realidade.
+              </p>
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bfs-part4-4-lemma-fifo-layers">
+              <h4>4.4 Lema 2 — FIFO Garante Exploração em Camadas</h4>
+
+              <p>
+                A fila garante que os vértices sejam processados em ordem não decrescente de distância:
+              </p>
+
+              <div class="note">
+                <strong>Propriedade de camadas:</strong>
+                Todos os vértices com distância <span class="math">k</span> são desenfileirados antes de qualquer vértice com distância
+                <span class="math">k + 1</span>.
+              </div>
+
+              <p>
+                Por quê? Quando um vértice <span class="math">u</span> é desenfileirado, todo vizinho recém-descoberto
+                <span class="math">v</span> recebe <span class="math">d[v] = d[u] + 1</span> e é colocado no final da fila.
+                Assim, a fila forma camadas consecutivas.
+              </p>
+
+              <!-- Small formal diagram (ASCII) -->
+              <div class="note">
+                <strong>Diagrama formal (camadas):</strong>
+                <pre><code>Camada L0:  { s }                     d = 0
+             |
+Camada L1:  { vizinhos de s }         d = 1
+             |
+Camada L2:  { vizinhos de L1 }        d = 2
+             |
+Camada L3:  { vizinhos de L2 }        d = 3
+...</code></pre>
+              </div>
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bfs-part4-5-lemma-first-discovery-optimal">
+              <h4>4.5 Lema 3 — A Primeira Descoberta É Ótima</h4>
+
+              <p>
+                <strong>Afirmação:</strong> Quando <span class="math">v</span> é descoberto pela primeira vez,
+                o BFS atribui a verdadeira menor distância:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] equals delta(s,v)">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <h5>Prova (por contradição)</h5>
+              <p>
+                Suponha que o BFS descubra <span class="math">v</span> pela primeira vez com <span class="math">d[v] &gt; δ(s, v)</span>.
+                Considere um menor caminho:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Shortest path sequence v0...vk">
+                <span class="math">s = v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub> = v</span>
+              </div>
+
+              <p>
+                Então <span class="math">v<sub>k-1</sub></span> satisfaz <span class="math">δ(s, v<sub>k-1</sub>) = δ(s, v) − 1</span>,
+                logo está em uma camada anterior. Pelo Lema 2, ele deve ser desenfileirado antes que qualquer vértice na camada
+                <span class="math">δ(s, v)</span> seja descoberto.
+              </p>
+
+              <p>
+                Quando o BFS processa <span class="math">v<sub>k-1</sub></span>, ele examina a aresta
+                <span class="math">(v<sub>k-1</sub>, v)</span> e atribuiria:
+              </p>
+
+              <div class="math-block" role="math" aria-label="distance assignment equals delta(s,v)">
+                <span class="math">d[v] = d[v<sub>k-1</sub>] + 1 = δ(s, v)</span>
+              </div>
+
+              <p>
+                Contradição. Portanto, a primeira descoberta atribui a distância ótima.
+              </p>
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bfs-part4-6-theorem">
+              <h4>4.6 Teorema — BFS Calcula Menores Caminhos</h4>
+
+              <p>
+                Pelo Lema 3, todo vértice alcançável <span class="math">v</span> recebe
+                <span class="math">d[v] = δ(s, v)</span> na primeira descoberta.
+              </p>
+
+              <div class="note">
+                <strong>Conclusão:</strong>
+                O BFS calcula corretamente distâncias de menores caminhos em grafos não ponderados.
+              </div>
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bfs-part4-7-tree">
+              <h4>4.7 A Árvore BFS É uma Árvore de Menores Caminhos</h4>
+
+              <p>
+                Todo vértice <span class="math">v ≠ s</span> recebe exatamente um predecessor <span class="math">π[v]</span>.
+                Além disso, quando <span class="math">π[v]</span> é definido, o BFS garante:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] equals d[pi[v]] + 1">
+                <span class="math">d[v] = d[π[v]] + 1</span>
+              </div>
+
+              <p>
+                Portanto, seguir os ponteiros de predecessor de <span class="math">v</span> de volta até <span class="math">s</span>
+                produz um caminho de comprimento <span class="math">d[v]</span>, que é igual à verdadeira menor distância.
+              </p>
+
+              <div class="note">
+                <strong>Resultado:</strong>
+                O subgrafo de predecessores é uma árvore enraizada em <span class="math">s</span>,
+                e todo caminho da raiz até um vértice é um menor caminho.
+              </div>
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="bfs-part4-8-complexity">
+              <h4>4.8 Complexidade de Tempo (Revisão)</h4>
+
+              <p>
+                A prova de correção não altera o tempo de execução:
+              </p>
+
+              <div class="math-block" role="math" aria-label="O(|V| + |E|)">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <p>
+                Cada vértice é descoberto uma vez.
+                Cada aresta é examinada no máximo duas vezes (caso não direcionado).
+              </p>
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card" id="bfs-part4-9-structural-insight">
+              <h4>4.9 Insight Estrutural</h4>
+
+              <p>
+                O BFS funciona porque ele impõe:
+              </p>
+
+              <ul>
+                <li>crescimento monotônico da distância (<span class="math">d</span> aumenta em exatamente 1 por camada)</li>
+                <li>sem revisitas (coloração)</li>
+                <li>ordem estrita por camadas (fila FIFO)</li>
+              </ul>
+
+              <div class="note">
+                <strong>Mensagem final:</strong>
+                A fila não é um detalhe de implementação. Ela é a razão estrutural pela qual a prova funciona.
+              </div>
+            </section>
+
+            <!-- Final transition to Part 5 (full width) -->
+            <section class="card full" id="bfs-part4-transition">
+              <h4>Próxima: Parte 5 — Complexidade</h4>
+              <p>
+                Já provamos a correção. Agora analisamos o algoritmo sob a perspectiva computacional.
+                Na <strong>Parte 5</strong>, examinamos formalmente a complexidade de tempo e espaço do BFS,
+                e entendemos por que ele executa em 
+                <span class="math">O(|V| + |E|)</span>.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-5.html">
+                  Parte 5 — Complexidade →
+                </a>
+              </div>
             </section>
 
           </div>
@@ -131,7 +352,6 @@
       </div>
 
       {{> main-footer}}
-
     </main>
   </div>
 </body>

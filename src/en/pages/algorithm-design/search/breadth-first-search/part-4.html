@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 4 — The Problem BFS Solves</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 4 — Correctness Proof</title>
   {{> head}}
 </head>
 
@@ -11,7 +11,6 @@
   <div class="app">
     {{> sidebar}}
     <main>
-
       <!-- Breadcrumb -->
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/en/index.html">Home</a>
@@ -22,14 +21,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 4 — The Problem BFS Solves</span>
+        <span class="current">Part 4 — Correctness Proof</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 4 — The Problem BFS Solves</p>
+          <p>Part 4 — Correctness Proof</p>
         </div>
       </div>
 
@@ -65,65 +64,287 @@
         <article class="prose">
           <div class="cards-grid">
 
-            <section class="card" id="bfs-part4-problem-1">
-              <h3>4. The Problem BFS Solves</h3>
+            <!-- 4 (intro + roadmap) -->
+            <section class="card" id="bfs-part4-roadmap">
+              <h3>4. Correctness Proof</h3>
               <hr class="soft" />
 
-              <p>
-                Let <span class="math">s ∈ V</span> be a distinguished source vertex.
-              </p>
-
-              <p>
-                We want to compute:
-              </p>
-
-              <h4>4.1 Reachability</h4>
-
-              <p>
-                Which vertices are reachable from <span class="math">s</span>?
-              </p>
-
-              <div class="math-block" role="math" aria-label="Reachability definition">
-                <span class="math">
-                  Reach(s) = { v ∈ V ∣ ∃ path from s to v }
-                </span>
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>State the correctness goal precisely</li>
+                  <li>Introduce the core invariant</li>
+                  <li>Prove BFS never underestimates distances</li>
+                  <li>Use FIFO to justify layered exploration</li>
+                  <li>Prove first discovery gives a shortest path</li>
+                  <li>Conclude BFS computes shortest-path distances</li>
+                  <li>Show the predecessor pointers form a shortest-path tree</li>
+                  <li>Revisit time complexity</li>
+                  <li>Extract the structural insight</li>
+                </ol>
               </div>
 
+              <p>
+                This part formalizes what we claimed in Part 3:
+                <strong>BFS computes shortest-path distances in unweighted graphs</strong>.
+              </p>
+              <p>
+                The proof is structural. The queue is not an implementation detail:
+                it is the reason the argument works.
+              </p>
             </section>
-            <section class="card" id="bfs-part4-problem-2">
-              <h4>4.2 Shortest Path Distance (Unweighted Graphs)</h4>
+
+            <!-- 4.1 -->
+            <section class="card" id="bfs-part4-1-what-to-prove">
+              <h4>4.1 What Must Be Proven</h4>
 
               <p>
-                Define
-                <span class="math">δ(s, v)</span>
-                as the minimum number of edges in any path from
-                <span class="math">s</span> to
-                <span class="math">v</span>.
+                Let <span class="math">G = (V, E)</span> be a graph and <span class="math">s ∈ V</span> the source.
+                Define <span class="math">δ(s, v)</span> as the true shortest-path distance (number of edges)
+                from <span class="math">s</span> to <span class="math">v</span>.
               </p>
 
               <p>
-                This quantity is called the <strong>graph distance</strong>.
+                We must prove that BFS computes:
               </p>
 
-              <p>
-                BFS computes:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Distance definition">
+              <div class="math-block" role="math" aria-label="Correctness statement d[v] equals delta(s,v)">
                 <span class="math">d[v] = δ(s, v)</span>
               </div>
 
               <p>
-                for all reachable vertices.
+                for every vertex <span class="math">v</span> reachable from <span class="math">s</span>.
               </p>
 
               <div class="note">
-                <strong>Important:</strong>
-                BFS does <strong>not</strong> minimize weights.
-                It minimizes the number of edges.
-                That is why it works only for <em>unweighted graphs</em>.
+                <strong>Reminder:</strong>
+                BFS sets distances only when a vertex is first discovered (WHITE → GRAY).
+              </div>
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bfs-part4-2-invariant">
+              <h4>4.2 Key Invariant</h4>
+
+              <p>
+                The proof relies on one core invariant:
+              </p>
+
+              <div class="note">
+                <strong>Invariant:</strong>
+                When a vertex <span class="math">v</span> is first discovered (colored GRAY),
+                its distance satisfies <span class="math">d[v] = δ(s, v)</span>.
               </div>
 
+              <p>
+                Intuitively: the first time we reach <span class="math">v</span>, we reached it via the shortest layer.
+              </p>
+
+              <p>
+                We will justify this using the queue’s FIFO discipline (layered exploration).
+              </p>
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bfs-part4-3-lemma-never-underestimate">
+              <h4>4.3 Lemma 1 — Distances Never Underestimate</h4>
+
+              <p>
+                <strong>Claim:</strong> For every vertex <span class="math">v</span>,
+                BFS never underestimates the true distance:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] >= delta(s,v)">
+                <span class="math">d[v] ≥ δ(s, v)</span>
+              </div>
+
+              <h5>Proof sketch</h5>
+              <p>
+                BFS only assigns <span class="math">d[v]</span> via an edge <span class="math">(u, v) ∈ E</span>:
+              </p>
+
+              <div class="math-block" role="math" aria-label="distance update rule d[v] = d[u] + 1">
+                <span class="math">d[v] = d[u] + 1</span>
+              </div>
+
+              <p>
+                Any path to <span class="math">v</span> through <span class="math">u</span> has length at least
+                <span class="math">δ(s, u) + 1</span>, so assigning <span class="math">d[u] + 1</span> cannot be smaller than
+                the true optimum. Therefore BFS does not produce distances smaller than reality.
+              </p>
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bfs-part4-4-lemma-fifo-layers">
+              <h4>4.4 Lemma 2 — FIFO Ensures Layered Exploration</h4>
+
+              <p>
+                The queue guarantees that vertices are processed in non-decreasing distance order:
+              </p>
+
+              <div class="note">
+                <strong>Layer property:</strong>
+                All vertices with distance <span class="math">k</span> are dequeued before any vertex with distance
+                <span class="math">k + 1</span>.
+              </div>
+
+              <p>
+                Why? When a vertex <span class="math">u</span> is dequeued, every newly discovered neighbor
+                <span class="math">v</span> is assigned <span class="math">d[v] = d[u] + 1</span> and appended to the end of the queue.
+                So the queue forms consecutive layers.
+              </p>
+
+              <!-- Small formal diagram (ASCII) -->
+              <div class="note">
+                <strong>Formal diagram (layers):</strong>
+                <pre><code>Layer L0:  { s }                     d = 0
+             |
+Layer L1:  { neighbors of s }        d = 1
+             |
+Layer L2:  { neighbors of L1 }       d = 2
+             |
+Layer L3:  { neighbors of L2 }       d = 3
+...</code></pre>
+              </div>
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bfs-part4-5-lemma-first-discovery-optimal">
+              <h4>4.5 Lemma 3 — First Discovery Is Optimal</h4>
+
+              <p>
+                <strong>Claim:</strong> When <span class="math">v</span> is first discovered,
+                BFS assigns the true shortest distance:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] equals delta(s,v)">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <h5>Proof (by contradiction)</h5>
+              <p>
+                Suppose BFS first discovers <span class="math">v</span> with <span class="math">d[v] &gt; δ(s, v)</span>.
+                Consider a shortest path:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Shortest path sequence v0...vk">
+                <span class="math">s = v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub> = v</span>
+              </div>
+
+              <p>
+                Then <span class="math">v<sub>k-1</sub></span> satisfies <span class="math">δ(s, v<sub>k-1</sub>) = δ(s, v) − 1</span>,
+                so it lies in an earlier layer. By Lemma 2, it must be dequeued before any vertex in layer
+                <span class="math">δ(s, v)</span> is discovered.
+              </p>
+
+              <p>
+                When BFS processes <span class="math">v<sub>k-1</sub></span>, it examines edge
+                <span class="math">(v<sub>k-1</sub>, v)</span> and would assign:
+              </p>
+
+              <div class="math-block" role="math" aria-label="distance assignment equals delta(s,v)">
+                <span class="math">d[v] = d[v<sub>k-1</sub>] + 1 = δ(s, v)</span>
+              </div>
+
+              <p>
+                Contradiction. Therefore first discovery assigns the optimal distance.
+              </p>
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bfs-part4-6-theorem">
+              <h4>4.6 Theorem — BFS Computes Shortest Paths</h4>
+
+              <p>
+                From Lemma 3, every reachable vertex <span class="math">v</span> receives
+                <span class="math">d[v] = δ(s, v)</span> at first discovery.
+              </p>
+
+              <div class="note">
+                <strong>Conclusion:</strong>
+                BFS computes correct shortest-path distances in unweighted graphs.
+              </div>
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bfs-part4-7-tree">
+              <h4>4.7 The BFS Tree Is a Shortest-Path Tree</h4>
+
+              <p>
+                Every vertex <span class="math">v ≠ s</span> receives exactly one predecessor <span class="math">π[v]</span>.
+                Moreover, when <span class="math">π[v]</span> is set, BFS enforces:
+              </p>
+
+              <div class="math-block" role="math" aria-label="d[v] equals d[pi[v]] + 1">
+                <span class="math">d[v] = d[π[v]] + 1</span>
+              </div>
+
+              <p>
+                Therefore, following predecessor pointers from <span class="math">v</span> back to <span class="math">s</span>
+                yields a path of length <span class="math">d[v]</span>, which equals the true shortest distance.
+              </p>
+
+              <div class="note">
+                <strong>Result:</strong>
+                The predecessor subgraph is a tree rooted at <span class="math">s</span>,
+                and every root-to-vertex path is a shortest path.
+              </div>
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="bfs-part4-8-complexity">
+              <h4>4.8 Time Complexity (Revisited)</h4>
+
+              <p>
+                The correctness proof does not change the runtime:
+              </p>
+
+              <div class="math-block" role="math" aria-label="O(|V| + |E|)">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <p>
+                Each vertex is discovered once.
+                Each edge is examined at most twice (undirected case).
+              </p>
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card" id="bfs-part4-9-structural-insight">
+              <h4>4.9 Structural Insight</h4>
+
+              <p>
+                BFS works because it enforces:
+              </p>
+
+              <ul>
+                <li>monotonic distance growth (<span class="math">d</span> increases by exactly 1 per layer)</li>
+                <li>no revisits (coloring)</li>
+                <li>strict layer order (FIFO queue)</li>
+              </ul>
+
+              <div class="note">
+                <strong>Takeaway:</strong>
+                The queue is not an implementation detail. It is the structural reason the proof works.
+              </div>
+            </section>
+
+            <!-- Final transition to Part 5 (full width) -->
+            <section class="card full" id="bfs-part4-transition">
+              <h4>Next: Part 5 — Complexity</h4>
+              <p>
+                We have proved correctness. Now we analyze the algorithm from a computational perspective.
+                In <strong>Part 5</strong>, we formally examine the time and space complexity of BFS,
+                and understand why it runs in 
+                <span class="math">O(|V| + |E|)</span>.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/part-5.html">
+                  Part 5 — Complexity →
+                </a>
+              </div>
             </section>
 
           </div>
@@ -131,7 +352,6 @@
       </div>
 
       {{> main-footer}}
-
     </main>
   </div>
 </body>
