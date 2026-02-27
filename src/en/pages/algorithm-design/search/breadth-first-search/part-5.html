@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 5 — Paths (Formal Definition)</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 5 — Complexity</title>
   {{> head}}
 </head>
 
@@ -22,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 5 — Paths (Formal Definition)</span>
+        <span class="current">Part 5 — Complexity</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 5 — Paths (Formal Definition)</p>
+          <p>Part 5 — Complexity</p>
         </div>
       </div>
 
@@ -63,39 +63,121 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part5-paths">
-              <h3>5. Paths — Formal Definition</h3>
+            <!-- 5 -->
+            <section class="card" id="bfs-part5-roadmap">
+              <h3>5. Complexity</h3>
               <hr class="soft" />
 
-              <p>
-                A path of length <span class="math">k</span> is a sequence:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Path sequence definition">
-                <span class="math">v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub></span>
+              <div class="note">
+                <strong>Roadmap (what we analyze in this part):</strong>
+                <ol>
+                  <li>Time complexity with adjacency lists</li>
+                  <li>Why each vertex is processed once</li>
+                  <li>Why each edge is examined at most twice</li>
+                  <li>Comparison with adjacency matrix</li>
+                  <li>Space complexity</li>
+                  <li>Structural insight</li>
+                </ol>
               </div>
 
               <p>
-                such that:
+                Now that correctness has been established,
+                we analyze the algorithm from a computational perspective.
               </p>
+            </section>
 
-              <div class="math-block" role="math" aria-label="Path edge condition">
-                <span class="math">(v<sub>i−1</sub>, v<sub>i</sub>) ∈ E</span>
+            <!-- 5.1 -->
+            <section class="card" id="bfs-part5-1-time">
+              <h4>5.1 Time Complexity (Adjacency List)</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
               </div>
 
               <p>
-                for all <span class="math">i = 1, …, k</span>.
+                This bound is optimal for graph traversal.
               </p>
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="bfs-part5-2-vertices">
+              <h4>5.2 Vertex Processing</h4>
+
+              <ul>
+                <li>Discovered once</li>
+                <li>Enqueued once</li>
+                <li>Dequeued once</li>
+                <li>Colored BLACK once</li>
+              </ul>
+
+              <div class="math-block">
+                <span class="math">O(|V|)</span>
+              </div>
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="bfs-part5-3-edges">
+              <h4>5.3 Edge Examination</h4>
 
               <p>
-                The length of the path is <span class="math">k</span>.
+                Each edge is examined at most twice (undirected case).
               </p>
 
-              <p class="math-note">
-                Shortest path problem: <span class="math">min k</span>, subject to the existence of such a sequence.
+              <div class="math-block">
+                <span class="math">O(|E|)</span>
+              </div>
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="bfs-part5-4-matrix">
+              <h4>5.4 Adjacency Matrix Case</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V|^2)</span>
+              </div>
+
+              <div class="note">
+                For sparse graphs, adjacency lists are asymptotically superior.
+              </div>
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="bfs-part5-5-space">
+              <h4>5.5 Space Complexity</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V|)</span>
+              </div>
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="bfs-part5-6-insight">
+              <h4>5.6 Structural Insight</h4>
+
+              <ul>
+                <li>No revisits</li>
+                <li>No redundant exploration</li>
+                <li>Strict layer order enforced by FIFO</li>
+              </ul>
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bfs-part5-transition">
+              <h4>Next: Part 6 — BFS Tree &amp; Path Reconstruction</h4>
+              <p>
+                With correctness and complexity understood, we now focus on what BFS actually produces:
+                the predecessor pointers form a BFS tree, and that tree lets us reconstruct shortest paths
+                from the source to any reachable vertex.
               </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/part-6.html">
+                  Part 6 — BFS Tree &amp; Path Reconstruction →
+                </a>
+              </div>
             </section>
 
           </div>
