@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 5 — Caminhos (Definição Formal)</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 5 — Complexidade</title>
   {{> head}}
 </head>
 
@@ -16,25 +16,25 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 5 — Caminhos (Definição Formal)</span>
+        <span class="current">Parte 5 — Complexidade</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 5 — Caminhos (Definição Formal)</p>
+          <p>Parte 5 — Complexidade</p>
         </div>
       </div>
 
       <!-- Series navigation -->
-      <div class="seriesbar" aria-label="Series navigation">
+      <div class="seriesbar" aria-label="Navegação da série">
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Busca em Largura (BFS)</strong>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
@@ -63,40 +63,121 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part5-paths">
-              <h3>5. Caminhos — Definição Formal</h3>
+            <!-- 5 -->
+            <section class="card" id="bfs-part5-roadmap">
+              <h3>5. Complexidade</h3>
               <hr class="soft" />
 
-              <p>
-                Um caminho de comprimento <span class="math">k</span> é uma sequência:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Definição da sequência de caminho">
-                <span class="math">v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub></span>
+              <div class="note">
+                <strong>Roteiro (o que analisamos nesta parte):</strong>
+                <ol>
+                  <li>Complexidade de tempo com lista de adjacência</li>
+                  <li>Por que cada vértice é processado uma vez</li>
+                  <li>Por que cada aresta é examinada no máximo duas vezes</li>
+                  <li>Comparação com matriz de adjacência</li>
+                  <li>Complexidade de espaço</li>
+                  <li>Insight estrutural</li>
+                </ol>
               </div>
 
               <p>
-                tal que:
+                Agora que a correção foi estabelecida,
+                analisamos o algoritmo sob a perspectiva computacional.
               </p>
+            </section>
 
-              <div class="math-block" role="math" aria-label="Condição das arestas do caminho">
-                <span class="math">(v<sub>i−1</sub>, v<sub>i</sub>) ∈ E</span>
+            <!-- 5.1 -->
+            <section class="card" id="bfs-part5-1-time">
+              <h4>5.1 Complexidade de Tempo (Lista de Adjacência)</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
               </div>
 
               <p>
-                para todo <span class="math">i = 1, …, k</span>.
+                Esse limite é ótimo para a travessia de grafos.
               </p>
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="bfs-part5-2-vertices">
+              <h4>5.2 Processamento de Vértices</h4>
+
+              <ul>
+                <li>Descoberto uma vez</li>
+                <li>Enfileirado uma vez</li>
+                <li>Desenfileirado uma vez</li>
+                <li>Colorido como BLACK uma vez</li>
+              </ul>
+
+              <div class="math-block">
+                <span class="math">O(|V|)</span>
+              </div>
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="bfs-part5-3-edges">
+              <h4>5.3 Exame de Arestas</h4>
 
               <p>
-                O comprimento do caminho é <span class="math">k</span>.
+                Cada aresta é examinada no máximo duas vezes (caso não direcionado).
               </p>
 
-              <p class="math-note">
-                Problema do menor caminho: <span class="math">min k</span>, sujeito à existência de tal sequência.
+              <div class="math-block">
+                <span class="math">O(|E|)</span>
+              </div>
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="bfs-part5-4-matrix">
+              <h4>5.4 Caso da Matriz de Adjacência</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V|^2)</span>
+              </div>
+
+              <div class="note">
+                Para grafos esparsos, listas de adjacência são assintoticamente superiores.
+              </div>
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="bfs-part5-5-space">
+              <h4>5.5 Complexidade de Espaço</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V|)</span>
+              </div>
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="bfs-part5-6-insight">
+              <h4>5.6 Insight Estrutural</h4>
+
+              <ul>
+                <li>Sem revisitas</li>
+                <li>Sem exploração redundante</li>
+                <li>Ordem estrita por camadas imposta pela fila FIFO</li>
+              </ul>
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bfs-part5-transition">
+              <h4>Próxima: Parte 6 — Árvore BFS &amp; Reconstrução de Caminhos</h4>
+              <p>
+                Com a correção e a complexidade compreendidas, agora focamos no que o BFS realmente produz:
+                os ponteiros de predecessores formam uma árvore BFS, e essa árvore nos permite reconstruir
+                os menores caminhos da fonte até qualquer vértice alcançável.
               </p>
 
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link" href="/pt/pages/algorithm-design/search/breadth-first-search/parte-6.html">
+                  Parte 6 — Árvore BFS &amp; Reconstrução de Caminhos →
+                </a>
+              </div>
             </section>
 
           </div>
