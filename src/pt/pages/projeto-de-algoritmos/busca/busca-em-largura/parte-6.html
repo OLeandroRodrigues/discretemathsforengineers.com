@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 6 — Estrutura em Camadas</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 6 — Árvore BFS &amp; Reconstrução de Caminho</title>
   {{> head}}
 </head>
 
@@ -16,25 +16,25 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 6 — Estrutura em Camadas</span>
+        <span class="current">Parte 6 — Árvore BFS &amp; Reconstrução de Caminho</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 6 — Estrutura em Camadas (Uma Prévia da Geometria da BFS)</p>
+          <p>Parte 6 — Árvore BFS &amp; Reconstrução de Caminho</p>
         </div>
       </div>
 
       <!-- Series navigation -->
-      <div class="seriesbar" aria-label="Navegação da série">
+      <div class="seriesbar" aria-label="Navegação da Série">
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Busca em Largura (BFS)</strong>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
@@ -63,43 +63,103 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part6-layers">
-              <h3>6. Estrutura em Camadas — Uma Prévia da Geometria da BFS</h3>
+            <section class="card" id="bfs-part6-roadmap">
+              <h3>6. Árvore BFS &amp; Reconstrução de Caminho</h3>
               <hr class="soft" />
 
-              <p class="math-note">
-                Embora ainda não tenhamos definido formalmente o algoritmo, já podemos introduzir uma ideia estrutural.
-              </p>
-
-              <p>
-                Definimos as camadas de distância:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Definição das camadas">
-                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Entender o que a BFS produz (vetores π e d)</li>
+                  <li>Definir o subgrafo de predecessores e por que ele é uma árvore</li>
+                  <li>Formalizar a “reconstrução de caminho” a partir dos ponteiros π</li>
+                  <li>Implementar um procedimento de reconstrução (estilo CLRS)</li>
+                  <li>Ver um pequeno exemplo resolvido</li>
+                  <li>Extrair padrões de engenharia (pais, roteamento, breadcrumbs)</li>
+                </ol>
               </div>
 
-              <p>Então:</p>
-
-              <ul class="bullets">
-                <li><span class="math">L<sub>0</sub> = {s}</span></li>
-                <li><span class="math">L<sub>1</sub></span> = vizinhos de <span class="math">s</span></li>
-                <li><span class="math">L<sub>2</sub></span> = vértices a distância 2</li>
-                <li>etc.</li>
-              </ul>
+              <p>
+                A BFS faz mais do que calcular distâncias.
+                Ela produz uma <strong>relação de predecessores</strong> <span class="math">π</span> que codifica
+                uma <strong>árvore BFS</strong> enraizada na origem.
+              </p>
 
               <p>
-                Essas camadas particionam o subgrafo alcançável.
-                A BFS explora os vértices <strong>exatamente</strong> nessa ordem em camadas.
+                Nesta parte, tornamos essa saída explícita e mostramos como reconstruir
+                um caminho mínimo de <span class="math">s</span> até qualquer vértice alcançável <span class="math">v</span>.
               </p>
-
-              <p class="note">
-                Essa estrutura em camadas é o coração geométrico do algoritmo.
-              </p>
-
             </section>
+
+            <section class="card">
+              <h4>6.1 O que a BFS Produz</h4>
+
+              <p>
+                Após executar BFS a partir de uma origem <span class="math">s</span>, cada vértice <span class="math">v</span> possui:
+              </p>
+
+              <ul>
+                <li><code>d[v]</code> — distância mínima de <span class="math">s</span> até <span class="math">v</span></li>
+                <li><code>π[v]</code> — predecessor de <span class="math">v</span> em um caminho mínimo (ou <code>NIL</code>)</li>
+              </ul>
+
+              <div class="note">
+                <strong>Regra fundamental:</strong>
+                Se <span class="math">π[v] = u</span>, então
+                <span class="math">d[v] = d[u] + 1</span>.
+              </div>
+            </section>
+
+            <section class="card">
+              <h4>6.2 O Subgrafo de Predecessores</h4>
+
+              <div class="math-block">
+                <span class="math">
+                  E<sub>π</sub> = { (π[v], v) ∣ v ∈ V, v ≠ s, π[v] ≠ NIL }
+                </span>
+              </div>
+
+              <p>
+                O grafo <span class="math">T = (V, E<sub>π</sub>)</span> é chamado de <strong>subgrafo de predecessores da BFS</strong>.
+              </p>
+
+              <div class="note">
+                Restrito aos vértices alcançáveis, ele forma uma árvore enraizada em <span class="math">s</span>.
+              </div>
+            </section>
+
+            <section class="card">
+              <h4>6.3 Por que Isso é uma Árvore</h4>
+
+              <ol>
+                <li>Cada vértice alcançável tem exatamente um predecessor.</li>
+                <li>As distâncias diminuem estritamente ao seguir predecessores.</li>
+              </ol>
+
+              <div class="note">
+                Logo, não há ciclos e todos os caminhos levam à raiz.
+              </div>
+            </section>
+
+            <!-- Transição final para a Parte 7 (largura total) -->
+          <section class="card full" id="bfs-part6-transition">
+            <h4>Próxima: Parte 7 — Aplicações</h4>
+            <p>
+              Agora que entendemos como a BFS constrói uma árvore e reconstrói caminhos mínimos,
+              vamos explorar onde essa estrutura é utilizada na prática.
+              Na <strong>Parte 7</strong>, analisamos aplicações reais da BFS
+              em redes, grades (grids), grafos de dependência e sistemas de engenharia.
+            </p>
+
+            <div class="note">
+              <strong>Continuar:</strong>
+              <a class="next-link" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">
+                Parte 7 — Aplicações →
+              </a>
+            </div>
+          </section>
 
           </div>
         </article>

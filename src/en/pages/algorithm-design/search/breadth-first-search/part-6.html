@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 6 — Layer Structure</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 6 — BFS Tree &amp; Path Reconstruction</title>
   {{> head}}
 </head>
 
@@ -22,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 6 — Layer Structure</span>
+        <span class="current">Part 6 — BFS Tree &amp; Path Reconstruction</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 6 — Layer Structure (A Preview of BFS Geometry)</p>
+          <p>Part 6 — BFS Tree &amp; Path Reconstruction</p>
         </div>
       </div>
 
@@ -63,43 +63,300 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part6-layers">
-              <h3>6. Layer Structure — A Preview of BFS Geometry</h3>
+            <!-- 6 (intro + roadmap) -->
+            <section class="card" id="bfs-part6-roadmap">
+              <h3>6. BFS Tree &amp; Path Reconstruction</h3>
               <hr class="soft" />
 
-              <p class="math-note">
-                Although we have not defined the algorithm yet, we introduce a structural idea.
-              </p>
-
-              <p>
-                Define distance layers:
-              </p>
-
-              <div class="math-block" role="math" aria-label="Layer sets definition">
-                <span class="math">L<sub>i</sub> = { v ∈ V ∣ δ(s, v) = i }</span>
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Understand what BFS outputs (π and d arrays)</li>
+                  <li>Define the predecessor subgraph and why it is a tree</li>
+                  <li>Formalize “path reconstruction” from π pointers</li>
+                  <li>Implement a reconstruction procedure (CLRS-style)</li>
+                  <li>See a small worked example</li>
+                  <li>Extract engineering patterns (parents, routing, breadcrumbs)</li>
+                </ol>
               </div>
 
-              <p>Then:</p>
-
-              <ul class="bullets">
-                <li><span class="math">L<sub>0</sub> = {s}</span></li>
-                <li><span class="math">L<sub>1</sub></span> = neighbors of <span class="math">s</span></li>
-                <li><span class="math">L<sub>2</sub></span> = vertices at distance 2</li>
-                <li>etc.</li>
-              </ul>
+              <p>
+                BFS does more than compute distances.
+                It produces a <strong>predecessor relation</strong> <span class="math">π</span> that encodes
+                a <strong>BFS tree</strong> rooted at the source.
+              </p>
 
               <p>
-                These layers partition the reachable subgraph.
-                BFS will explore vertices <strong>exactly</strong> in this layered order.
+                In this part, we make that output explicit and show how to reconstruct
+                a shortest path from <span class="math">s</span> to any reachable vertex <span class="math">v</span>.
               </p>
-
-              <p class="note">
-                This layered structure is the geometric heart of the algorithm.
-              </p>
-
             </section>
+
+            <!-- 6.1 -->
+            <section class="card" id="bfs-part6-1-outputs">
+              <h4>6.1 What BFS Produces</h4>
+
+              <p>
+                After running BFS from a source <span class="math">s</span>, each vertex <span class="math">v</span> has:
+              </p>
+
+              <ul>
+                <li><code>d[v]</code> — shortest-path distance from <span class="math">s</span> to <span class="math">v</span> (in edges)</li>
+                <li><code>π[v]</code> — predecessor of <span class="math">v</span> on a shortest path (or <code>NIL</code>)</li>
+              </ul>
+
+              <div class="note">
+                <strong>Key rule:</strong>
+                When <span class="math">π[v] = u</span>, BFS enforced
+                <span class="math">d[v] = d[u] + 1</span> at discovery time.
+              </div>
+            </section>
+
+            <!-- 6.2 -->
+            <section class="card" id="bfs-part6-2-predecessor-subgraph">
+              <h4>6.2 The Predecessor Subgraph</h4>
+
+              <p>
+                Define the predecessor edge set:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Predecessor edges definition">
+                <span class="math">
+                  E<sub>π</sub> = { (π[v], v) ∣ v ∈ V, v ≠ s, π[v] ≠ NIL }
+                </span>
+              </div>
+
+              <p>
+                The graph <span class="math">T = (V, E<sub>π</sub>)</span> is called the <strong>BFS predecessor subgraph</strong>.
+              </p>
+
+              <div class="note">
+                If we restrict to vertices reachable from <span class="math">s</span>,
+                this subgraph forms a tree rooted at <span class="math">s</span>.
+              </div>
+            </section>
+
+            <!-- 6.3 -->
+            <section class="card" id="bfs-part6-3-why-tree">
+              <h4>6.3 Why This Is a Tree</h4>
+
+              <p>
+                Two facts give the tree structure:
+              </p>
+
+              <ol>
+                <li>
+                  <strong>Unique parent:</strong>
+                  Every reachable vertex <span class="math">v ≠ s</span> gets exactly one predecessor <span class="math">π[v]</span>.
+                </li>
+                <li>
+                  <strong>Acyclic:</strong>
+                  Distances strictly decrease when following predecessors:
+                  <span class="math">d[π[v]] = d[v] − 1</span>.
+                  So you can never come back to a vertex with the same distance.
+                </li>
+              </ol>
+
+              <div class="note">
+                <strong>Consequence:</strong>
+                Following <span class="math">π</span> pointers from any reachable <span class="math">v</span>
+                must eventually reach <span class="math">s</span>, and the path is unique.
+              </div>
+            </section>
+
+            <!-- 6.4 -->
+            <section class="card" id="bfs-part6-4-layer-diagram">
+              <h4>6.4 Small Formal Diagram</h4>
+
+              <p>
+                The predecessor pointers connect consecutive layers:
+              </p>
+
+              <div class="note">
+                <strong>Layer + tree view (ASCII):</strong>
+                <pre><code>L0:   s
+      |
+L1:  a   b
+     |   |
+L2:  c   d   e
+         |
+L3:      f
+
+Edges are (π[v], v).
+Each edge goes from layer k to layer k+1.</code></pre>
+              </div>
+
+              <p>
+                This is why the predecessor subgraph is both a <strong>tree</strong> and a <strong>shortest-path structure</strong>.
+              </p>
+            </section>
+
+            <!-- 6.5 -->
+            <section class="card" id="bfs-part6-5-reconstruct-definition">
+              <h4>6.5 Path Reconstruction (Definition)</h4>
+
+              <p>
+                A reconstructed path from <span class="math">s</span> to a reachable vertex <span class="math">v</span> is:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Path reconstruction via predecessors">
+                <span class="math">
+                  s = v<sub>0</sub>, v<sub>1</sub>, …, v<sub>k</sub> = v
+                  &nbsp;&nbsp;where&nbsp;&nbsp;
+                  v<sub>i−1</sub> = π[v<sub>i</sub>]
+                </span>
+              </div>
+
+              <p>
+                The length is <span class="math">k = d[v]</span>.
+              </p>
+
+              <div class="note">
+                <strong>Important:</strong>
+                This reconstruction is valid only if <span class="math">v</span> is reachable from <span class="math">s</span>
+                (i.e., BFS discovered it).
+              </div>
+            </section>
+
+            <!-- 6.6 -->
+            <section class="card" id="bfs-part6-6-clrs-print-path">
+              <h4>6.6 CLRS-Style Procedure — PRINT-PATH</h4>
+
+              <p>
+                CLRS presents reconstruction as a recursive procedure on predecessors:
+              </p>
+
+              <pre><code>PRINT-PATH(π, s, v):
+
+    if v == s:
+        print s
+    else if π[v] == NIL:
+        print "no path"
+    else:
+        PRINT-PATH(π, s, π[v])
+        print v</code></pre>
+
+              <div class="note">
+                <strong>What it does:</strong>
+                It follows <span class="math">π</span> pointers backward to the source, then prints forward on unwind.
+              </div>
+            </section>
+
+            <!-- 6.7 -->
+            <section class="card" id="bfs-part6-7-iterative-reconstruct">
+              <h4>6.7 Iterative Reconstruction (Engineering-Friendly)</h4>
+
+              <p>
+                In practice, you often build the path in reverse, then reverse it:
+              </p>
+
+              <pre><code>RECONSTRUCT-PATH(π, s, v):
+
+    path = []
+    cur = v
+
+    while cur != NIL:
+        path.append(cur)
+        if cur == s:
+            break
+        cur = π[cur]
+
+    if path.last != s:
+        return []   // no path
+
+    reverse(path)
+    return path</code></pre>
+
+              <div class="note">
+                <strong>Tip:</strong>
+                The loop is bounded by <span class="math">d[v] + 1</span>, so reconstruction is linear in path length.
+              </div>
+            </section>
+
+            <!-- 6.8 -->
+            <section class="card" id="bfs-part6-8-worked-example">
+              <h4>6.8 Worked Example</h4>
+
+              <p>
+                Suppose BFS from <span class="math">s</span> produced:
+              </p>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>v</th>
+                      <th>d[v]</th>
+                      <th>π[v]</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>s</td><td>0</td><td>NIL</td></tr>
+                    <tr><td>a</td><td>1</td><td>s</td></tr>
+                    <tr><td>b</td><td>1</td><td>s</td></tr>
+                    <tr><td>d</td><td>2</td><td>b</td></tr>
+                    <tr><td>f</td><td>3</td><td>d</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>
+                Reconstructing the path to <span class="math">f</span> follows predecessors:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Path reconstruction example">
+                <span class="math">f → d → b → s</span>
+              </div>
+
+              <p>
+                Reversing gives the shortest path:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Shortest path example">
+                <span class="math">s → b → d → f</span>
+              </div>
+            </section>
+
+            <!-- 6.9 -->
+            <section class="card" id="bfs-part6-9-engineering-patterns">
+              <h4>6.9 Engineering Patterns</h4>
+
+              <p>
+                The BFS tree and predecessor pointers show up everywhere:
+              </p>
+
+              <ul>
+                <li><strong>Routing / shortest hops:</strong> reconstruct the hop-by-hop path in networks</li>
+                <li><strong>Breadcrumbs:</strong> parent pointers from a node up to a root (UI navigation)</li>
+                <li><strong>Org charts / hierarchies:</strong> store parent pointers to rebuild chains</li>
+                <li><strong>Dependency exploration:</strong> discover layers of impact from a starting component</li>
+              </ul>
+
+              <div class="note">
+                <strong>Takeaway:</strong>
+                <span class="math">π</span> is not just “extra metadata” — it is the concrete structure that turns BFS into a usable output.
+              </div>
+            </section>
+
+           <!-- Final transition to Part 7 (full width) -->
+          <section class="card full" id="bfs-part6-transition">
+            <h4>Next: Part 7 — Applications</h4>
+            <p>
+              Now that we understand how BFS builds a tree and reconstructs shortest paths,
+              we explore where this structure is actually used in practice.
+              In <strong>Part 7</strong>, we examine real-world applications of BFS
+              across networks, grids, dependency graphs, and engineering systems.
+            </p>
+
+            <div class="note">
+              <strong>Continue:</strong>
+              <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">
+                Part 7 — Applications →
+              </a>
+            </div>
+          </section>
 
           </div>
         </article>
