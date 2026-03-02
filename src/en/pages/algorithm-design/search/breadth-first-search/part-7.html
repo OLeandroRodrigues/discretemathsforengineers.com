@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 7 — The BFS Objective</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 7 — Applications</title>
   {{> head}}
 </head>
 
@@ -22,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 7 — The BFS Objective</span>
+        <span class="current">Part 7 — Applications</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 7 — The BFS Objective (Precise Statement)</p>
+          <p>Part 7 — Applications</p>
         </div>
       </div>
 
@@ -63,37 +63,214 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part7-objective">
-              <h3>7. The BFS Objective (Precise Statement)</h3>
+            <!-- 7 (intro + roadmap) -->
+            <section class="card" id="bfs-part7-roadmap">
+              <h3>7. Applications</h3>
               <hr class="soft" />
 
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Shortest paths in unweighted graphs</li>
+                  <li>Pathfinding on grids (games, robotics)</li>
+                  <li>Connectivity and reachability</li>
+                  <li>Bipartite checking (two-coloring)</li>
+                  <li>Connected components (undirected graphs)</li>
+                  <li>Levels, broadcasting, and “degrees of separation”</li>
+                  <li>Engineering patterns: routing, breadcrumbs, dependency impact</li>
+                </ol>
+              </div>
+
               <p>
-                Given a graph <span class="math">G = (V, E)</span> and a source <span class="math">s ∈ V</span>,
-                compute:
+                BFS is one of the most practical graph algorithms in engineering.
+                Whenever edges represent <strong>unit cost</strong> (one hop, one move, one step),
+                BFS becomes the default tool.
               </p>
 
-              <ul class="bullets">
-                <li>
-                  The distance function <span class="math">d : V → N ∪ {∞}</span>
-                </li>
-                <li>
-                  A predecessor function <span class="math">π : V → V ∪ {NIL}</span>
-                </li>
-              </ul>
-
-              <p>such that:</p>
-
-              <ul class="bullets">
-                <li><span class="math">d[v] = δ(s, v)</span></li>
-                <li>
-                  The predecessor pointers form a shortest-path tree rooted at
-                  <span class="math">s</span>
-                </li>
-              </ul>
-
+              <p>
+                In this part, we map the theory to real-world tasks you will see in systems,
+                products, and interviews.
+              </p>
             </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bfs-part7-1-shortest-unweighted">
+              <h4>7.1 Shortest Paths (Unweighted Graphs)</h4>
+
+              <p>
+                If each edge has the same “cost” (1 hop), BFS computes shortest-path distances:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Unweighted shortest path distances">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <p>
+                And the predecessor pointers <span class="math">π</span> allow path reconstruction (Part 6).
+              </p>
+
+              <div class="note">
+                <strong>Use cases:</strong> social graphs, routing by hop-count, shortest “click path” on a site map.
+              </div>
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bfs-part7-2-grid-pathfinding">
+              <h4>7.2 Grid Pathfinding (Games &amp; Robotics)</h4>
+
+              <p>
+                A 2D grid can be modeled as a graph:
+              </p>
+
+              <ul>
+                <li>Each cell is a vertex</li>
+                <li>Edges connect valid neighbor moves (4-neighborhood or 8-neighborhood)</li>
+                <li>Walls/obstacles remove vertices or edges</li>
+              </ul>
+
+              <p>
+                BFS finds the shortest number of moves from start to goal.
+              </p>
+
+              <div class="note">
+                <strong>Classic problems:</strong> shortest path in a maze, minimum steps in a grid, flood-fill with distances.
+              </div>
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bfs-part7-3-reachability">
+              <h4>7.3 Reachability &amp; Connectivity</h4>
+
+              <p>
+                BFS answers “can I get there from here?”:
+              </p>
+
+              <ul>
+                <li>Run BFS from <span class="math">s</span></li>
+                <li>All discovered vertices are reachable</li>
+              </ul>
+
+              <div class="note">
+                <strong>Use cases:</strong> access control graphs, dependency reachability, network connectivity checks.
+              </div>
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bfs-part7-4-connected-components">
+              <h4>7.4 Connected Components (Undirected Graphs)</h4>
+
+              <p>
+                To find all connected components:
+              </p>
+
+              <ol>
+                <li>Mark all vertices as unvisited</li>
+                <li>For each unvisited vertex, run BFS and mark its entire component</li>
+                <li>Each BFS run discovers exactly one component</li>
+              </ol>
+
+              <p>
+                The total time remains linear:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Connected components complexity">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <div class="note">
+                <strong>Use cases:</strong> clustering by connectivity, detecting isolated subnetworks, grouping users by connectivity.
+              </div>
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bfs-part7-5-bipartite">
+              <h4>7.5 Bipartite Checking (Two-Coloring)</h4>
+
+              <p>
+                BFS can test whether a graph is bipartite by two-coloring layers:
+              </p>
+
+              <ul>
+                <li>Assign color A to <span class="math">s</span></li>
+                <li>All neighbors must be color B</li>
+                <li>Neighbors of B must be A, and so on</li>
+                <li>If an edge connects same-color vertices, the graph is not bipartite</li>
+              </ul>
+
+              <div class="note">
+                <strong>Use cases:</strong> conflict graphs, scheduling constraints, checking if a graph has an odd cycle.
+              </div>
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bfs-part7-6-broadcast-levels">
+              <h4>7.6 Levels, Broadcast, and “Degrees of Separation”</h4>
+
+              <p>
+                BFS naturally computes layers:
+              </p>
+
+              <div class="note">
+                <strong>Layer meaning:</strong>
+                <span class="math">L<sub>k</sub> = { v ∈ V ∣ d[v] = k }</span>
+              </div>
+
+              <p>
+                This models spreading processes:
+              </p>
+
+              <ul>
+                <li>Broadcast message propagation (hops)</li>
+                <li>Minimum time steps in discrete diffusion</li>
+                <li>“Friends within 2 hops” queries</li>
+              </ul>
+
+              <div class="note">
+                <strong>Engineering insight:</strong>
+                Layer computations are often more valuable than the path itself.
+              </div>
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bfs-part7-7-engineering-patterns">
+              <h4>7.7 Engineering Patterns</h4>
+
+              <p>
+                BFS is a pattern, not just an algorithm:
+              </p>
+
+              <ul>
+                <li><strong>Routing by hop-count:</strong> shortest number of hops in overlay networks</li>
+                <li><strong>Breadcrumbs / parent pointers:</strong> store parents to rebuild paths or UI navigation</li>
+                <li><strong>Impact analysis:</strong> “what depends on this?” (dependency graphs)</li>
+                <li><strong>State-space search:</strong> explore transitions in minimal step count</li>
+              </ul>
+
+              <div class="note">
+                <strong>Takeaway:</strong>
+                When your system can be modeled as “states” and “unit transitions”, BFS is usually the first tool to try.
+              </div>
+            </section>
+
+          <!-- Final transition to Part 8 (full width) -->
+          <section class="card full" id="bfs-part7-transition">
+            <h4>Next: Part 8 — BFS vs DFS</h4>
+            <p>
+              We have seen what BFS does and where it shines.
+              Next, we put it side by side with Depth-First Search (DFS):
+              how the exploration order differs, what structures each one produces,
+              and how to choose the right traversal for engineering problems.
+            </p>
+
+            <div class="note">
+              <strong>Continue:</strong>
+              <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/part-8.html">
+                Part 8 — BFS vs DFS →
+              </a>
+            </div>
+          </section>
 
           </div>
         </article>

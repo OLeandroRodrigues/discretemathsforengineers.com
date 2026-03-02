@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 7 — O Objetivo da BFS</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 7 — Aplicações</title>
   {{> head}}
 </head>
 
@@ -16,25 +16,25 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 7 — O Objetivo da BFS</span>
+        <span class="current">Parte 7 — Aplicações</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 7 — O Objetivo da BFS (Enunciado Preciso)</p>
+          <p>Parte 7 — Aplicações</p>
         </div>
       </div>
 
       <!-- Series navigation -->
-      <div class="seriesbar" aria-label="Navegação da série">
+      <div class="seriesbar" aria-label="Navegação da Série">
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Busca em Largura (BFS)</strong>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
@@ -63,37 +63,215 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part7-objective">
-              <h3>7. O Objetivo da BFS (Enunciado Preciso)</h3>
+            <!-- 7 (intro + roadmap) -->
+            <section class="card" id="bfs-part7-roadmap">
+              <h3>7. Aplicações</h3>
               <hr class="soft" />
 
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Caminhos mínimos em grafos não ponderados</li>
+                  <li>Busca de caminho em grades (jogos, robótica)</li>
+                  <li>Conectividade e alcançabilidade</li>
+                  <li>Verificação de bipartição (duas cores)</li>
+                  <li>Componentes conexas (grafos não direcionados)</li>
+                  <li>Níveis, propagação e “graus de separação”</li>
+                  <li>Padrões de engenharia: roteamento, breadcrumbs, impacto de dependências</li>
+                </ol>
+              </div>
+
               <p>
-                Dado um grafo <span class="math">G = (V, E)</span> e uma fonte <span class="math">s ∈ V</span>,
-                queremos calcular:
+                A BFS é um dos algoritmos de grafos mais práticos na engenharia.
+                Sempre que as arestas representam <strong>custo unitário</strong> (um salto, um movimento, um passo),
+                a BFS se torna a ferramenta padrão.
               </p>
 
-              <ul class="bullets">
-                <li>
-                  A função distância <span class="math">d : V → N ∪ {∞}</span>
-                </li>
-                <li>
-                  A função predecessora <span class="math">π : V → V ∪ {NIL}</span>
-                </li>
-              </ul>
-
-              <p>tais que:</p>
-
-              <ul class="bullets">
-                <li><span class="math">d[v] = δ(s, v)</span></li>
-                <li>
-                  Os ponteiros predecessores formam uma árvore de menor caminho
-                  enraizada em <span class="math">s</span>
-                </li>
-              </ul>
-
+              <p>
+                Nesta parte, conectamos a teoria a tarefas do mundo real que você verá em sistemas,
+                produtos e entrevistas.
+              </p>
             </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bfs-part7-1-shortest-unweighted">
+              <h4>7.1 Caminhos Mínimos (Grafos Não Ponderados)</h4>
+
+              <p>
+                Se cada aresta tem o mesmo “custo” (1 salto), a BFS calcula as distâncias de caminho mínimo:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Distâncias de caminho mínimo em grafos não ponderados">
+                <span class="math">d[v] = δ(s, v)</span>
+              </div>
+
+              <p>
+                E os ponteiros de predecessor <span class="math">π</span> permitem reconstruir o caminho (Parte 6).
+              </p>
+
+              <div class="note">
+                <strong>Casos de uso:</strong> grafos sociais, roteamento por número de saltos, menor “caminho de cliques” em um mapa do site.
+              </div>
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bfs-part7-2-grid-pathfinding">
+              <h4>7.2 Busca de Caminho em Grades (Jogos &amp; Robótica)</h4>
+
+              <p>
+                Uma grade 2D pode ser modelada como um grafo:
+              </p>
+
+              <ul>
+                <li>Cada célula é um vértice</li>
+                <li>Arestas conectam movimentos válidos para vizinhos (vizinhança-4 ou vizinhança-8)</li>
+                <li>Paredes/obstáculos removem vértices ou arestas</li>
+              </ul>
+
+              <p>
+                A BFS encontra o menor número de movimentos do início até o objetivo.
+              </p>
+
+              <div class="note">
+                <strong>Problemas clássicos:</strong> menor caminho em um labirinto, mínimo de passos em uma grade, flood-fill com distâncias.
+              </div>
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bfs-part7-3-reachability">
+              <h4>7.3 Alcançabilidade &amp; Conectividade</h4>
+
+              <p>
+                A BFS responde: “consigo chegar lá a partir daqui?”:
+              </p>
+
+              <ul>
+                <li>Execute BFS a partir de <span class="math">s</span></li>
+                <li>Todos os vértices descobertos são alcançáveis</li>
+              </ul>
+
+              <div class="note">
+                <strong>Casos de uso:</strong> grafos de controle de acesso, alcançabilidade em dependências, checagens de conectividade em redes.
+              </div>
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bfs-part7-4-connected-components">
+              <h4>7.4 Componentes Conexas (Grafos Não Direcionados)</h4>
+
+              <p>
+                Para encontrar todas as componentes conexas:
+              </p>
+
+              <ol>
+                <li>Marque todos os vértices como não visitados</li>
+                <li>Para cada vértice não visitado, execute BFS e marque toda a sua componente</li>
+                <li>Cada execução de BFS descobre exatamente uma componente</li>
+              </ol>
+
+              <p>
+                O tempo total permanece linear:
+              </p>
+
+              <div class="math-block" role="math" aria-label="Complexidade para componentes conexas">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <div class="note">
+                <strong>Casos de uso:</strong> agrupamento por conectividade, detectar sub-redes isoladas, agrupar usuários por conectividade.
+              </div>
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bfs-part7-5-bipartite">
+              <h4>7.5 Verificação de Bipartição (Duas Cores)</h4>
+
+              <p>
+                A BFS pode testar se um grafo é bipartido usando duas cores por camadas:
+              </p>
+
+              <ul>
+                <li>Atribua a cor A a <span class="math">s</span></li>
+                <li>Todos os vizinhos devem ter a cor B</li>
+                <li>Vizinhos de B devem ter A, e assim por diante</li>
+                <li>Se uma aresta conecta vértices da mesma cor, o grafo não é bipartido</li>
+              </ul>
+
+              <div class="note">
+                <strong>Casos de uso:</strong> grafos de conflito, restrições de escalonamento, checar se o grafo possui ciclo ímpar.
+              </div>
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bfs-part7-6-broadcast-levels">
+              <h4>7.6 Níveis, Propagação e “Graus de Separação”</h4>
+
+              <p>
+                A BFS naturalmente calcula camadas:
+              </p>
+
+              <div class="note">
+                <strong>Significado da camada:</strong>
+                <span class="math">L<sub>k</sub> = { v ∈ V ∣ d[v] = k }</span>
+              </div>
+
+              <p>
+                Isso modela processos de espalhamento:
+              </p>
+
+              <ul>
+                <li>Propagação de mensagens (saltos)</li>
+                <li>Tempo mínimo em passos discretos de difusão</li>
+                <li>Consultas do tipo “amigos a até 2 saltos”</li>
+              </ul>
+
+              <div class="note">
+                <strong>Insight de engenharia:</strong>
+                Cálculos por camadas muitas vezes são mais valiosos do que o caminho em si.
+              </div>
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bfs-part7-7-engineering-patterns">
+              <h4>7.7 Padrões de Engenharia</h4>
+
+              <p>
+                BFS é um padrão, não apenas um algoritmo:
+              </p>
+
+              <ul>
+                <li><strong>Roteamento por número de saltos:</strong> menor número de hops em redes overlay</li>
+                <li><strong>Breadcrumbs / ponteiros de pai:</strong> guardar pais para reconstruir caminhos ou navegação de UI</li>
+                <li><strong>Análise de impacto:</strong> “o que depende disso?” (grafos de dependência)</li>
+                <li><strong>Busca em espaço de estados:</strong> explorar transições com número mínimo de passos</li>
+              </ul>
+
+              <div class="note">
+                <strong>Resumo:</strong>
+                Quando seu sistema pode ser modelado como “estados” e “transições unitárias”,
+                a BFS costuma ser a primeira ferramenta a testar.
+              </div>
+            </section>
+
+          <!-- Final transition to Part 8 (full width) -->
+          <section class="card full" id="bfs-part7-transition">
+            <h4>Próxima: Parte 8 — BFS vs DFS</h4>
+            <p>
+              Já vimos o que a BFS faz e onde ela se destaca.
+              Agora vamos colocá-la lado a lado com a Busca em Profundidade (DFS):
+              como a ordem de exploração muda, quais estruturas cada uma produz,
+              e como escolher a travessia certa para problemas de engenharia.
+            </p>
+
+            <div class="note">
+              <strong>Continuar:</strong>
+              <a class="next-link" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-8.html">
+                Parte 8 — BFS vs DFS →
+              </a>
+            </div>
+          </section>
 
           </div>
         </article>
