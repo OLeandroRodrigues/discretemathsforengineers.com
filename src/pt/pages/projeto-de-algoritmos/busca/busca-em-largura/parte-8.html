@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 8 — Por que Isso Importa na Engenharia</title>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 8 — BFS vs DFS</title>
   {{> head}}
 </head>
 
@@ -16,25 +16,25 @@
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/pt/index.html">Início</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
         <span class="sep">›</span>
-        <a href="/pt/pages/algorithm-design/search/breadth-first-search/index.html">Busca em Largura (BFS)</a>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Busca em Largura (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Parte 8 — Por que Isso Importa na Engenharia</span>
+        <span class="current">Parte 8 — BFS vs DFS</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Busca em Largura (BFS)</h2>
-          <p>Parte 8 — Por que Isso Importa na Engenharia</p>
+          <p>Parte 8 — BFS vs DFS</p>
         </div>
       </div>
 
       <!-- Series navigation -->
-      <div class="seriesbar" aria-label="Navegação da série">
+      <div class="seriesbar" aria-label="Navegação da Série">
         <div class="series-meta">
           <div class="series-title">
             <strong>Série: Busca em Largura (BFS)</strong>
@@ -43,12 +43,12 @@
 
           <div class="series-actions">
             <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-7.html">← Anterior</a>
-            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Finalizar →</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral da Série →</a>
           </div>
         </div>
 
         <div class="pill-row">
-          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">Visão Geral</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-1.html">1</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-2.html">2</a>
           <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/parte-3.html">3</a>
@@ -63,32 +63,142 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part8-why-matters">
-              <h3>8. Por que Isso Importa na Engenharia</h3>
+            <section class="card" id="bfs-part8-roadmap">
+              <h3>8. BFS vs DFS</h3>
               <hr class="soft" />
 
-              <p>A BFS aparece em:</p>
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>A diferença central: ordem de exploração</li>
+                  <li>Estruturas de dados: fila vs pilha (ou recursão)</li>
+                  <li>O que cada travessia produz (árvores + metadados)</li>
+                  <li>Quando BFS é a ferramenta correta</li>
+                  <li>Quando DFS é a ferramenta correta</li>
+                  <li>Comparação de complexidade</li>
+                  <li>Erros comuns &amp; diretrizes de engenharia</li>
+                </ol>
+              </div>
 
-              <ul class="bullets">
-                <li>Roteamento de redes (saltos não ponderados)</li>
-                <li>Distância em redes sociais</li>
-                <li>Rastreamento da web (web crawling)</li>
-                <li>Resolução de dependências</li>
-                <li>Análise de conectividade</li>
-                <li>Teste de bipartição</li>
+              <p>
+                BFS e DFS são as duas travessias fundamentais em grafos.
+                Elas parecem semelhantes no código, mas seu <strong>comportamento estrutural</strong> é diferente:
+                a BFS expande por camadas; a DFS aprofunda ao máximo antes de retroceder.
+              </p>
+
+              <p>
+                Esta parte fornece um modelo mental prático para escolher rapidamente a abordagem correta.
+              </p>
+            </section>
+
+            <section class="card">
+              <h4>8.1 Diferença Central: Ordem de Exploração</h4>
+
+              <div class="note">
+                <strong>BFS:</strong> explora vértices por distância crescente a partir da origem (camada por camada).
+              </div>
+
+              <div class="note">
+                <strong>DFS:</strong> explora o mais profundamente possível antes de retroceder.
+              </div>
+
+              <p>
+                A ordem não é apenas estética: ela altera as garantias do algoritmo.
+                A BFS garante caminhos mínimos em grafos não ponderados; a DFS não.
+              </p>
+            </section>
+
+            <section class="card">
+              <h4>8.2 Fila vs Pilha</h4>
+
+              <ul>
+                <li><strong>BFS</strong> usa <em>fila (FIFO)</em> → preserva camadas.</li>
+                <li><strong>DFS</strong> usa <em>pilha (LIFO)</em> ou recursão (pilha de chamadas).</li>
               </ul>
 
-              <p class="math-note">
-                Em termos de matemática discreta: a BFS constrói a estrutura métrica induzida pela distância em número de arestas.
+              <div class="note">
+                <strong>Regra prática:</strong>
+                FIFO → “expandir igualmente”; LIFO → “seguir um caminho até o fim”.
+              </div>
+            </section>
+
+            <section class="card">
+              <h4>8.3 Comparação Lado a Lado</h4>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Aspecto</th>
+                      <th>BFS</th>
+                      <th>DFS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Exploração</td>
+                      <td>Camada por camada</td>
+                      <td>Aprofunda e depois retrocede</td>
+                    </tr>
+                    <tr>
+                      <td>Estrutura</td>
+                      <td>Fila (FIFO)</td>
+                      <td>Pilha (LIFO) / recursão</td>
+                    </tr>
+                    <tr>
+                      <td>Caminho mínimo (não ponderado)</td>
+                      <td><strong>Sim</strong></td>
+                      <td>Não</td>
+                    </tr>
+                    <tr>
+                      <td>Melhor para</td>
+                      <td>Mínimo de saltos, camadas</td>
+                      <td>Estrutura, ciclos, ordenação topológica</td>
+                    </tr>
+                    <tr>
+                      <td>Complexidade</td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="card">
+              <h4>8.8 Complexidade</h4>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <p>
+                A principal diferença prática está no perfil de memória:
               </p>
 
-              <p class="note">
-                Isso não é apenas uma travessia.
-                É a construção de um espaço métrico de menor caminho sobre <span class="math">G</span>.
+              <ul>
+                <li><strong>BFS</strong> pode armazenar uma grande fronteira.</li>
+                <li><strong>DFS</strong> armazena apenas o caminho atual.</li>
+              </ul>
+            </section>
+
+            <section class="card full">
+              <h4>Série Concluída </h4>
+              <p>
+                Você agora possui o conjunto completo da BFS:
+                intuição, algoritmo formal, prova de correção,
+                análise de complexidade, reconstrução de caminhos,
+                aplicações — e comparação com DFS.
               </p>
 
+              <div class="note">
+                <strong>Voltar para a visão geral:</strong>
+                <a class="next-link" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-largura/index.html">
+                  Busca em Largura (BFS) — Visão Geral →
+                </a>
+              </div>
             </section>
 
           </div>

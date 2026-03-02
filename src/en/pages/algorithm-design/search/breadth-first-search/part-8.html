@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 8 — Why This Matters in Engineering</title>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 8 — BFS vs DFS</title>
   {{> head}}
 </head>
 
@@ -22,14 +22,14 @@
         <span class="sep">›</span>
         <a href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Breadth-First Search (BFS)</a>
         <span class="sep">›</span>
-        <span class="current">Part 8 — Why This Matters in Engineering</span>
+        <span class="current">Part 8 — BFS vs DFS</span>
       </nav>
 
       <!-- Page header -->
       <div class="main-header">
         <div>
           <h2>Breadth-First Search (BFS)</h2>
-          <p>Part 8 — Why This Matters in Engineering</p>
+          <p>Part 8 — BFS vs DFS</p>
         </div>
       </div>
 
@@ -43,7 +43,7 @@
 
           <div class="series-actions">
             <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/part-7.html">← Previous</a>
-            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Finish →</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">Series Overview →</a>
           </div>
         </div>
 
@@ -63,31 +63,270 @@
       <!-- Content -->
       <div class="content">
         <article class="prose">
-          <div class="cards-stack">
+          <div class="cards-grid">
 
-            <section class="card" id="bfs-part8-why-matters">
-              <h3>8. Why This Matters in Engineering</h3>
+            <!-- 8 (intro + roadmap) -->
+            <section class="card" id="bfs-part8-roadmap">
+              <h3>8. BFS vs DFS</h3>
               <hr class="soft" />
 
-              <p>BFS appears in:</p>
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The core difference: exploration order</li>
+                  <li>Data structures: queue vs stack (or recursion)</li>
+                  <li>What each traversal produces (trees + metadata)</li>
+                  <li>When BFS is the right tool</li>
+                  <li>When DFS is the right tool</li>
+                  <li>Complexity comparison</li>
+                  <li>Common pitfalls &amp; engineering guidelines</li>
+                </ol>
+              </div>
 
-              <ul class="bullets">
-                <li>Network routing (unweighted hops)</li>
-                <li>Social network distance</li>
-                <li>Web crawling</li>
-                <li>Dependency resolution</li>
-                <li>Connectivity analysis</li>
-                <li>Bipartite testing</li>
+              <p>
+                BFS and DFS are the two fundamental graph traversals.
+                They look similar in code, but their <strong>structural behavior</strong> is different:
+                BFS expands by layers; DFS dives deep along a path.
+              </p>
+
+              <p>
+                This part gives you a practical mental model: how to choose the right one quickly.
+              </p>
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="bfs-part8-1-core-difference">
+              <h4>8.1 Core Difference: Exploration Order</h4>
+
+              <div class="note">
+                <strong>BFS:</strong> explores vertices by increasing distance from the source (layer by layer).
+              </div>
+
+              <div class="note">
+                <strong>DFS:</strong> explores by going as deep as possible before backtracking.
+              </div>
+
+              <p>
+                The order is not cosmetic: it changes what you can guarantee.
+                BFS guarantees shortest paths in unweighted graphs; DFS does not.
+              </p>
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="bfs-part8-2-structures">
+              <h4>8.2 Queue vs Stack</h4>
+
+              <p>
+                The data structure dictates the traversal:
+              </p>
+
+              <ul>
+                <li><strong>BFS</strong> uses a <em>queue (FIFO)</em> → preserves layers.</li>
+                <li><strong>DFS</strong> uses a <em>stack (LIFO)</em> (explicit) or recursion (implicit call stack).</li>
               </ul>
 
-              <p class="math-note">
-                In discrete mathematics terms: BFS constructs the metric structure induced by edge-count distance.
+              <div class="note">
+                <strong>Rule of thumb:</strong>
+                FIFO → “expand equally”; LIFO → “commit to a path”.
+              </div>
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="bfs-part8-3-comparison-table">
+              <h4>8.3 Side-by-Side Comparison</h4>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Aspect</th>
+                      <th>BFS</th>
+                      <th>DFS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Exploration</td>
+                      <td>Layer by layer</td>
+                      <td>Deep then backtrack</td>
+                    </tr>
+                    <tr>
+                      <td>Data structure</td>
+                      <td>Queue (FIFO)</td>
+                      <td>Stack (LIFO) / recursion</td>
+                    </tr>
+                    <tr>
+                      <td>Shortest paths (unweighted)</td>
+                      <td><strong>Yes</strong></td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <td>Typical outputs</td>
+                      <td>Distances + predecessor tree</td>
+                      <td>Discovery/finish times, DFS tree/forest</td>
+                    </tr>
+                    <tr>
+                      <td>Best for</td>
+                      <td>Minimum hops, layers, nearest target</td>
+                      <td>Structure, cycles, topological order, SCC</td>
+                    </tr>
+                    <tr>
+                      <td>Complexity</td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="bfs-part8-4-what-bfs-produces">
+              <h4>8.4 What BFS Produces</h4>
+
+              <p>
+                BFS produces two “usable” artifacts:
               </p>
 
-              <p class="note">
-                This is not just traversal. It is the construction of a shortest-path metric space over <span class="math">G</span>.
+              <ul>
+                <li><code>d[v]</code> — shortest distance from <span class="math">s</span> to <span class="math">v</span> (in edges)</li>
+                <li><code>π[v]</code> — predecessor pointers, forming a BFS tree</li>
+              </ul>
+
+              <div class="note">
+                <strong>Key guarantee:</strong>
+                In unweighted graphs, <span class="math">d[v] = δ(s,v)</span>.
+              </div>
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="bfs-part8-5-what-dfs-produces">
+              <h4>8.5 What DFS Produces</h4>
+
+              <p>
+                DFS is best seen as a “structure extractor”. Common DFS metadata:
               </p>
 
+              <ul>
+                <li>discovery time (<span class="math">tin[v]</span>) and finish time (<span class="math">tout[v]</span>)</li>
+                <li>DFS tree / forest</li>
+                <li>edge classification (tree, back, forward, cross) — in directed graphs</li>
+              </ul>
+
+              <div class="note">
+                <strong>Why this matters:</strong>
+                Many global graph properties are proven/implemented using DFS time structure.
+              </div>
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="bfs-part8-6-when-bfs">
+              <h4>8.6 When to Choose BFS</h4>
+
+              <p>
+                Choose BFS when edges represent <strong>unit transitions</strong> and you care about:
+              </p>
+
+              <ul>
+                <li><strong>minimum number of steps</strong> (shortest path in hops)</li>
+                <li><strong>nearest target</strong> (early exit when you first reach it)</li>
+                <li><strong>layers / wavefront</strong> (broadcast, diffusion, degrees of separation)</li>
+                <li><strong>grid shortest moves</strong> (maze, robotics on 2D maps)</li>
+              </ul>
+
+              <div class="note">
+                <strong>One-liner:</strong> “If the cost is 1 per move, try BFS first.”
+              </div>
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="bfs-part8-7-when-dfs">
+              <h4>8.7 When to Choose DFS</h4>
+
+              <p>
+                Choose DFS when you need <strong>deep structure</strong> or global graph properties:
+              </p>
+
+              <ul>
+                <li><strong>topological sorting</strong> (DAG scheduling)</li>
+                <li><strong>cycle detection</strong> (especially in directed graphs)</li>
+                <li><strong>connected components</strong> (also possible with BFS, but DFS is common)</li>
+                <li><strong>strongly connected components</strong> (Kosaraju, Tarjan)</li>
+                <li><strong>backtracking / state-space search</strong> (when you must explore choices)</li>
+              </ul>
+
+              <div class="note">
+                <strong>One-liner:</strong> “If you need ordering, structure, or recursion-like exploration, use DFS.”
+              </div>
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="bfs-part8-8-complexity">
+              <h4>8.8 Complexity</h4>
+
+              <p>
+                With adjacency lists, both traversals run in:
+              </p>
+
+              <div class="math-block" role="math" aria-label="O(|V| + |E|)">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <p>
+                Differences are usually in <strong>memory profile</strong>:
+              </p>
+
+              <ul>
+                <li><strong>BFS</strong> may store an entire frontier (worst-case: large queue).</li>
+                <li><strong>DFS</strong> stores a path plus recursion/stack (depth-dependent).</li>
+              </ul>
+
+              <div class="note">
+                <strong>Practical note:</strong>
+                For very deep graphs, recursive DFS can overflow the call stack; use an explicit stack if needed.
+              </div>
+            </section>
+
+            <!-- 8.9 -->
+            <section class="card" id="bfs-part8-9-pitfalls">
+              <h4>8.9 Common Pitfalls &amp; Guidelines</h4>
+
+              <ul>
+                <li><strong>Mixing goals:</strong> using DFS when you need shortest paths (wrong tool).</li>
+                <li><strong>Late marking:</strong> in BFS, mark visited when enqueuing, not when dequeuing (avoids duplicates).</li>
+                <li><strong>Disconnected graphs:</strong> to traverse everything, run BFS/DFS from each unvisited vertex.</li>
+                <li><strong>Weighted edges:</strong> BFS is not for weighted shortest paths → use Dijkstra / 0-1 BFS.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Guideline:</strong>
+                Start with the question: “Do I need the nearest solution, or do I need structure?”
+              </div>
+            </section>
+
+            <!-- Final closing card (full width) -->
+            <section class="card full" id="bfs-part8-closing">
+              <h4>Series Complete</h4>
+              <p>
+                You now have the full BFS toolkit: intuition (layers), formal algorithm, correctness proof,
+                complexity analysis, tree/path reconstruction, applications — and how BFS compares to DFS.
+              </p>
+
+              <div class="note">
+                <strong>Next steps:</strong>
+                <ul>
+                  <li>Revisit the <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">BFS Series Overview</a></li>
+                  <li>Practice on grids and shortest-hop problems (BFS + path reconstruction)</li>
+                  <li>Move on to DFS fundamentals and topological sorting</li>
+                </ul>
+              </div>
+
+              <div class="note">
+                <strong>Back to overview:</strong>
+                <a class="next-link" href="/en/pages/algorithm-design/search/breadth-first-search/index.html">
+                  Breadth-First Search (BFS) — Series Overview →
+                </a>
+              </div>
             </section>
 
           </div>
