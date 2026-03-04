@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Largura (BFS) · Parte 1 — Modelo de Grafo & Definição do Problema</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Largura (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 1 — Modelo de Grafo & Definição do Problema</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Largura (BFS)</h2>
+          <p>Parte 1 — Modelo de Grafo & Definição do Problema</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Largura (BFS)</strong>
+            <span>Parte 1 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">← Índice</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.1 -->
+            <section class="card">
+
+              <h3>1. Modelo de Grafo</h3>
+
+              <p>
+                A Busca em Largura (BFS) opera sobre um grafo
+                formalmente definido como
+              </p>
+
+              <div class="math-block">
+                <span class="math">G = (V, E)</span>
+              </div>
+
+              <ul>
+                <li><strong>V</strong> — o conjunto de vértices</li>
+                <li><strong>E</strong> — o conjunto de arestas</li>
+              </ul>
+
+              <p>
+                Os grafos podem ser:
+              </p>
+
+              <ul>
+                <li>Direcionados</li>
+                <li>Não direcionados</li>
+              </ul>
+
+              <p>
+                A BFS funciona em ambos os casos,
+                mas sua interpretação pode variar dependendo
+                da direção das arestas.
+              </p>
+
+            </section>
+
+
+            <!-- 1.2 -->
+            <section class="card">
+
+              <h3>2. O Problema de Busca</h3>
+
+              <p>
+                Dado um grafo
+                <span class="math">G = (V,E)</span>
+                e um vértice inicial
+                <span class="math">s ∈ V</span>,
+                o objetivo é explorar todos os vértices
+                alcançáveis a partir de <span class="math">s</span>.
+              </p>
+
+              <p>
+                A BFS visita sistematicamente os vértices
+                em ordem crescente de distância
+                em relação à origem.
+              </p>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                vértices mais próximos da origem são explorados primeiro.
+              </div>
+
+            </section>
+
+
+            <!-- 1.3 -->
+            <section class="card">
+
+              <h3>3. Distância em Grafos</h3>
+
+              <p>
+                Em grafos não ponderados,
+                a distância entre dois vértices
+                é medida pelo número de arestas
+                no menor caminho que os conecta.
+              </p>
+
+              <div class="math-block">
+                <span class="math">δ(s,v)</span>
+              </div>
+
+              <p>
+                Isso representa a distância do menor caminho
+                entre a origem <span class="math">s</span>
+                e o vértice <span class="math">v</span>.
+              </p>
+
+              <div class="note">
+                A BFS calcula exatamente essas distâncias
+                em grafos não ponderados.
+              </div>
+
+            </section>
+
+
+            <!-- 1.4 -->
+            <section class="card">
+
+              <h3>4. Alcançabilidade</h3>
+
+              <p>
+                Um vértice <span class="math">v</span>
+                é considerado alcançável a partir de
+                <span class="math">s</span>
+                se existir um caminho
+                de <span class="math">s</span> até <span class="math">v</span>.
+              </p>
+
+              <p>
+                A BFS descobre exatamente o conjunto
+                de vértices alcançáveis a partir da origem.
+              </p>
+
+              <div class="note">
+                Essa propriedade torna a BFS útil para
+                análise de conectividade e exploração de redes.
+              </div>
+
+            </section>
+
+
+            <!-- 1.5 -->
+            <section class="card">
+
+              <h3>5. Por que a BFS é Importante</h3>
+
+              <p>
+                A BFS é um dos algoritmos mais fundamentais
+                de travessia em grafos.
+              </p>
+
+              <p>
+                Ela serve como base para muitos
+                problemas importantes da ciência da computação.
+              </p>
+
+              <ul>
+                <li>Menores caminhos em grafos não ponderados</li>
+                <li>Propagação de mensagens em redes</li>
+                <li>Número mínimo de movimentos em puzzles</li>
+                <li>Análise de distância em redes sociais</li>
+              </ul>
+
+            </section>
+
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 2 — A Ideia Central (Exploração Profunda + Backtracking)</h4>
+
+              <p>
+                Agora que definimos o modelo de grafo e o problema de busca,
+                podemos explorar a ideia fundamental por trás da Depth-First Search.
+              </p>
+
+              <p>
+                Diferente da BFS, que expande o grafo camada por camada,
+                a DFS segue uma estratégia diferente: ela explora um caminho
+                o mais profundamente possível antes de voltar (backtracking).
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/algorithm-design/search/depth-first-search/part-2.html">
+                  Parte 2 — A Ideia Central (Exploração Profunda + Retrocesso) →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
