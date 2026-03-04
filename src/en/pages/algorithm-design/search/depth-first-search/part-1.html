@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Breadth-First Search (BFS) · Part 1 — Graph Model & Problem Setting</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Breadth-First Search (BFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1 — Graph Model & Problem Setting</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Breadth-First Search (BFS)</h2>
+          <p>Part 1 — Graph Model & Problem Setting</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Breadth-First Search (BFS)</strong>
+            <span>Part 1 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/index.html">← Index</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.1 -->
+            <section class="card">
+
+              <h3>1. Graph Model</h3>
+
+              <p>
+                Breadth-First Search operates on a graph
+                formally defined as
+              </p>
+
+              <div class="math-block">
+                <span class="math">G = (V, E)</span>
+              </div>
+
+              <ul>
+                <li><strong>V</strong> — the set of vertices</li>
+                <li><strong>E</strong> — the set of edges</li>
+              </ul>
+
+              <p>
+                Graphs may be:
+              </p>
+
+              <ul>
+                <li>Directed</li>
+                <li>Undirected</li>
+              </ul>
+
+              <p>
+                BFS works for both, but its interpretation
+                may differ depending on edge direction.
+              </p>
+
+            </section>
+
+
+            <!-- 1.2 -->
+            <section class="card">
+
+              <h3>2. The Search Problem</h3>
+
+              <p>
+                Given a graph
+                <span class="math">G = (V,E)</span>
+                and a starting vertex
+                <span class="math">s ∈ V</span>,
+                the goal is to explore all vertices
+                reachable from <span class="math">s</span>.
+              </p>
+
+              <p>
+                BFS systematically visits vertices
+                in increasing order of distance
+                from the source.
+              </p>
+
+              <div class="note">
+                <strong>Key idea:</strong>
+                vertices closer to the source are explored first.
+              </div>
+
+            </section>
+
+
+            <!-- 1.3 -->
+            <section class="card">
+
+              <h3>3. Distance in Graphs</h3>
+
+              <p>
+                In unweighted graphs,
+                the distance between two vertices
+                is measured as the number of edges
+                in the shortest path connecting them.
+              </p>
+
+              <div class="math-block">
+                <span class="math">δ(s,v)</span>
+              </div>
+
+              <p>
+                This represents the shortest-path distance
+                from the source <span class="math">s</span>
+                to vertex <span class="math">v</span>.
+              </p>
+
+              <div class="note">
+                BFS computes these distances exactly
+                for unweighted graphs.
+              </div>
+
+            </section>
+
+
+            <!-- 1.4 -->
+            <section class="card">
+
+              <h3>4. Reachability</h3>
+
+              <p>
+                A vertex <span class="math">v</span>
+                is said to be reachable from
+                <span class="math">s</span>
+                if there exists a path
+                from <span class="math">s</span>
+                to <span class="math">v</span>.
+              </p>
+
+              <p>
+                BFS discovers exactly the set of vertices
+                reachable from the source.
+              </p>
+
+              <div class="note">
+                This property makes BFS useful for
+                connectivity analysis and network traversal.
+              </div>
+
+            </section>
+
+
+            <!-- 1.5 -->
+            <section class="card">
+
+              <h3>5. Why BFS Matters</h3>
+
+              <p>
+                BFS is one of the most fundamental
+                graph traversal algorithms.
+              </p>
+
+              <p>
+                It serves as the foundation for many
+                important problems in computer science.
+              </p>
+
+              <ul>
+                <li>Shortest paths in unweighted graphs</li>
+                <li>Network broadcasting</li>
+                <li>Minimum number of moves in puzzles</li>
+                <li>Social network distance analysis</li>
+              </ul>
+
+            </section>
+
+
+            <!-- Transition -->
+            <section class="card full">
+
+            <h4>Next: Part 2 — The Core Idea (Deep Exploration + Backtracking)</h4>
+
+            <p>
+                Now that we defined the graph model and the search problem,
+                we can explore the fundamental idea behind Depth-First Search.
+            </p>
+
+            <p>
+                Instead of expanding the graph layer by layer like BFS,
+                DFS follows a different strategy: it explores one path
+                as deep as possible before backtracking.
+            </p>
+
+            <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">
+                Part 2 — The Core Idea (Deep Exploration + Backtracking) →
+                </a>
+            </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

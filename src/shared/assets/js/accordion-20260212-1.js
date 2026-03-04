@@ -1,4 +1,3 @@
-console.log("[accordion] script loaded", location.pathname);
 
 (function () {
   const KEY = "nav.activeMenu";
@@ -145,7 +144,6 @@ console.log("[accordion] script loaded", location.pathname);
   installOnce();
 
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("[accordion] init", getMenus().length);
     restoreOpenState();
   });
 
