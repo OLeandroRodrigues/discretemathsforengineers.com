@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Depth-First Search (DFS) · Part 2 — The Core Idea (Deep Exploration + Backtracking)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Depth-First Search (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2 — The Core Idea</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Depth-First Search (DFS)</h2>
+          <p>Part 2 — The Core Idea (Deep Exploration + Backtracking)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Depth-First Search (DFS)</strong>
+            <span>Part 2 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.1 -->
+            <section class="card">
+
+              <h3>1. The Central Idea</h3>
+
+              <p>
+                Depth-First Search explores a graph by
+                following one path as far as possible
+                before exploring alternative paths.
+              </p>
+
+              <p>
+                Starting from a source vertex
+                <span class="math">s</span>,
+                the algorithm repeatedly moves to an
+                unvisited neighbor until it reaches
+                a vertex that has no unexplored edges.
+              </p>
+
+              <div class="note">
+                <strong>Key idea:</strong>
+                go deep first, then backtrack.
+              </div>
+
+            </section>
+
+
+            <!-- 2.2 -->
+            <section class="card">
+
+              <h3>2. Deep Exploration</h3>
+
+              <p>
+                DFS expands the search by always selecting
+                a neighbor that has not yet been visited.
+              </p>
+
+              <p>
+                This produces long exploration chains
+                that follow a single branch of the graph.
+              </p>
+
+              <p>
+                Only when no further expansion is possible
+                does the algorithm return to the previous
+                vertex and continue exploring.
+              </p>
+
+            </section>
+
+
+            <!-- 2.3 -->
+            <section class="card">
+
+              <h3>3. Backtracking</h3>
+
+              <p>
+                When a vertex has no unvisited neighbors,
+                DFS performs <strong>backtracking</strong>.
+              </p>
+
+              <p>
+                The algorithm returns to the most recent
+                vertex that still has unexplored edges.
+              </p>
+
+              <div class="note">
+                Backtracking ensures that every reachable
+                vertex in the graph is eventually explored.
+              </div>
+
+            </section>
+
+
+            <!-- 2.4 -->
+            <section class="card">
+
+              <h3>4. The Implicit Stack</h3>
+
+              <p>
+                The exploration process naturally forms
+                a stack structure.
+              </p>
+
+              <ul>
+                <li>Each recursive call pushes a vertex onto the stack</li>
+                <li>Returning from recursion pops the vertex</li>
+              </ul>
+
+              <p>
+                DFS can therefore be implemented either
+                with recursion or with an explicit stack.
+              </p>
+
+            </section>
+
+
+            <!-- 2.5 -->
+            <section class="card">
+
+              <h3>5. Visual Intuition</h3>
+
+              <p>
+                The traversal behaves like exploring a maze.
+              </p>
+
+              <ul>
+                <li>Choose a direction</li>
+                <li>Walk forward until you hit a dead end</li>
+                <li>Go back to the last intersection</li>
+                <li>Try another direction</li>
+              </ul>
+
+              <p>
+                This strategy systematically explores
+                every reachable path.
+              </p>
+
+            </section>
+
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Next: Part 3 — The Algorithm (CLRS Pseudocode)</h4>
+
+              <p>
+                Now that we understand the intuition behind DFS,
+                we formalize the algorithm using the classical
+                pseudocode from <em>Introduction to Algorithms (CLRS)</em>.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">
+                  Part 3 — The Algorithm →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

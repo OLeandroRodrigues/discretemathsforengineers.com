@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 2 — A Ideia Central (Exploração Profunda + Backtracking)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2 — A Ideia Central</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 2 — A Ideia Central (Exploração Profunda + Backtracking)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 2 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.1 -->
+            <section class="card">
+
+              <h3>1. A Ideia Central</h3>
+
+              <p>
+                A Busca em Profundidade explora um grafo
+                seguindo um caminho o mais profundamente
+                possível antes de explorar caminhos alternativos.
+              </p>
+
+              <p>
+                Começando a partir de um vértice de origem
+                <span class="math">s</span>,
+                o algoritmo move-se repetidamente para um
+                vizinho ainda não visitado até alcançar
+                um vértice que não possui mais arestas não exploradas.
+              </p>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                vá profundamente primeiro, depois volte (backtracking).
+              </div>
+
+            </section>
+
+
+            <!-- 2.2 -->
+            <section class="card">
+
+              <h3>2. Exploração Profunda</h3>
+
+              <p>
+                A DFS expande a busca sempre selecionando
+                um vizinho que ainda não foi visitado.
+              </p>
+
+              <p>
+                Isso produz cadeias longas de exploração
+                que seguem um único ramo do grafo.
+              </p>
+
+              <p>
+                Somente quando nenhuma expansão adicional
+                é possível o algoritmo retorna ao vértice
+                anterior e continua a exploração.
+              </p>
+
+            </section>
+
+
+            <!-- 2.3 -->
+            <section class="card">
+
+              <h3>3. Backtracking</h3>
+
+              <p>
+                Quando um vértice não possui vizinhos não visitados,
+                a DFS realiza <strong>backtracking</strong>.
+              </p>
+
+              <p>
+                O algoritmo retorna ao vértice mais recente
+                que ainda possui arestas não exploradas.
+              </p>
+
+              <div class="note">
+                O backtracking garante que todo vértice
+                alcançável no grafo será eventualmente explorado.
+              </div>
+
+            </section>
+
+
+            <!-- 2.4 -->
+            <section class="card">
+
+              <h3>4. A Pilha Implícita</h3>
+
+              <p>
+                O processo de exploração naturalmente
+                forma uma estrutura de pilha.
+              </p>
+
+              <ul>
+                <li>Cada chamada recursiva empilha um vértice</li>
+                <li>O retorno da recursão desempilha o vértice</li>
+              </ul>
+
+              <p>
+                Portanto, a DFS pode ser implementada
+                tanto com recursão quanto com uma pilha explícita.
+              </p>
+
+            </section>
+
+
+            <!-- 2.5 -->
+            <section class="card">
+
+              <h3>5. Intuição Visual</h3>
+
+              <p>
+                A travessia se comporta como explorar um labirinto.
+              </p>
+
+              <ul>
+                <li>Escolha uma direção</li>
+                <li>Caminhe até encontrar um beco sem saída</li>
+                <li>Volte até a última interseção</li>
+                <li>Tente outra direção</li>
+              </ul>
+
+              <p>
+                Essa estratégia explora sistematicamente
+                todos os caminhos alcançáveis.
+              </p>
+
+            </section>
+
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 3 — O Algoritmo (Pseudocódigo do CLRS)</h4>
+
+              <p>
+                Agora que entendemos a intuição por trás da DFS,
+                vamos formalizar o algoritmo usando o pseudocódigo
+                clássico do livro <em>Introduction to Algorithms (CLRS)</em>.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">
+                  Parte 3 — O Algoritmo →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
