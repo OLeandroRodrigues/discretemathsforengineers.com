@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Depth-First Search (DFS) · Part 3 — The Algorithm (CLRS Pseudocode)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Depth-First Search (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3 — The Algorithm (CLRS Pseudocode)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Depth-First Search (DFS)</h2>
+          <p>Part 3 — The Algorithm (CLRS Pseudocode)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Depth-First Search (DFS)</strong>
+            <span>Part 3 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="dfs-part3-roadmap">
+
+              <h3>3. The Algorithm</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The state maintained by DFS</li>
+                  <li>The role of colors and parent pointers</li>
+                  <li>The global DFS procedure</li>
+                  <li>The recursive DFS-VISIT procedure</li>
+                  <li>Discovery and finish times</li>
+                  <li>Why DFS may produce a forest</li>
+                </ol>
+              </div>
+
+              <p>
+                In this part, we formalize Depth-First Search using the classical presentation
+                from <em>Introduction to Algorithms</em> (CLRS).
+              </p>
+
+              <p>
+                DFS is not just an intuition about “going deep”.
+                It is a precise graph traversal procedure with well-defined state,
+                recursion structure, and timestamps.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="dfs-part3-state">
+
+              <h3>3.1 State Maintained by DFS</h3>
+
+              <p>
+                For each vertex <span class="math">u ∈ V</span>, DFS stores:
+              </p>
+
+              <ul>
+                <li><code>color[u]</code> — exploration state</li>
+                <li><code>π[u]</code> — predecessor (parent) in the DFS tree</li>
+                <li><code>d[u]</code> — discovery time</li>
+                <li><code>f[u]</code> — finish time</li>
+              </ul>
+
+              <p>
+                These values allow DFS to do much more than just traverse the graph.
+                They encode structural information that will be essential later
+                for edge classification, cycle detection, and topological sorting.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="dfs-part3-colors">
+
+              <h3>3.2 The Meaning of Colors</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Color</th>
+                      <th>Meaning</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>WHITE</strong></td>
+                      <td>The vertex has not been discovered yet.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>GRAY</strong></td>
+                      <td>The vertex has been discovered but is still being explored.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>BLACK</strong></td>
+                      <td>The vertex and all its reachable descendants have been fully explored.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="note">
+                <strong>Interpretation:</strong>
+                GRAY means “currently active in the recursion stack”.
+              </div>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="dfs-part3-main-procedure">
+
+              <h3>3.3 Main Procedure — DFS</h3>
+
+              <p>
+                The global DFS procedure initializes all vertices and then scans the graph.
+                If it finds a WHITE vertex, it starts a new DFS tree rooted at that vertex.
+              </p>
+
+<pre><code>DFS(G):
+
+    for each vertex u in V[G]:
+        color[u] = WHITE
+        π[u] = NIL
+
+    time = 0
+
+    for each vertex u in V[G]:
+        if color[u] == WHITE:
+            DFS-VISIT(G, u)</code></pre>
+
+              <div class="note">
+                <strong>Important:</strong>
+                If the graph is disconnected, DFS will produce a <strong>DFS forest</strong>,
+                not just a single tree.
+              </div>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="dfs-part3-visit-procedure">
+
+              <h3>3.4 Recursive Procedure — DFS-VISIT</h3>
+
+              <p>
+                The real exploration happens inside the recursive subroutine:
+              </p>
+
+<pre><code>DFS-VISIT(G, u):
+
+    time = time + 1
+    d[u] = time
+    color[u] = GRAY
+
+    for each v in Adj[u]:
+        if color[v] == WHITE:
+            π[v] = u
+            DFS-VISIT(G, v)
+
+    color[u] = BLACK
+    time = time + 1
+    f[u] = time</code></pre>
+
+              <p>
+                This procedure captures the full deep-exploration logic:
+                discover a vertex, recursively visit unvisited neighbors,
+                and only then finish the current vertex.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="dfs-part3-discovery-finish">
+
+              <h3>3.5 Discovery and Finish Times</h3>
+
+              <p>
+                DFS assigns two timestamps to every vertex:
+              </p>
+
+              <ul>
+                <li><span class="math">d[u]</span> — when <span class="math">u</span> is first discovered</li>
+                <li><span class="math">f[u]</span> — when the exploration of <span class="math">u</span> is complete</li>
+              </ul>
+
+              <p>
+                These timestamps are one of the most important features of DFS.
+                They turn a traversal into a structural analysis tool.
+              </p>
+
+              <div class="note">
+                Later, the interval
+                <span class="math">[d[u], f[u]]</span>
+                will let us reason about ancestry, nesting, and edge types.
+              </div>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="dfs-part3-parent-structure">
+
+              <h3>3.6 Parent Pointers and DFS Trees</h3>
+
+              <p>
+                Whenever DFS discovers a WHITE vertex <span class="math">v</span>
+                from a vertex <span class="math">u</span>, it sets:
+              </p>
+
+              <div class="math-block">
+                <span class="math">π[v] = u</span>
+              </div>
+
+              <p>
+                These parent pointers define the DFS tree rooted at the vertex
+                that started the exploration.
+              </p>
+
+              <p>
+                If the graph has multiple disconnected regions,
+                DFS builds a collection of trees, called a <strong>DFS forest</strong>.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="dfs-part3-why-forest">
+
+              <h3>3.7 Why DFS May Produce a Forest</h3>
+
+              <p>
+                DFS starts a new recursive exploration every time it encounters
+                a vertex that is still WHITE in the outer loop.
+              </p>
+
+              <p>
+                Therefore:
+              </p>
+
+              <ul>
+                <li>If the graph is fully reachable from a single source, DFS produces one tree.</li>
+                <li>If the graph has multiple disconnected components, DFS produces multiple trees.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Conclusion:</strong>
+                the complete DFS output is, in general, a <strong>forest</strong>.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="dfs-part3-transition">
+
+              <h4>Next: Part 4 — Structural Properties &amp; Discovery Times</h4>
+
+              <p>
+                Now that the algorithm is fully defined, the next step is to understand
+                the structural meaning of its timestamps and recursion.
+              </p>
+
+              <p>
+                In Part 4, we study discovery times, finish times,
+                nesting intervals, and the parenthesis-style structure
+                generated by DFS.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">
+                  Part 4 — Structural Properties →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
