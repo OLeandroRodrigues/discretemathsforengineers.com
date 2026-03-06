@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 3 — O Algoritmo (Pseudocódigo CLRS)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3 — O Algoritmo (Pseudocódigo CLRS)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 3 — O Algoritmo (Pseudocódigo CLRS)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 3 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="dfs-part3-roadmap">
+
+              <h3>3. O Algoritmo</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O estado mantido pela DFS</li>
+                  <li>O papel das cores e dos ponteiros de pai</li>
+                  <li>O procedimento global da DFS</li>
+                  <li>O procedimento recursivo DFS-VISIT</li>
+                  <li>Tempos de descoberta e finalização</li>
+                  <li>Por que a DFS pode produzir uma floresta</li>
+                </ol>
+              </div>
+
+              <p>
+                Nesta parte, formalizamos a Busca em Profundidade usando a apresentação clássica
+                de <em>Introduction to Algorithms</em> (CLRS).
+              </p>
+
+              <p>
+                A DFS não é apenas uma intuição sobre “ir profundamente”.
+                Ela é um procedimento preciso de travessia em grafos, com estado bem definido,
+                estrutura recursiva e marcações de tempo.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="dfs-part3-state">
+
+              <h3>3.1 Estado Mantido pela DFS</h3>
+
+              <p>
+                Para cada vértice <span class="math">u ∈ V</span>, a DFS armazena:
+              </p>
+
+              <ul>
+                <li><code>color[u]</code> — estado da exploração</li>
+                <li><code>π[u]</code> — predecessor (pai) na árvore DFS</li>
+                <li><code>d[u]</code> — tempo de descoberta</li>
+                <li><code>f[u]</code> — tempo de finalização</li>
+              </ul>
+
+              <p>
+                Esses valores permitem que a DFS faça muito mais do que apenas percorrer o grafo.
+                Eles codificam informação estrutural que será essencial depois
+                para classificação de arestas, detecção de ciclos e ordenação topológica.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="dfs-part3-colors">
+
+              <h3>3.2 O Significado das Cores</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cor</th>
+                      <th>Significado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>WHITE</strong></td>
+                      <td>O vértice ainda não foi descoberto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>GRAY</strong></td>
+                      <td>O vértice foi descoberto, mas ainda está sendo explorado.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>BLACK</strong></td>
+                      <td>O vértice e todos os seus descendentes alcançáveis já foram totalmente explorados.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="note">
+                <strong>Interpretação:</strong>
+                GRAY significa “atualmente ativo na pilha de recursão”.
+              </div>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="dfs-part3-main-procedure">
+
+              <h3>3.3 Procedimento Principal — DFS</h3>
+
+              <p>
+                O procedimento global da DFS inicializa todos os vértices e depois percorre o grafo.
+                Se encontrar um vértice WHITE, inicia uma nova árvore DFS com raiz nesse vértice.
+              </p>
+
+<pre><code>DFS(G):
+
+    for each vertex u in V[G]:
+        color[u] = WHITE
+        π[u] = NIL
+
+    time = 0
+
+    for each vertex u in V[G]:
+        if color[u] == WHITE:
+            DFS-VISIT(G, u)</code></pre>
+
+              <div class="note">
+                <strong>Importante:</strong>
+                Se o grafo for desconexo, a DFS produzirá uma <strong>floresta DFS</strong>,
+                e não apenas uma única árvore.
+              </div>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="dfs-part3-visit-procedure">
+
+              <h3>3.4 Procedimento Recursivo — DFS-VISIT</h3>
+
+              <p>
+                A exploração real acontece dentro da sub-rotina recursiva:
+              </p>
+
+<pre><code>DFS-VISIT(G, u):
+
+    time = time + 1
+    d[u] = time
+    color[u] = GRAY
+
+    for each v in Adj[u]:
+        if color[v] == WHITE:
+            π[v] = u
+            DFS-VISIT(G, v)
+
+    color[u] = BLACK
+    time = time + 1
+    f[u] = time</code></pre>
+
+              <p>
+                Esse procedimento captura toda a lógica da exploração profunda:
+                descobrir um vértice, visitar recursivamente os vizinhos ainda não visitados
+                e só então finalizar o vértice atual.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="dfs-part3-discovery-finish">
+
+              <h3>3.5 Tempos de Descoberta e Finalização</h3>
+
+              <p>
+                A DFS atribui dois timestamps a cada vértice:
+              </p>
+
+              <ul>
+                <li><span class="math">d[u]</span> — quando <span class="math">u</span> é descoberto pela primeira vez</li>
+                <li><span class="math">f[u]</span> — quando a exploração de <span class="math">u</span> é concluída</li>
+              </ul>
+
+              <p>
+                Esses timestamps são uma das características mais importantes da DFS.
+                Eles transformam uma travessia em uma ferramenta de análise estrutural.
+              </p>
+
+              <div class="note">
+                Mais adiante, o intervalo
+                <span class="math">[d[u], f[u]]</span>
+                nos permitirá raciocinar sobre ancestralidade, aninhamento e tipos de aresta.
+              </div>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="dfs-part3-parent-structure">
+
+              <h3>3.6 Ponteiros de Pai e Árvores DFS</h3>
+
+              <p>
+                Sempre que a DFS descobre um vértice WHITE <span class="math">v</span>
+                a partir de um vértice <span class="math">u</span>, ela define:
+              </p>
+
+              <div class="math-block">
+                <span class="math">π[v] = u</span>
+              </div>
+
+              <p>
+                Esses ponteiros de pai definem a árvore DFS enraizada no vértice
+                que iniciou a exploração.
+              </p>
+
+              <p>
+                Se o grafo tiver múltiplas regiões desconexas,
+                a DFS constrói uma coleção de árvores, chamada de <strong>floresta DFS</strong>.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="dfs-part3-why-forest">
+
+              <h3>3.7 Por que a DFS Pode Produzir uma Floresta</h3>
+
+              <p>
+                A DFS inicia uma nova exploração recursiva sempre que encontra
+                um vértice que ainda está WHITE no laço externo.
+              </p>
+
+              <p>
+                Portanto:
+              </p>
+
+              <ul>
+                <li>Se o grafo for totalmente alcançável a partir de uma única fonte, a DFS produz uma árvore.</li>
+                <li>Se o grafo tiver múltiplas componentes desconexas, a DFS produz múltiplas árvores.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Conclusão:</strong>
+                a saída completa da DFS é, em geral, uma <strong>floresta</strong>.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="dfs-part3-transition">
+
+              <h4>Próximo: Parte 4 — Propriedades Estruturais &amp; Tempos de Descoberta</h4>
+
+              <p>
+                Agora que o algoritmo está completamente definido, o próximo passo é entender
+                o significado estrutural de seus timestamps e da recursão.
+              </p>
+
+              <p>
+                Na Parte 4, estudaremos tempos de descoberta, tempos de finalização,
+                intervalos aninhados e a estrutura em estilo de parênteses
+                gerada pela DFS.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">
+                  Parte 4 — Propriedades Estruturais →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
