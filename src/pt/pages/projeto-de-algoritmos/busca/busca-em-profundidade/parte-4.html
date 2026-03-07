@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 4 — Propriedades Estruturais & Tempos de Descoberta</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4 — Propriedades Estruturais & Tempos de Descoberta</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 4 — Propriedades Estruturais & Tempos de Descoberta</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 4 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="dfs-part4-roadmap">
+
+              <h3>4. Propriedades Estruturais & Tempos de Descoberta</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O que significam os tempos de descoberta e finalização</li>
+                  <li>Por que os intervalos da DFS são estruturalmente importantes</li>
+                  <li>O teorema dos parênteses</li>
+                  <li>A intuição do teorema do caminho branco</li>
+                  <li>Relações de ancestralidade nas árvores DFS</li>
+                  <li>Por que essas propriedades são fundamentais para aplicações posteriores</li>
+                </ol>
+              </div>
+
+              <p>
+                A Busca em Profundidade é mais do que uma simples regra de travessia.
+                Seus timestamps codificam uma estrutura oculta na exploração do grafo.
+              </p>
+
+              <p>
+                Nesta parte estudamos as propriedades formais dos tempos de descoberta,
+                dos tempos de finalização e da estrutura de intervalos gerada pela recursão.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card">
+
+              <h3>4.1 Tempos de Descoberta e Finalização</h3>
+
+              <p>
+                Durante a DFS, cada vértice <span class="math">u</span> recebe dois timestamps:
+              </p>
+
+              <ul>
+                <li><span class="math">d[u]</span> — momento em que <span class="math">u</span> é descoberto</li>
+                <li><span class="math">f[u]</span> — momento em que a exploração de <span class="math">u</span> termina</li>
+              </ul>
+
+              <p>
+                Esses tempos satisfazem:
+              </p>
+
+              <div class="math-block">
+                <span class="math">d[u] &lt; f[u]</span>
+              </div>
+
+              <p>
+                porque um vértice precisa ser descoberto antes de ser finalizado.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card">
+
+              <h3>4.2 A Visão de Intervalos</h3>
+
+              <p>
+                Cada vértice define um intervalo de tempo:
+              </p>
+
+              <div class="math-block">
+                <span class="math">[d[u], f[u]]</span>
+              </div>
+
+              <p>
+                Esse intervalo representa todo o período em que
+                <span class="math">u</span> está ativo na recursão.
+              </p>
+
+              <div class="note">
+                <strong>Interpretação:</strong>
+                um vértice está GRAY exatamente enquanto seu intervalo está aberto.
+              </div>
+
+              <p>
+                O fato estrutural mais importante é que os intervalos da DFS
+                são sempre **aninhados ou disjuntos**.
+              </p>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card">
+
+              <h3>4.3 Teorema dos Parênteses</h3>
+
+              <p>
+                Para quaisquer dois vértices <span class="math">u</span> e <span class="math">v</span>,
+                exatamente uma das situações ocorre:
+              </p>
+
+              <ul>
+                <li>Os intervalos são disjuntos</li>
+                <li>O intervalo de <span class="math">u</span> contém o de <span class="math">v</span></li>
+                <li>O intervalo de <span class="math">v</span> contém o de <span class="math">u</span></li>
+              </ul>
+
+              <div class="note">
+                A DFS se comporta como **parênteses bem formados**.
+              </div>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card">
+
+              <h3>4.4 Exemplo de Aninhamento</h3>
+
+              <div class="math-block">
+                <span class="math">d[u] &lt; d[v] &lt; f[v] &lt; f[u]</span>
+              </div>
+
+              <p>
+                Isso significa que <span class="math">v</span> é descendente de <span class="math">u</span>.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card">
+
+              <h3>4.5 Critério de Ancestralidade</h3>
+
+              <p>
+                Um vértice <span class="math">u</span> é ancestral de <span class="math">v</span>
+                se e somente se:
+              </p>
+
+              <div class="math-block">
+                <span class="math">d[u] &lt; d[v] &lt; f[v] &lt; f[u]</span>
+              </div>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card">
+
+              <h3>4.6 Intervalos Disjuntos</h3>
+
+              <p>
+                Se dois vértices estão em ramos diferentes da DFS,
+                seus intervalos são disjuntos.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card">
+
+              <h3>4.7 Intuição do Caminho Branco</h3>
+
+              <p>
+                Um vértice <span class="math">v</span> torna-se descendente de
+                <span class="math">u</span> se existir um caminho de vértices WHITE
+                no momento em que <span class="math">u</span> é descoberto.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card">
+
+              <h3>4.8 Por que Isso Importa</h3>
+
+              <ul>
+                <li>classificação de arestas</li>
+                <li>detecção de ciclos</li>
+                <li>ordenação topológica</li>
+                <li>componentes fortemente conexas</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 5 — Classificação de Arestas</h4>
+
+              <p>
+                Agora que entendemos os timestamps da DFS,
+                podemos classificar as arestas do grafo.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">
+                  Parte 5 — Classificação de Arestas →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
