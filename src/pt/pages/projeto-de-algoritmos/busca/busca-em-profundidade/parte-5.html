@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 5 — Classificação de Arestas</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 5 — Classificação de Arestas</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 5 — Classificação de Arestas</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 5 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card">
+
+              <h3>5. Classificação de Arestas</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que a DFS classifica arestas</li>
+                  <li>Os quatro tipos de arestas</li>
+                  <li>Arestas de árvore e estrutura da DFS</li>
+                  <li>Arestas de retorno e detecção de ciclos</li>
+                  <li>Arestas forward e cross</li>
+                  <li>Como os timestamps revelam os tipos de aresta</li>
+                  <li>Por que isso é importante para DAGs e análise de grafos</li>
+                </ol>
+              </div>
+
+              <p>
+                Uma vez que os timestamps da DFS estão disponíveis,
+                as arestas deixam de ser apenas conexões no grafo.
+                Elas passam a ter um significado estrutural
+                em relação à floresta DFS.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card">
+
+              <h3>5.1 Por que Classificar Arestas</h3>
+
+              <p>
+                A DFS atribui tempos de descoberta e finalização aos vértices,
+                e esses tempos permitem interpretar cada aresta
+                em relação à estrutura da busca.
+              </p>
+
+              <p>
+                Essa classificação é fundamental para:
+              </p>
+
+              <ul>
+                <li>detecção de ciclos</li>
+                <li>ordenação topológica</li>
+                <li>análise de DAGs</li>
+                <li>análise estrutural de grafos direcionados</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card">
+
+              <h3>5.2 Os Quatro Tipos de Arestas</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Significado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Aresta de Árvore</strong></td>
+                      <td>A aresta descobre um novo vértice WHITE.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Aresta de Retorno</strong></td>
+                      <td>A aresta aponta para um ancestral na árvore DFS.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Aresta Forward</strong></td>
+                      <td>A aresta aponta para um descendente que não foi descoberto por ela.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Aresta Cross</strong></td>
+                      <td>A aresta conecta ramos diferentes da DFS.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card">
+
+              <h3>5.3 Arestas de Árvore</h3>
+
+              <p>
+                Uma aresta <span class="math">(u,v)</span> é uma aresta de árvore
+                quando <span class="math">v</span> está WHITE no momento da exploração.
+              </p>
+
+              <div class="math-block">
+                <span class="math">π[v] = u</span>
+              </div>
+
+              <p>
+                Essas arestas formam a estrutura da árvore DFS.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card">
+
+              <h3>5.4 Arestas de Retorno</h3>
+
+              <p>
+                Uma aresta <span class="math">(u,v)</span> é uma aresta de retorno
+                quando aponta para um ancestral na árvore DFS.
+              </p>
+
+              <div class="note">
+                <strong>Fato importante:</strong>
+                a presença de uma aresta de retorno indica um ciclo.
+              </div>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card">
+
+              <h3>5.5 Arestas Forward</h3>
+
+              <p>
+                Uma aresta forward conecta um vértice a um descendente
+                na árvore DFS, mas não foi usada para descobri-lo.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card">
+
+              <h3>5.6 Arestas Cross</h3>
+
+              <p>
+                Uma aresta cross conecta vértices que não possuem
+                relação de ancestralidade na DFS.
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card">
+
+              <h3>5.7 Caracterização por Timestamps</h3>
+
+              <div class="math-block">
+                <span class="math">d[u] &lt; d[v] &lt; f[v] &lt; f[u]</span>
+              </div>
+
+              <p>
+                Isso indica relação de ancestralidade.
+              </p>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card">
+
+              <h3>5.8 Caso Especial: Grafos Não Direcionados</h3>
+
+              <p>
+                Em grafos não direcionados,
+                existem apenas dois tipos de aresta:
+              </p>
+
+              <ul>
+                <li>Arestas de árvore</li>
+                <li>Arestas de retorno</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.9 -->
+            <section class="card">
+
+              <h3>5.9 Consequência para DAGs</h3>
+
+              <p>
+                Um grafo direcionado é acíclico
+                se e somente se não houver arestas de retorno.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 6 — Aplicações I (Ciclos & Ordenação Topológica)</h4>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">
+                  Parte 6 — Aplicações →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
