@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 6 — Aplicações I (Ciclos & Ordenação Topológica)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 6 — Aplicações I (Ciclos & Ordenação Topológica)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 6 — Aplicações I (Ciclos & Ordenação Topológica)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 6 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 6.0 -->
+            <section class="card">
+
+              <h3>6. Aplicações I</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que a DFS é uma ferramenta natural para detectar ciclos</li>
+                  <li>Como arestas de retorno caracterizam ciclos direcionados</li>
+                  <li>Como testar se um grafo é um DAG</li>
+                  <li>Por que os tempos de finalização sugerem uma ordenação</li>
+                  <li>Como construir ordenação topológica usando DFS</li>
+                  <li>Por que ordenação topológica só funciona em DAGs</li>
+                  <li>Casos de uso em engenharia para ordenação por dependência</li>
+                </ol>
+              </div>
+
+              <p>
+                A Busca em Profundidade não é apenas um método de travessia.
+                Ela é uma ferramenta estrutural que permite duas aplicações clássicas:
+                <strong>detecção de ciclos</strong> e <strong>ordenação topológica</strong>.
+              </p>
+
+            </section>
+
+            <!-- 6.1 -->
+            <section class="card">
+
+              <h3>6.1 Por que DFS Detecta Ciclos</h3>
+
+              <p>
+                A DFS explora o grafo recursivamente e mantém controle dos vértices
+                que estão ativos na pilha de recursão.
+              </p>
+
+              <p>
+                Se durante a exploração a DFS alcançar um vértice que já está ativo,
+                então a busca retornou a um ancestral.
+              </p>
+
+              <div class="note">
+                <strong>Significado estrutural:</strong>
+                retornar a um ancestral significa que existe um ciclo.
+              </div>
+
+            </section>
+
+            <!-- 6.2 -->
+            <section class="card">
+
+              <h3>6.2 Arestas de Retorno e Ciclos</h3>
+
+              <p>
+                Uma <strong>aresta de retorno</strong> é uma aresta que conecta um vértice
+                a um de seus ancestrais na árvore DFS.
+              </p>
+
+              <div class="math-block">
+                <span class="math">G possui ciclo ⇔ DFS encontra uma aresta de retorno</span>
+              </div>
+
+            </section>
+
+            <!-- 6.3 -->
+            <section class="card">
+
+              <h3>6.3 Teste Prático com Cores</h3>
+
+              <ul>
+                <li>WHITE — não visitado</li>
+                <li>GRAY — ativo na recursão</li>
+                <li>BLACK — totalmente explorado</li>
+              </ul>
+
+              <p>
+                Se durante a exploração uma aresta aponta para um vértice GRAY,
+                então existe um ciclo.
+              </p>
+
+            </section>
+
+            <!-- 6.4 -->
+            <section class="card">
+
+              <h3>6.4 Esboço de Algoritmo para Detectar Ciclos</h3>
+
+<pre><code>HAS-CYCLE(G):
+
+    for each vertex u in V[G]:
+        color[u] = WHITE
+
+    for each vertex u in V[G]:
+        if color[u] == WHITE:
+            if DFS-CYCLE-VISIT(G, u):
+                return true
+
+    return false
+</code></pre>
+
+            </section>
+
+            <!-- 6.5 -->
+            <section class="card">
+
+              <h3>6.5 Grafos DAG</h3>
+
+              <p>
+                Um DAG é um <strong>Directed Acyclic Graph</strong>
+                (grafo direcionado acíclico).
+              </p>
+
+              <div class="math-block">
+                <span class="math">G é DAG ⇔ DFS não encontra arestas de retorno</span>
+              </div>
+
+            </section>
+
+            <!-- 6.6 -->
+            <section class="card">
+
+              <h3>6.6 Ideia da Ordenação Topológica</h3>
+
+              <p>
+                Uma ordenação topológica é uma ordenação linear dos vértices
+                tal que para toda aresta <span class="math">(u,v)</span>,
+                o vértice <span class="math">u</span> aparece antes de <span class="math">v</span>.
+              </p>
+
+            </section>
+
+            <!-- 6.7 -->
+            <section class="card">
+
+              <h3>6.7 Regra dos Tempos de Finalização</h3>
+
+              <div class="math-block">
+                <span class="math">f[u] &gt; f[v]</span>
+              </div>
+
+              <p>
+                Se ordenarmos os vértices por tempo de finalização decrescente,
+                obtemos uma ordenação topológica.
+              </p>
+
+            </section>
+
+            <!-- 6.8 -->
+            <section class="card">
+
+              <h3>6.8 Algoritmo de Ordenação Topológica</h3>
+
+<pre><code>TOPOLOGICAL-SORT(G):
+
+    run DFS(G)
+
+    return vertices sorted by decreasing finish time
+</code></pre>
+
+            </section>
+
+            <!-- 6.9 -->
+            <section class="card">
+
+              <h3>6.9 Casos de Uso em Engenharia</h3>
+
+              <ul>
+                <li>ordenação de tarefas com dependências</li>
+                <li>sistemas de build</li>
+                <li>ordenação de disciplinas com pré-requisitos</li>
+                <li>pipelines de processamento</li>
+              </ul>
+
+            </section>
+
+            <!-- 6.10 -->
+            <section class="card">
+
+              <h3>6.10 Mini Resumo</h3>
+
+              <ul>
+                <li>Arestas de retorno indicam ciclos.</li>
+                <li>Ausência de arestas de retorno ⇒ DAG.</li>
+                <li>Tempos de finalização produzem ordenação topológica.</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 7 — Aplicações II (Componentes Fortemente Conexas)</h4>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">
+                  Parte 7 — Aplicações II →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
