@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Depth-First Search (DFS) · Part 5 — Edge Classification</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Depth-First Search (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 5 — Edge Classification</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Depth-First Search (DFS)</h2>
+          <p>Part 5 — Edge Classification</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Depth-First Search (DFS)</strong>
+            <span>Part 5 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="dfs-part5-roadmap">
+
+              <h3>5. Edge Classification</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why DFS classifies edges</li>
+                  <li>The four edge types</li>
+                  <li>Tree edges and DFS structure</li>
+                  <li>Back edges and cycle detection</li>
+                  <li>Forward and cross edges</li>
+                  <li>How timestamps reveal edge types</li>
+                  <li>Why this matters for DAGs and graph analysis</li>
+                </ol>
+              </div>
+
+              <p>
+                Once DFS timestamps are available, edges are no longer just connections in the graph.
+                They acquire a structural meaning relative to the DFS forest.
+              </p>
+
+              <p>
+                In this part, we classify edges according to how they connect vertices
+                in the recursive exploration.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="dfs-part5-why-classification">
+
+              <h3>5.1 Why Edge Classification Matters</h3>
+
+              <p>
+                DFS assigns discovery and finish times to vertices,
+                and these timestamps allow us to interpret each edge
+                in relation to the DFS forest.
+              </p>
+
+              <p>
+                This classification is fundamental for:
+              </p>
+
+              <ul>
+                <li>cycle detection</li>
+                <li>topological sorting</li>
+                <li>reasoning about DAGs</li>
+                <li>structural analysis of directed graphs</li>
+              </ul>
+
+              <div class="note">
+                <strong>Key idea:</strong>
+                edge classification turns DFS into a tool for graph theory,
+                not just traversal.
+              </div>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="dfs-part5-four-types">
+
+              <h3>5.2 The Four Edge Types</h3>
+
+              <p>
+                In a directed graph, every edge <span class="math">(u, v)</span>
+                encountered during DFS falls into one of four categories:
+              </p>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Meaning</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Tree edge</strong></td>
+                      <td>The edge discovers a new WHITE vertex.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Back edge</strong></td>
+                      <td>The edge points to an ancestor in the DFS tree.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Forward edge</strong></td>
+                      <td>The edge points to a proper descendant that was not discovered by this edge.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cross edge</strong></td>
+                      <td>The edge connects unrelated DFS branches or different DFS trees.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="dfs-part5-tree-edge">
+
+              <h3>5.3 Tree Edges</h3>
+
+              <p>
+                An edge <span class="math">(u, v)</span> is a <strong>tree edge</strong>
+                if <span class="math">v</span> is WHITE when the edge is explored.
+              </p>
+
+              <p>
+                In that case, DFS sets:
+              </p>
+
+              <div class="math-block">
+                <span class="math">π[v] = u</span>
+              </div>
+
+              <p>
+                and the edge becomes part of the DFS tree (or DFS forest).
+              </p>
+
+              <div class="note">
+                Tree edges define the recursive skeleton of the traversal.
+              </div>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="dfs-part5-back-edge">
+
+              <h3>5.4 Back Edges</h3>
+
+              <p>
+                An edge <span class="math">(u, v)</span> is a <strong>back edge</strong>
+                if it points from a vertex to one of its ancestors in the DFS tree.
+              </p>
+
+              <p>
+                Operationally, this often appears when <span class="math">v</span> is GRAY
+                at the moment the edge is examined.
+              </p>
+
+              <div class="note">
+                <strong>Critical fact:</strong>
+                a back edge indicates a cycle in a directed graph.
+              </div>
+
+              <p>
+                This is why DFS is the classical tool for cycle detection.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="dfs-part5-forward-edge">
+
+              <h3>5.5 Forward Edges</h3>
+
+              <p>
+                An edge <span class="math">(u, v)</span> is a <strong>forward edge</strong>
+                if it points from a vertex to a proper descendant in the DFS tree,
+                but the edge itself was not used to discover that descendant.
+              </p>
+
+              <p>
+                So the ancestor–descendant relation exists,
+                but the edge is not a tree edge.
+              </p>
+
+              <div class="note">
+                Forward edges appear only in directed graphs.
+              </div>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="dfs-part5-cross-edge">
+
+              <h3>5.6 Cross Edges</h3>
+
+              <p>
+                An edge <span class="math">(u, v)</span> is a <strong>cross edge</strong>
+                if it connects vertices that are not in an ancestor–descendant relation.
+              </p>
+
+              <p>
+                Cross edges may connect:
+              </p>
+
+              <ul>
+                <li>different branches of the same DFS tree</li>
+                <li>different trees in the DFS forest</li>
+              </ul>
+
+              <div class="note">
+                Cross edges also appear only in directed graphs.
+              </div>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="dfs-part5-timestamp-characterization">
+
+              <h3>5.7 Characterization by Timestamps</h3>
+
+              <p>
+                DFS timestamps let us reason about edge types formally.
+              </p>
+
+              <p>
+                If <span class="math">v</span> is a descendant of <span class="math">u</span>, then:
+              </p>
+
+              <div class="math-block">
+                <span class="math">d[u] &lt; d[v] &lt; f[v] &lt; f[u]</span>
+              </div>
+
+              <p>
+                If the intervals are disjoint, the vertices are in separate branches:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f[v] &lt; d[u] \quad \text{or} \quad f[u] &lt; d[v]</span>
+              </div>
+
+              <div class="note">
+                The interval structure from Part 4 is exactly what makes edge classification possible.
+              </div>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card" id="dfs-part5-undirected-case">
+
+              <h3>5.8 Special Case: Undirected Graphs</h3>
+
+              <p>
+                In undirected graphs, DFS edge classification is simpler.
+              </p>
+
+              <p>
+                Every edge is either:
+              </p>
+
+              <ul>
+                <li>a <strong>tree edge</strong>, or</li>
+                <li>a <strong>back edge</strong></li>
+              </ul>
+
+              <p>
+                There are no forward or cross edges in the undirected case.
+              </p>
+
+              <div class="note">
+                This simplification is one reason DFS is especially elegant in undirected graph theory.
+              </div>
+
+            </section>
+
+            <!-- 5.9 -->
+            <section class="card" id="dfs-part5-dag-consequence">
+
+              <h3>5.9 Consequence for DAGs</h3>
+
+              <p>
+                A directed graph is acyclic if and only if DFS finds no back edges.
+              </p>
+
+              <div class="note">
+                <strong>DAG criterion:</strong>
+                no back edge ⇔ no directed cycle.
+              </div>
+
+              <p>
+                This result is one of the most important consequences of DFS edge classification,
+                and it leads directly to topological sorting.
+              </p>
+
+            </section>
+
+            <!-- 5.10 -->
+            <section class="card" id="dfs-part5-mini-summary">
+
+              <h3>5.10 Mini Summary</h3>
+
+              <ul>
+                <li>Tree edges discover new vertices.</li>
+                <li>Back edges point to ancestors and indicate cycles.</li>
+                <li>Forward edges point to descendants.</li>
+                <li>Cross edges connect separate branches.</li>
+                <li>In undirected graphs, only tree edges and back edges occur.</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="dfs-part5-transition">
+
+              <h4>Next: Part 6 — Applications I (Cycles &amp; Topological Sorting)</h4>
+
+              <p>
+                Now that we know how DFS classifies edges,
+                we can apply these structural properties to concrete problems.
+              </p>
+
+              <p>
+                In Part 6, we study how DFS detects cycles
+                and why finish times lead naturally to topological sorting.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">
+                  Part 6 — Applications I →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
