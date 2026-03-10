@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Depth-First Search (DFS) · Part 8 — DFS vs BFS</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Depth-First Search (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 8 — DFS vs BFS</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Depth-First Search (DFS)</h2>
+          <p>Part 8 — DFS vs BFS</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Depth-First Search (DFS)</strong>
+            <span>Part 8 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Series Overview →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card" id="dfs-part8-roadmap">
+
+              <h3>8. DFS vs BFS</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The core contrast between DFS and BFS</li>
+                  <li>Stack vs queue</li>
+                  <li>What BFS naturally computes</li>
+                  <li>What DFS naturally computes</li>
+                  <li>A side-by-side comparison</li>
+                  <li>When DFS is the right tool</li>
+                  <li>When BFS is the right tool</li>
+                  <li>Complexity comparison</li>
+                  <li>Common misconceptions</li>
+                  <li>Series summary and closing</li>
+                </ol>
+              </div>
+
+              <p>
+                DFS and BFS are the two fundamental graph traversal strategies.
+                They both explore graphs in linear time,
+                but they reveal <strong>different kinds of structure</strong>.
+              </p>
+
+              <p>
+                BFS is distance-oriented.
+                DFS is structure-oriented.
+              </p>
+
+              <div class="note">
+                <strong>Takeaway:</strong>
+                If BFS is the language of layers,
+                DFS is the language of recursive structure.
+              </div>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="dfs-part8-core-difference">
+
+              <h3>8.1 The Core Difference</h3>
+
+              <p>
+                The fundamental contrast is:
+              </p>
+
+              <ul>
+                <li><strong>BFS</strong> explores the graph layer by layer.</li>
+                <li><strong>DFS</strong> explores one path deeply before backtracking.</li>
+              </ul>
+
+              <p>
+                This difference changes not only the traversal order,
+                but also the kind of information each algorithm naturally exposes.
+              </p>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="dfs-part8-data-structures">
+
+              <h3>8.2 Queue vs Stack</h3>
+
+              <p>
+                The data structure behind each traversal explains its behavior:
+              </p>
+
+              <ul>
+                <li><strong>BFS</strong> uses a <strong>queue</strong> (FIFO).</li>
+                <li><strong>DFS</strong> uses a <strong>stack</strong> (explicit or implicit via recursion).</li>
+              </ul>
+
+              <div class="note">
+                <strong>Interpretation:</strong>
+                FIFO preserves breadth; LIFO preserves depth.
+              </div>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="dfs-part8-what-bfs-computes">
+
+              <h3>8.3 What BFS Naturally Computes</h3>
+
+              <p>
+                BFS is the natural tool when we care about
+                <strong>distance from a source</strong>.
+              </p>
+
+              <ul>
+                <li>shortest paths in unweighted graphs</li>
+                <li>layer structure</li>
+                <li>minimum number of moves</li>
+                <li>reachability by hop count</li>
+              </ul>
+
+              <div class="math-block">
+                <span class="math">\( d[v] = \delta(s,v) \)</span>
+              </div>
+
+              <p>
+                This is why BFS is the standard algorithm
+                for shortest paths in unweighted graphs.
+              </p>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="dfs-part8-what-dfs-computes">
+
+              <h3>8.4 What DFS Naturally Computes</h3>
+
+              <p>
+                DFS is the natural tool when we care about
+                <strong>graph structure</strong>.
+              </p>
+
+              <ul>
+                <li>discovery and finish times</li>
+                <li>ancestry relations</li>
+                <li>edge classification</li>
+                <li>cycle detection</li>
+                <li>topological sorting</li>
+                <li>strongly connected components</li>
+              </ul>
+
+              <p>
+                DFS turns traversal into a structural decomposition method.
+              </p>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="dfs-part8-side-by-side">
+
+              <h3>8.5 Side-by-Side Comparison</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Aspect</th>
+                      <th>BFS</th>
+                      <th>DFS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Main strategy</td>
+                      <td>Explore by layers</td>
+                      <td>Explore deeply, then backtrack</td>
+                    </tr>
+                    <tr>
+                      <td>Primary data structure</td>
+                      <td>Queue</td>
+                      <td>Stack / recursion</td>
+                    </tr>
+                    <tr>
+                      <td>Best for</td>
+                      <td>Distance and shortest paths</td>
+                      <td>Structure and decomposition</td>
+                    </tr>
+                    <tr>
+                      <td>Shortest path in unweighted graphs</td>
+                      <td>Yes</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <td>Cycle detection</td>
+                      <td>Possible, but not natural</td>
+                      <td>Natural and elegant</td>
+                    </tr>
+                    <tr>
+                      <td>Topological sorting</td>
+                      <td>No</td>
+                      <td>Yes</td>
+                    </tr>
+                    <tr>
+                      <td>Strongly connected components</td>
+                      <td>No</td>
+                      <td>Yes</td>
+                    </tr>
+                    <tr>
+                      <td>Time complexity</td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                      <td><span class="math">O(|V|+|E|)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="dfs-part8-when-use-dfs">
+
+              <h3>8.6 When to Prefer DFS</h3>
+
+              <p>
+                Choose DFS when the problem asks for structural information such as:
+              </p>
+
+              <ul>
+                <li>Does the graph contain a cycle?</li>
+                <li>Can the graph be topologically sorted?</li>
+                <li>What are its strongly connected components?</li>
+                <li>Which vertices are ancestors/descendants in the exploration tree?</li>
+              </ul>
+
+              <div class="note">
+                <strong>Rule of thumb:</strong>
+                choose DFS when the problem is about the internal organization of the graph.
+              </div>
+
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="dfs-part8-when-use-bfs">
+
+              <h3>8.7 When to Prefer BFS</h3>
+
+              <p>
+                Choose BFS when the problem asks for distance-like information such as:
+              </p>
+
+              <ul>
+                <li>What is the shortest path in an unweighted graph?</li>
+                <li>What is the minimum number of steps?</li>
+                <li>Which vertices lie in layer 1, 2, 3, ... from a source?</li>
+              </ul>
+
+              <div class="note">
+                <strong>Rule of thumb:</strong>
+                choose BFS when the problem is about closeness to a source.
+              </div>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="dfs-part8-complexity">
+
+              <h3>8.8 Complexity</h3>
+
+              <p>
+                With adjacency lists, both traversals run in:
+              </p>
+
+              <div class="math-block">
+                <span class="math">\( O(|V| + |E|) \)</span>
+              </div>
+
+              <p>
+                So the main difference is not asymptotic complexity,
+                but the <strong>kind of information</strong> each traversal exposes.
+              </p>
+
+            </section>
+
+            <!-- 8.9 -->
+            <section class="card" id="dfs-part8-misconceptions">
+
+              <h3>8.9 Common Misconceptions</h3>
+
+              <ul>
+                <li><strong>“DFS can also find shortest paths.”</strong> Not in general.</li>
+                <li><strong>“BFS and DFS are interchangeable.”</strong> They are not; they solve different structural goals.</li>
+                <li><strong>“DFS is only recursion.”</strong> DFS is a traversal principle; recursion is just one implementation style.</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.10 -->
+            <section class="card" id="dfs-part8-series-summary">
+
+              <h3>8.10 Series Summary</h3>
+
+              <p>
+                Across this DFS series, we studied:
+              </p>
+
+              <ul>
+                <li>the graph model and exploration problem</li>
+                <li>deep exploration and backtracking</li>
+                <li>the formal DFS algorithm</li>
+                <li>discovery and finish times</li>
+                <li>edge classification</li>
+                <li>cycle detection and topological sorting</li>
+                <li>strongly connected components</li>
+              </ul>
+
+              <div class="note">
+                <strong>Final takeaway:</strong>
+                DFS is one of the most powerful structural tools in graph theory and algorithms.
+              </div>
+
+            </section>
+
+            <!-- Closing -->
+            <section class="card full" id="dfs-part8-closing">
+
+              <h4>Series Complete </h4>
+
+              <p>
+                This closes the Depth-First Search series.
+                You now have both the formal algorithmic view
+                and the structural perspective needed to apply DFS
+                in theoretical and engineering contexts.
+              </p>
+
+              <div class="note">
+                <strong>Back to overview:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/depth-first-search/index.html">
+                  Depth-First Search (DFS) — Series Overview →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

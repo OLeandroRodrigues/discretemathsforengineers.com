@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Depth-First Search (DFS) · Part 7 — Applications II (SCC &amp; Advanced Structures)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/depth-first-search/index.html">Depth-First Search (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Part 7 — Applications II (SCC &amp; Advanced Structures)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Depth-First Search (DFS)</h2>
+          <p>Part 7 — Applications II (SCC &amp; Advanced Structures)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Depth-First Search (DFS)</strong>
+            <span>Part 7 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-6.html">6</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/depth-first-search/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card" id="dfs-part7-roadmap">
+
+              <h3>7. Applications II</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What strongly connected components (SCCs) are</li>
+                  <li>Why DFS finish times matter again</li>
+                  <li>The transpose graph intuition</li>
+                  <li>Kosaraju’s algorithm</li>
+                  <li>Why Kosaraju works</li>
+                  <li>Advanced DFS-based structures and patterns</li>
+                </ol>
+              </div>
+
+              <p>
+                Depth-First Search becomes especially powerful when we move from traversal
+                to global graph decomposition.
+              </p>
+
+              <p>
+                In this part, we study <strong>strongly connected components (SCCs)</strong>
+                and show how DFS reveals large-scale structure in directed graphs.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="dfs-part7-scc-definition">
+
+              <h3>7.1 Strongly Connected Components</h3>
+
+              <p>
+                In a directed graph, two vertices
+                <span class="math">u</span> and <span class="math">v</span>
+                are strongly connected if:
+              </p>
+
+              <div class="math-block">
+                <span class="math">
+                  \( u \leadsto v \quad \text{e} \quad v \leadsto u \)
+                </span>
+              </div>
+
+              <p>
+                That is, each vertex can reach the other.
+              </p>
+
+              <p>
+                A <strong>strongly connected component</strong> is a maximal set of vertices
+                that are pairwise strongly connected.
+              </p>
+
+              <div class="note">
+                <strong>Interpretation:</strong>
+                inside one SCC, every vertex is reachable from every other vertex.
+              </div>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="dfs-part7-condensation">
+
+              <h3>7.2 SCCs as a Higher-Level Structure</h3>
+
+              <p>
+                If we collapse each SCC into a single super-vertex,
+                we obtain the <strong>condensation graph</strong>.
+              </p>
+
+              <p>
+                A fundamental fact is:
+              </p>
+
+              <div class="math-block">
+                 <strong>Theorem.</strong> The condensation graph of a directed graph is a DAG.
+              </div>
+
+              <p>
+                So SCC decomposition turns an arbitrary directed graph
+                into an acyclic structure of components.
+              </p>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="dfs-part7-finish-times-intuition">
+
+              <h3>7.3 Why Finish Times Matter Again</h3>
+
+              <p>
+                In Part 6, finish times gave a topological-style order for DAGs.
+                Here they guide us across SCCs.
+              </p>
+
+              <p>
+                If one SCC can reach another SCC,
+                then DFS tends to finish the source component later.
+              </p>
+
+              <div class="note">
+                <strong>High-level idea:</strong>
+                decreasing finish times process SCCs in the right structural order.
+              </div>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="dfs-part7-transpose">
+
+              <h3>7.4 The Transpose Graph</h3>
+
+              <p>
+                The <strong>transpose</strong> of a directed graph
+                <span class="math">G = (V, E)</span>
+                is the graph
+                <span class="math">G^T = (V, E^T)</span>
+                obtained by reversing every edge:
+              </p>
+
+              <div class="math-block">
+                <span class="math">
+                  \( (u,v) \in E \iff (v,u) \in E^{T} \)
+                </span>
+              </div>
+
+              <p>
+                SCCs are preserved under transposition:
+                the components remain the same,
+                but the direction between components reverses.
+              </p>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="dfs-part7-kosaraju-overview">
+
+              <h3>7.5 Kosaraju’s Algorithm</h3>
+
+              <p>
+                Kosaraju’s algorithm computes SCCs using two DFS passes:
+              </p>
+
+              <ol>
+                <li>Run DFS on <span class="math">G</span> and record finish times.</li>
+                <li>Build the transpose graph <span class="math">G^T</span>.</li>
+                <li>Run DFS on <span class="math">G^T</span> in decreasing order of finish times.</li>
+                <li>Each DFS tree in the second pass is one SCC.</li>
+              </ol>
+
+              <div class="note">
+                <strong>Core strategy:</strong>
+                first pass computes the right order; second pass extracts the components.
+              </div>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="dfs-part7-kosaraju-pseudocode">
+
+              <h3>7.6 Kosaraju — Pseudocode Sketch</h3>
+
+<pre><code>KOSARAJU(G):
+
+    run DFS(G)
+    let vertices be ordered by decreasing finish time
+
+    compute G^T
+
+    mark all vertices WHITE
+
+    for each vertex u in decreasing finish-time order:
+        if color[u] == WHITE:
+            DFS-VISIT(G^T, u)
+            output the vertices reached in this DFS as one SCC</code></pre>
+
+              <p>
+                The second DFS pass groups vertices into strongly connected components.
+              </p>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="dfs-part7-why-kosaraju-works">
+
+              <h3>7.7 Why Kosaraju Works</h3>
+
+              <p>
+                The first DFS pass identifies an order that respects the component-level structure.
+              </p>
+
+              <p>
+                After transposition, edges between SCCs are reversed.
+                So when the second pass starts from the largest remaining finish time,
+                DFS stays inside exactly one SCC before crossing to others.
+              </p>
+
+              <div class="note">
+                <strong>Key idea:</strong>
+                finish times isolate the “right” SCC roots for the transpose graph.
+              </div>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card" id="dfs-part7-complexity">
+
+              <h3>7.8 Complexity</h3>
+
+              <p>
+                Kosaraju’s algorithm runs in linear time:
+              </p>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <p>
+                because:
+              </p>
+
+              <ul>
+                <li>the first DFS is linear,</li>
+                <li>building the transpose is linear,</li>
+                <li>the second DFS is linear.</li>
+              </ul>
+
+            </section>
+
+            <!-- 7.9 -->
+            <section class="card" id="dfs-part7-advanced-structures">
+
+              <h3>7.9 Advanced DFS-Based Structures</h3>
+
+              <p>
+                DFS is also the foundation for deeper graph algorithms and structures:
+              </p>
+
+              <ul>
+                <li><strong>Tarjan’s SCC algorithm</strong> — SCCs using one DFS pass</li>
+                <li><strong>Bridges and articulation points</strong> — in undirected graphs</li>
+                <li><strong>Biconnected components</strong></li>
+                <li><strong>Low-link values</strong> — a key DFS structural invariant</li>
+              </ul>
+
+              <div class="note">
+                <strong>Takeaway:</strong>
+                DFS is not just a traversal algorithm; it is a framework for extracting graph structure.
+              </div>
+
+            </section>
+
+            <!-- 7.10 -->
+            <section class="card" id="dfs-part7-use-cases">
+
+              <h3>7.10 Engineering Use Cases</h3>
+
+              <p>
+                SCC decomposition appears in many real systems:
+              </p>
+
+              <ul>
+                <li>dependency cycle analysis</li>
+                <li>package/module graph condensation</li>
+                <li>compiler optimization passes</li>
+                <li>workflow and service dependency analysis</li>
+              </ul>
+
+              <p>
+                In practice, SCCs help turn cyclic systems
+                into a DAG of strongly connected blocks.
+              </p>
+
+            </section>
+
+            <!-- 7.11 -->
+            <section class="card" id="dfs-part7-mini-summary">
+
+              <h3>7.11 Mini Summary</h3>
+
+              <ul>
+                <li>SCCs are maximal mutually reachable vertex sets.</li>
+                <li>Collapsing SCCs produces a DAG.</li>
+                <li>Kosaraju uses two DFS passes and graph transposition.</li>
+                <li>DFS remains linear while extracting deep global structure.</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="dfs-part7-transition">
+
+              <h4>Next: Part 8 — DFS vs BFS</h4>
+
+              <p>
+                We now have the full DFS toolbox:
+                recursive exploration, timestamps, edge classification,
+                cycle detection, topological sorting, and SCC decomposition.
+              </p>
+
+              <p>
+                In Part 8, we close the series by comparing DFS with BFS:
+                two traversal strategies with very different structural roles.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/depth-first-search/part-8.html">
+                  Part 8 — DFS vs BFS →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

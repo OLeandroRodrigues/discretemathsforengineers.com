@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 7 — Aplicações II (SCC & Estruturas Avançadas)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 7 — Aplicações II (SCC & Estruturas Avançadas)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 7 — Aplicações II (SCC & Estruturas Avançadas)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 7 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card">
+
+              <h3>7. Aplicações II</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O que são componentes fortemente conexas (SCC)</li>
+                  <li>Por que os tempos de finalização voltam a ser importantes</li>
+                  <li>A intuição do grafo transposto</li>
+                  <li>O algoritmo de Kosaraju</li>
+                  <li>Por que o algoritmo funciona</li>
+                  <li>Estruturas avançadas baseadas em DFS</li>
+                </ol>
+              </div>
+
+              <p>
+                A Busca em Profundidade se torna especialmente poderosa quando passamos
+                da simples travessia para a decomposição estrutural do grafo.
+              </p>
+
+              <p>
+                Nesta parte estudamos as <strong>componentes fortemente conexas (SCC)</strong>
+                e como a DFS revela a estrutura global de grafos direcionados.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card">
+
+              <h3>7.1 Componentes Fortemente Conexas</h3>
+
+              <p>
+                Em um grafo direcionado, dois vértices
+                <span class="math">u</span> e <span class="math">v</span>
+                são fortemente conectados se:
+              </p>
+
+              <div class="math-block">
+                <span class="math">
+                  \( u \leadsto v \quad \text{e} \quad v \leadsto u \)
+                </span>
+              </div>
+
+              <p>
+                Ou seja, cada vértice consegue alcançar o outro.
+              </p>
+
+              <p>
+                Uma <strong>componente fortemente conexa</strong> é um conjunto máximo
+                de vértices que são mutuamente alcançáveis.
+              </p>
+
+              <div class="note">
+                <strong>Interpretação:</strong>
+                dentro de uma SCC, qualquer vértice pode alcançar qualquer outro.
+              </div>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card">
+
+              <h3>7.2 SCC como Estrutura de Alto Nível</h3>
+
+              <p>
+                Se colapsarmos cada SCC em um único vértice,
+                obtemos o chamado <strong>grafo de condensação</strong>.
+              </p>
+
+              <div class="math-block">
+                <strong>Teorema.</strong> O grafo de condensação de um grafo direcionado é um DAG.
+              </div>
+
+              <p>
+                Assim, a decomposição em SCC transforma um grafo arbitrário
+                em uma estrutura acíclica entre componentes.
+              </p>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card">
+
+              <h3>7.3 Por que os Tempos de Finalização Importam</h3>
+
+              <p>
+                Os tempos de finalização da DFS revelam a ordem estrutural
+                entre componentes.
+              </p>
+
+              <p>
+                Se uma SCC alcança outra SCC,
+                a primeira tende a terminar depois na DFS.
+              </p>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card">
+
+              <h3>7.4 O Grafo Transposto</h3>
+
+              <p>
+                O <strong>grafo transposto</strong> de um grafo direcionado
+                <span class="math">G = (V,E)</span>
+                é o grafo
+                <span class="math">G^T = (V,E^T)</span>
+                obtido invertendo todas as arestas.
+              </p>
+
+              <div class="math-block">
+                <span class="math">
+                  \( (u,v) \in E \iff (v,u) \in E^{T} \)
+                </span>
+              </div>
+
+              <p>
+                As SCCs permanecem as mesmas,
+                mas a direção entre componentes é invertida.
+              </p>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card">
+
+              <h3>7.5 Algoritmo de Kosaraju</h3>
+
+              <ol>
+                <li>Executar DFS em <span class="math">G</span> e registrar tempos de finalização.</li>
+                <li>Construir o grafo transposto <span class="math">G^T</span>.</li>
+                <li>Executar DFS em <span class="math">G^T</span> na ordem decrescente de tempos de finalização.</li>
+                <li>Cada árvore DFS corresponde a uma SCC.</li>
+              </ol>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card">
+
+              <h3>7.6 Pseudocódigo de Kosaraju</h3>
+
+<pre><code>KOSARAJU(G):
+
+    execute DFS(G)
+
+    ordenar vértices por tempo de finalização decrescente
+
+    construir G^T
+
+    marcar todos os vértices como WHITE
+
+    para cada vértice u na ordem calculada:
+        se color[u] == WHITE:
+            DFS-VISIT(G^T, u)
+            os vértices visitados formam uma SCC
+</code></pre>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card">
+
+              <h3>7.7 Por que Kosaraju Funciona</h3>
+
+              <p>
+                A primeira DFS calcula uma ordem que respeita
+                a estrutura entre componentes.
+              </p>
+
+              <p>
+                No grafo transposto, iniciar DFS pelo maior tempo de finalização
+                garante que exploramos exatamente uma SCC por vez.
+              </p>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card">
+
+              <h3>7.8 Complexidade</h3>
+
+              <div class="math-block">
+                <span class="math">O(|V| + |E|)</span>
+              </div>
+
+              <ul>
+                <li>DFS inicial</li>
+                <li>Construção do grafo transposto</li>
+                <li>Segunda DFS</li>
+              </ul>
+
+            </section>
+
+            <!-- 7.9 -->
+            <section class="card">
+
+              <h3>7.9 Estruturas Avançadas Baseadas em DFS</h3>
+
+              <ul>
+                <li>Algoritmo de Tarjan para SCC</li>
+                <li>Pontes em grafos</li>
+                <li>Pontos de articulação</li>
+                <li>Componentes biconexas</li>
+                <li>Valores low-link</li>
+              </ul>
+
+            </section>
+
+            <!-- 7.10 -->
+            <section class="card">
+
+              <h3>7.10 Aplicações em Engenharia</h3>
+
+              <ul>
+                <li>análise de dependências entre módulos</li>
+                <li>detecção de ciclos em sistemas</li>
+                <li>otimizações de compiladores</li>
+                <li>análise de grafos de serviços</li>
+              </ul>
+
+            </section>
+
+            <!-- 7.11 -->
+            <section class="card">
+
+              <h3>7.11 Mini Resumo</h3>
+
+              <ul>
+                <li>SCC são conjuntos máximos de vértices mutuamente alcançáveis.</li>
+                <li>Colapsar SCC produz um DAG.</li>
+                <li>Kosaraju usa duas DFS.</li>
+                <li>DFS revela estruturas profundas do grafo.</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 8 — DFS vs BFS</h4>
+
+              <p>
+                Agora que exploramos profundamente a DFS,
+                finalizamos a série comparando as duas estratégias
+                fundamentais de busca em grafos.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">
+                  Parte 8 — DFS vs BFS →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

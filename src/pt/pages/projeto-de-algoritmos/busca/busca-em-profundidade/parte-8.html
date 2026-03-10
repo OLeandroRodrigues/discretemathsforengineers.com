@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Busca em Profundidade (DFS) · Parte 8 — DFS vs BFS</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Busca em Profundidade (DFS)</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 8 — DFS vs BFS</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Busca em Profundidade (DFS)</h2>
+          <p>Parte 8 — DFS vs BFS</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Busca em Profundidade (DFS)</strong>
+            <span>Parte 8 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão geral da série →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-7.html">7</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card">
+
+              <h3>8. DFS vs BFS</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>A diferença central entre DFS e BFS</li>
+                  <li>Pilha vs fila</li>
+                  <li>O que a BFS calcula naturalmente</li>
+                  <li>O que a DFS calcula naturalmente</li>
+                  <li>Comparação lado a lado</li>
+                  <li>Quando usar DFS</li>
+                  <li>Quando usar BFS</li>
+                  <li>Comparação de complexidade</li>
+                  <li>Equívocos comuns</li>
+                  <li>Resumo e encerramento da série</li>
+                </ol>
+              </div>
+
+              <p>
+                DFS e BFS são as duas estratégias fundamentais de travessia em grafos.
+                Ambas exploram grafos em tempo linear,
+                mas revelam <strong>diferentes tipos de estrutura</strong>.
+              </p>
+
+              <p>
+                BFS é orientada a distância.
+                DFS é orientada à estrutura.
+              </p>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                se BFS é a linguagem das camadas,
+                DFS é a linguagem da estrutura recursiva.
+              </div>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card">
+
+              <h3>8.1 A Diferença Central</h3>
+
+              <ul>
+                <li><strong>BFS</strong> explora o grafo camada por camada.</li>
+                <li><strong>DFS</strong> explora um caminho profundamente antes de voltar (backtracking).</li>
+              </ul>
+
+              <p>
+                Essa diferença muda não apenas a ordem de visita,
+                mas também o tipo de informação que cada algoritmo revela naturalmente.
+              </p>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card">
+
+              <h3>8.2 Fila vs Pilha</h3>
+
+              <p>
+                A estrutura de dados explica o comportamento de cada algoritmo:
+              </p>
+
+              <ul>
+                <li><strong>BFS</strong> usa uma <strong>fila</strong> (FIFO).</li>
+                <li><strong>DFS</strong> usa uma <strong>pilha</strong> (explícita ou via recursão).</li>
+              </ul>
+
+              <div class="note">
+                FIFO preserva a largura; LIFO preserva a profundidade.
+              </div>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card">
+
+              <h3>8.3 O que a BFS Calcula Naturalmente</h3>
+
+              <ul>
+                <li>menores caminhos em grafos não ponderados</li>
+                <li>estrutura por camadas</li>
+                <li>número mínimo de passos</li>
+                <li>alcance por número de saltos</li>
+              </ul>
+
+              <div class="math-block">
+                <span class="math">\( d[v] = \delta(s,v) \)</span>
+              </div>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card">
+
+              <h3>8.4 O que a DFS Calcula Naturalmente</h3>
+
+              <ul>
+                <li>tempos de descoberta e finalização</li>
+                <li>relações de ancestralidade</li>
+                <li>classificação de arestas</li>
+                <li>detecção de ciclos</li>
+                <li>ordenação topológica</li>
+                <li>componentes fortemente conexas</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card">
+
+              <h3>8.5 Comparação Lado a Lado</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Aspecto</th>
+                      <th>BFS</th>
+                      <th>DFS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Estratégia</td>
+                      <td>Exploração por camadas</td>
+                      <td>Exploração profunda com retorno</td>
+                    </tr>
+                    <tr>
+                      <td>Estrutura de dados</td>
+                      <td>Fila</td>
+                      <td>Pilha / recursão</td>
+                    </tr>
+                    <tr>
+                      <td>Melhor para</td>
+                      <td>Distância</td>
+                      <td>Estrutura</td>
+                    </tr>
+                    <tr>
+                      <td>Menor caminho</td>
+                      <td>Sim</td>
+                      <td>Não</td>
+                    </tr>
+                    <tr>
+                      <td>Detecção de ciclos</td>
+                      <td>Possível</td>
+                      <td>Natural</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card">
+
+              <h3>8.8 Complexidade</h3>
+
+              <div class="math-block">
+                <span class="math">\( O(|V| + |E|) \)</span>
+              </div>
+
+              <p>
+                A principal diferença não está na complexidade,
+                mas no tipo de informação estrutural revelada.
+              </p>
+
+            </section>
+
+            <!-- Closing -->
+            <section class="card full">
+
+              <h4>Série concluída</h4>
+
+              <p>
+                Isso encerra a série sobre Busca em Profundidade (DFS).
+                Agora você domina tanto o algoritmo quanto sua interpretação estrutural em grafos.
+              </p>
+
+              <div class="note">
+                <strong>Voltar para a visão geral:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/busca-em-profundidade/index.html">
+                  Série DFS →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
