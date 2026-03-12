@@ -1,0 +1,914 @@
+/* =========================================================
+   1. BRAND / TOP BAR
+   ========================================================= */
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-link:focus {
+  outline: 2px solid rgba(26, 188, 156, 0.45);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(26, 188, 156, 0.10);
+  color: var(--primary);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.logo svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title h1 strong {
+  font-weight: 850;
+}
+
+.title h1 span {
+  margin-left: 4px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.title p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   2. LANGUAGE TOGGLE
+   ========================================================= */
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+  user-select: none;
+  font-size: 12px;
+}
+
+.lang-toggle a {
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.lang-toggle a:hover {
+  color: var(--text);
+  border-color: rgba(26, 188, 156, 0.35);
+  background: rgba(26, 188, 156, 0.08);
+}
+
+.lang-toggle a.active {
+  color: var(--text);
+  border-color: rgba(26, 188, 156, 0.45);
+  background: rgba(26, 188, 156, 0.12);
+}
+
+.lang-toggle .sep {
+  color: rgba(154, 160, 166, 0.7);
+}
+
+
+/* =========================================================
+   3. SIDEBAR / MAIN NAVIGATION
+   ========================================================= */
+
+nav {
+  padding: 8px;
+  overflow: auto;
+}
+
+.nav-section {
+  margin: 6px 0 10px;
+}
+
+.nav-label {
+  padding: 10px 10px 6px;
+  color: var(--muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+/* Menu container */
+
+details.menu {
+  margin: 6px 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+}
+
+details.menu[open] {
+  border-color: var(--border-strong);
+  background: rgba(26, 188, 156, 0.06);
+}
+
+/* Menu title */
+
+summary.menu-title {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.015);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+summary.menu-title::-webkit-details-marker {
+  display: none;
+}
+
+summary.menu-title:hover {
+  background: rgba(26, 188, 156, 0.06);
+  border-color: var(--border-strong);
+}
+
+details.menu[open] > summary.menu-title {
+  background: rgba(26, 188, 156, 0.10);
+  border-color: var(--border-strong);
+}
+
+/* Menu title structure */
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.menu-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.menu-text strong {
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-text span {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Menu icons */
+
+.icon {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(26, 188, 156, 0.08);
+  color: var(--primary);
+}
+
+.icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+details.menu[open] .icon {
+  background: rgba(26, 188, 156, 0.14);
+}
+
+.chev {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+details.menu[open] .chev {
+  transform: rotate(90deg);
+}
+
+/* Submenu */
+
+.submenu {
+  position: relative;
+  z-index: 2;
+  display: none;
+  gap: 6px;
+  padding: 6px 10px 12px;
+}
+
+details.menu[open] > .submenu {
+  display: grid;
+}
+
+.submenu a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.submenu a:hover {
+  border-color: var(--border-strong);
+  background: rgba(26, 188, 156, 0.08);
+}
+
+.submenu a small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.series-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.submenu-title {
+  line-height: 1.3;
+}
+
+.submenu-meta {
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+/* Sidebar preload behavior */
+
+html.nav-preload details.menu,
+html.nav-preload summary.menu-title,
+html.nav-preload .submenu,
+html.nav-preload .submenu a,
+html.nav-preload .chev {
+  transition: none !important;
+}
+
+html.nav-preload nav[aria-label="Main navigation"] {
+  visibility: hidden;
+}
+
+/* Sidebar footer */
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-strong);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   4. MAIN HEADER / PAGE CONTENT
+   ========================================================= */
+
+.main-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.main-header h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+.main-header p {
+  margin: 6px 0 0;
+  max-width: 70ch;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14.5px;
+}
+
+.content {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+
+/* =========================================================
+   5. CARDS / LAYOUTS
+   ========================================================= */
+
+.card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 14.5px;
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 15.3px;
+}
+
+.card p + p {
+  margin-top: 12px;
+}
+
+.card-sub {
+  margin-top: 10px;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Card containers */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  width: 100%;
+  max-width: 100%;
+  align-items: start;
+}
+
+.cards-grid .card {
+  height: 100%;
+}
+
+.cards-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+/* Full-width transition card */
+
+.card.full {
+  grid-column: 1 / -1;
+  padding-left: 1.25rem;
+  border-left: 4px solid #4da3ff;
+}
+
+.card.full a,
+.card.full a:visited {
+  color: #4da3ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card.full a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   6. SEARCH INDEX / FAMILY CARDS
+   ========================================================= */
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.search-section {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 16px 14px 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.search-section::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 0;
+  width: 4px;
+  border-radius: 8px;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 188, 156, 0.9),
+    rgba(26, 188, 156, 0.3)
+  );
+}
+
+.search-section h4 {
+  margin: 0 0 14px;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.search-section p {
+  margin-bottom: 16px;
+}
+
+/* Search list */
+
+.search-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.search-list {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.search-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.search-list a {
+  display: inline-block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.search-list a:hover {
+  color: var(--primary);
+}
+
+/*Search list scoped*/
+.search-index-page .search-list{
+  list-style:none;
+  margin:14px 0 0;
+  padding:0;
+  display:grid;
+  gap:10px;
+}
+
+.search-index-page .search-list li{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.search-index-page .search-list li a{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+}
+
+.search-index-page .search-list li a::before{
+  content:"→";
+  color:var(--primary);
+  opacity:.85;;
+}
+
+.search-index-page .search-list li a:hover{
+  color:var(--primary);
+  text-decoration:underline;
+}
+
+/* Construction badge */
+
+.badge-construction {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border: 1px solid rgba(26, 188, 156, 0.35);
+  border-radius: 999px;
+  background: rgba(26, 188, 156, 0.08);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   7. INLINE CODE
+   ========================================================= */
+
+code {
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font-size: 0.95em;
+}
+
+
+/* =========================================================
+   8. TEXT / NOTE / MATH BLOCKS
+   ========================================================= */
+
+.math-quote {
+  margin: 0;
+  padding: 14px;
+  border-left: 3px solid rgba(26, 188, 156, 0.55);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.math-quote p {
+  margin: 0 0 10px;
+  line-height: 1.7;
+}
+
+.math-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.math-list {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding-left: 22px;
+}
+
+.math-list li {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.callout {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(26, 188, 156, 0.7);
+  border-radius: 10px;
+  background: rgba(26, 188, 156, 0.05);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.note {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: rgba(154, 160, 166, 0.9);
+  font-style: italic;
+  font-size: 12.5px;
+}
+
+.math {
+  margin: 14px 0 0;
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+
+.card .math:first-of-type {
+  margin-top: 8px;
+}
+
+.katex-inline {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.math-block {
+  margin-top: 16px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-left: 3px solid rgba(26, 188, 156, 0.55);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.math-block .katex-display {
+  margin: 0;
+}
+
+.math-block--ore {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.math-block--ore::-webkit-scrollbar {
+  height: 0;
+}
+
+
+/* =========================================================
+   9. GRAPH META / ARC DETAILS
+   ========================================================= */
+
+.graph-meta {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.arc-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.arc-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.arc-chip strong {
+  color: var(--text);
+  font-weight: 750;
+}
+
+.arc-chip em {
+  color: rgba(231, 76, 60, 0.90);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.arc-list {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.arc-list li {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.arc-list li strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.arc-list li span {
+  margin-left: 4px;
+  color: rgba(231, 76, 60, 0.9);
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   10. GRAPH / EXAMPLE LAYOUTS
+   ========================================================= */
+
+/* Adjacency layout */
+
+.adj-card {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.adj-graph {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.adj-graph svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.adj-caption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.adj-matrix .adj-mathblock {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-left: 3px solid rgba(26, 188, 156, 0.55);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Example graph layout */
+
+.example-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  max-width: 100%;
+}
+
+.example-graph {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.example-graph svg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   11. FOOTER
+   ========================================================= */
+
+.main-footer {
+  margin-top: auto;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border-strong);
+  background:
+    radial-gradient(900px 220px at 20% 120%, rgba(26, 188, 156, 0.18), transparent 60%),
+    radial-gradient(700px 220px at 80% 120%, rgba(22, 160, 133, 0.14), transparent 55%),
+    rgba(0, 0, 0, 0.12);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+
+/* =========================================================
+   12. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-list a {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adj-card,
+  .example-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .example-graph {
+    padding: 10px;
+  }
+
+  .math-block {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .example-graph svg {
+    max-width: 340px;
+    max-height: 220px;
+  }
+}
+
+@media (max-width: 420px) {
+  .example-graph svg {
+    max-width: 300px;
+    max-height: 200px;
+  }
+}
