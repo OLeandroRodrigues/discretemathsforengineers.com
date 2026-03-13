@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Combinatorial Search → Backtracking — Index</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/combinatorial-search/index.html">Combinatorial Search</a>
+        <span class="sep">›</span>
+        <span class="current">Backtracking</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Series overview — combinatorial search with exploration and undo</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>8 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-1.html">Start →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-8.html">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>What Backtracking Solves</h3>
+
+              <p class="math-note">
+                Backtracking is a general technique for exploring a
+                <strong>combinatorial search space</strong>
+                by incrementally building candidate solutions and abandoning
+                partial states that cannot lead to a valid final answer.
+              </p>
+
+              <p>
+                Conceptually, backtracking performs a depth-first exploration
+                of a search tree where each node represents a partial solution,
+                each edge represents a choice, and failed branches are undone
+                so the algorithm can try another possibility.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Reference:</strong>
+                the presentation follows the classical treatment used in
+                algorithm design and combinatorial search,
+                connecting recursive exploration, pruning, and search trees.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Parts</h3>
+
+              <ul class="search-list">
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-1.html">
+                    Part 1 — Problem Model &amp; Search Space
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-2.html">
+                    Part 2 — The Core Idea (Explore + Undo)
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-3.html">
+                    Part 3 — Generic Backtracking Algorithm
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-4.html">
+                    Part 4 — Search Tree &amp; Recursion Structure
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-5.html">
+                    Part 5 — Pruning
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-6.html">
+                    Part 6 — Classic Problems
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-7.html">
+                    Part 7 — Complexity
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/combinatorial-search/backtracking/part-8.html">
+                    Part 8 — Backtracking vs DFS vs Dynamic Programming
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

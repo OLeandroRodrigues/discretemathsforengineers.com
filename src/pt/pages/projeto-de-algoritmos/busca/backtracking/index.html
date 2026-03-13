@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca Combinatória → Backtracking — Índice</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca Combinatória</a>
+        <span class="sep">›</span>
+        <span class="current">Backtracking</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Visão geral da série — busca combinatória com exploração e desfazer</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>8 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">Começar →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>O que o Backtracking Resolve</h3>
+
+              <p class="math-note">
+                Backtracking é uma técnica geral para explorar um
+                <strong>espaço de busca combinatório</strong>
+                construindo soluções candidatas de forma incremental e abandonando
+                estados parciais que não podem levar a uma resposta final válida.
+              </p>
+
+              <p>
+                Conceitualmente, o backtracking realiza uma exploração em profundidade
+                de uma árvore de busca, em que cada nó representa uma solução parcial,
+                cada aresta representa uma escolha, e ramos fracassados são desfeitos
+                para que o algoritmo possa tentar outra possibilidade.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Referência:</strong>
+                a apresentação segue o tratamento clássico usado em
+                projeto de algoritmos e busca combinatória,
+                conectando exploração recursiva, poda e árvores de busca.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Partes</h3>
+
+              <ul class="search-list">
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">
+                    Parte 1 — Modelo do Problema &amp; Espaço de Busca
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">
+                    Parte 2 — A Ideia Central (Explorar + Desfazer)
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">
+                    Parte 3 — Algoritmo Genérico de Backtracking
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">
+                    Parte 4 — Árvore de Busca &amp; Estrutura de Recursão
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">
+                    Parte 5 — Poda
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">
+                    Parte 6 — Problemas Clássicos
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">
+                    Parte 7 — Complexidade
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">
+                    Parte 8 — Backtracking vs DFS vs Programação Dinâmica
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
