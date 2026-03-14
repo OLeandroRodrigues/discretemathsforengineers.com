@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 1 — Problem Model &amp; Search Space</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1 — Problem Model &amp; Search Space</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 1 — Problem Model &amp; Search Space</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 1 of 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/index.html">← Index</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-2.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card" id="bt-part1-roadmap">
+
+              <h3>1. Problem Model &amp; Search Space</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What kind of problems backtracking solves</li>
+                  <li>How candidate solutions are modeled</li>
+                  <li>Why the search space forms a tree</li>
+                  <li>The role of constraints in pruning</li>
+                  <li>The precise objective of the method</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking is often introduced informally as a method that
+                tries possibilities and undoes decisions when they fail.
+              </p>
+
+              <p>
+                That intuition is useful, but to understand the technique rigorously,
+                we must first define the <strong>problem model</strong> and the
+                <strong>search space</strong> it explores.
+              </p>
+
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card" id="bt-part1-why-model">
+
+              <h3>1.1 Why Start With the Model?</h3>
+
+              <p>
+                Backtracking is not tied to a single concrete problem.
+                It is a general strategy for exploring a structured set of possibilities
+                under constraints.
+              </p>
+
+              <p>
+                Therefore, before discussing recursion or implementation details,
+                we must answer:
+              </p>
+
+              <ul>
+                <li>What is a candidate solution?</li>
+                <li>How is a partial solution represented?</li>
+                <li>When can we stop exploring a branch?</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main idea:</strong>
+                backtracking is a method for exploring a constrained search space.
+              </div>
+
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card" id="bt-part1-candidates">
+
+              <h3>1.2 Candidate Solutions</h3>
+
+              <p>
+                A candidate solution is usually built incrementally as a sequence of decisions:
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">x = (x₁, x₂, …, xₖ)</span>
+              </div>
+
+              <p>
+                Each variable <span class="math">xᵢ</span> represents a choice made at step
+                <span class="math">i</span>, typically selected from a domain of feasible values.
+              </p>
+
+              <p>
+                A complete assignment may represent a full solution,
+                while a prefix
+                <span class="math">(x₁, …, xᵢ)</span>
+                represents a <strong>partial solution</strong>.
+              </p>
+
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card" id="bt-part1-search-space">
+
+              <h3>1.3 The Search Space</h3>
+
+              <p>
+                The collection of all candidate solutions defines the
+                <strong>search space</strong>.
+              </p>
+
+              <p>
+                This space is naturally modeled as a tree:
+              </p>
+
+              <ul>
+                <li>The root is the empty solution</li>
+                <li>Each level corresponds to one additional decision</li>
+                <li>Each edge represents a choice</li>
+                <li>Each node represents a partial assignment</li>
+              </ul>
+
+              <p class="math-note">
+                In abstract terms, a node may be written as
+                <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card" id="bt-part1-constraints">
+
+              <h3>1.4 Constraints</h3>
+
+              <p>
+                Not every partial solution is worth exploring.
+              </p>
+
+              <p>
+                A backtracking problem is defined together with constraints that determine
+                whether a partial assignment can still be extended into a valid full solution.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, x₂, …, xᵢ)</span>
+              </div>
+
+              <p>
+                If the current partial assignment violates the problem structure,
+                the algorithm stops exploring that branch.
+              </p>
+
+              <div class="note">
+                <strong>This is the core pruning principle:</strong>
+                reject impossible branches as early as possible.
+              </div>
+
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card" id="bt-part1-feasibility">
+
+              <h3>1.5 Feasible vs. Complete Solutions</h3>
+
+              <p>
+                It is useful to distinguish two notions:
+              </p>
+
+              <ul>
+                <li><strong>Feasible partial solution:</strong> a partial assignment that does not violate constraints</li>
+                <li><strong>Complete solution:</strong> a full assignment that satisfies all problem requirements</li>
+              </ul>
+
+              <p>
+                Backtracking spends most of its time exploring feasible partial solutions
+                and testing whether they can be extended.
+              </p>
+
+              <p class="math-note">
+                Feasibility is a local condition, while completeness is a global one.
+              </p>
+
+            </section>
+
+            <!-- 1.6 -->
+            <section class="card" id="bt-part1-objective">
+
+              <h3>1.6 The Objective of Backtracking</h3>
+
+              <p>
+                Depending on the problem, the objective may be:
+              </p>
+
+              <ul>
+                <li>Find one valid solution</li>
+                <li>Find all valid solutions</li>
+                <li>Count how many valid solutions exist</li>
+                <li>Find an optimal solution under additional criteria</li>
+              </ul>
+
+              <p>
+                In every case, the method systematically explores the search tree
+                while pruning branches that cannot succeed.
+              </p>
+
+            </section>
+
+            <!-- 1.7 -->
+            <section class="card" id="bt-part1-why-matters">
+
+              <h3>1.7 Why This Matters</h3>
+
+              <p>
+                This model appears in many classical problems:
+              </p>
+
+              <ul>
+                <li>N-Queens</li>
+                <li>Sudoku</li>
+                <li>Permutation generation</li>
+                <li>Subset generation</li>
+                <li>Graph coloring</li>
+                <li>Hamiltonian path search</li>
+              </ul>
+
+              <p>
+                In all of them, the central idea is the same:
+                build solutions incrementally, test constraints early,
+                and backtrack whenever a branch becomes impossible.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part1-transition">
+
+              <h4>Next: Part 2 — The Core Idea (Explore + Undo)</h4>
+
+              <p>
+                Now that we have defined the structure of the problem space,
+                the next step is to understand the mechanism that explores it.
+              </p>
+
+              <p>
+                In Part 2, we study how recursive exploration works,
+                why choices are undone, and how this process navigates
+                the search tree systematically.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/part-2.html">
+                  Part 2 — The Core Idea (Explore + Undo) →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

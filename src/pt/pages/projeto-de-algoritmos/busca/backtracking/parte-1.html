@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 1 — Modelo do Problema &amp; Espaço de Busca</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 1 — Modelo do Problema &amp; Espaço de Busca</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 1 — Modelo do Problema &amp; Espaço de Busca</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 1 de 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">← Índice</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card" id="bt-part1-roadmap">
+
+              <h3>1. Modelo do Problema &amp; Espaço de Busca</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Que tipo de problemas o backtracking resolve</li>
+                  <li>Como as soluções candidatas são modeladas</li>
+                  <li>Por que o espaço de busca forma uma árvore</li>
+                  <li>O papel das restrições na poda</li>
+                  <li>O objetivo preciso do método</li>
+                </ol>
+              </div>
+
+              <p>
+                O backtracking costuma ser introduzido informalmente como um método que
+                tenta possibilidades e desfaz decisões quando elas falham.
+              </p>
+
+              <p>
+                Essa intuição é útil, mas para compreender a técnica de forma rigorosa
+                precisamos primeiro definir o <strong>modelo do problema</strong>
+                e o <strong>espaço de busca</strong> que ela explora.
+              </p>
+
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card" id="bt-part1-why-model">
+
+              <h3>1.1 Por que começar pelo modelo?</h3>
+
+              <p>
+                Backtracking não está ligado a um único problema específico.
+                Ele é uma estratégia geral para explorar um conjunto estruturado
+                de possibilidades sob restrições.
+              </p>
+
+              <p>
+                Portanto, antes de discutir recursão ou detalhes de implementação,
+                precisamos responder:
+              </p>
+
+              <ul>
+                <li>O que é uma solução candidata?</li>
+                <li>Como uma solução parcial é representada?</li>
+                <li>Quando devemos parar de explorar um ramo?</li>
+              </ul>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                backtracking é um método para explorar um espaço de busca com restrições.
+              </div>
+
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card" id="bt-part1-candidates">
+
+              <h3>1.2 Soluções candidatas</h3>
+
+              <p>
+                Uma solução candidata normalmente é construída incrementalmente
+                como uma sequência de decisões:
+              </p>
+
+              <div class="math-block">
+                <span class="math">x = (x₁, x₂, …, xₖ)</span>
+              </div>
+
+              <p>
+                Cada variável <span class="math">xᵢ</span> representa uma escolha feita
+                no passo <span class="math">i</span>, normalmente selecionada
+                de um domínio de valores possíveis.
+              </p>
+
+              <p>
+                Uma atribuição completa pode representar uma solução final,
+                enquanto um prefixo
+                <span class="math">(x₁, …, xᵢ)</span>
+                representa uma <strong>solução parcial</strong>.
+              </p>
+
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card" id="bt-part1-search-space">
+
+              <h3>1.3 O espaço de busca</h3>
+
+              <p>
+                O conjunto de todas as soluções candidatas define o
+                <strong>espaço de busca</strong>.
+              </p>
+
+              <p>
+                Esse espaço é naturalmente modelado como uma árvore:
+              </p>
+
+              <ul>
+                <li>A raiz representa a solução vazia</li>
+                <li>Cada nível corresponde a uma nova decisão</li>
+                <li>Cada aresta representa uma escolha</li>
+                <li>Cada nó representa uma solução parcial</li>
+              </ul>
+
+              <p class="math-note">
+                Em termos abstratos, um nó pode ser escrito como
+                <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card" id="bt-part1-constraints">
+
+              <h3>1.4 Restrições</h3>
+
+              <p>
+                Nem toda solução parcial vale a pena explorar.
+              </p>
+
+              <p>
+                Um problema de backtracking é definido juntamente com restrições
+                que determinam se uma atribuição parcial ainda pode ser estendida
+                para uma solução completa válida.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, x₂, …, xᵢ)</span>
+              </div>
+
+              <p>
+                Se a atribuição parcial atual viola a estrutura do problema,
+                o algoritmo interrompe a exploração daquele ramo.
+              </p>
+
+              <div class="note">
+                <strong>Este é o princípio central da poda:</strong>
+                eliminar ramos impossíveis o mais cedo possível.
+              </div>
+
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card" id="bt-part1-feasibility">
+
+              <h3>1.5 Soluções viáveis vs. completas</h3>
+
+              <p>
+                É útil distinguir dois conceitos:
+              </p>
+
+              <ul>
+                <li><strong>Solução parcial viável:</strong> não viola as restrições</li>
+                <li><strong>Solução completa:</strong> satisfaz todos os requisitos do problema</li>
+              </ul>
+
+              <p>
+                O backtracking passa a maior parte do tempo explorando
+                soluções parciais viáveis e verificando se elas podem ser estendidas.
+              </p>
+
+              <p class="math-note">
+                A viabilidade é uma condição local, enquanto a completude é global.
+              </p>
+
+            </section>
+
+            <!-- 1.6 -->
+            <section class="card" id="bt-part1-objective">
+
+              <h3>1.6 O objetivo do backtracking</h3>
+
+              <p>
+                Dependendo do problema, o objetivo pode ser:
+              </p>
+
+              <ul>
+                <li>Encontrar uma solução válida</li>
+                <li>Encontrar todas as soluções válidas</li>
+                <li>Contar quantas soluções existem</li>
+                <li>Encontrar uma solução ótima segundo algum critério</li>
+              </ul>
+
+              <p>
+                Em todos os casos, o método explora sistematicamente
+                a árvore de busca enquanto poda ramos impossíveis.
+              </p>
+
+            </section>
+
+            <!-- 1.7 -->
+            <section class="card" id="bt-part1-why-matters">
+
+              <h3>1.7 Por que isso é importante</h3>
+
+              <p>
+                Esse modelo aparece em vários problemas clássicos:
+              </p>
+
+              <ul>
+                <li>N-Rainhas</li>
+                <li>Sudoku</li>
+                <li>Geração de permutações</li>
+                <li>Geração de subconjuntos</li>
+                <li>Coloração de grafos</li>
+                <li>Busca de caminho Hamiltoniano</li>
+              </ul>
+
+              <p>
+                Em todos eles a ideia central é a mesma:
+                construir soluções incrementalmente,
+                testar restrições cedo
+                e voltar atrás quando um ramo se torna impossível.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part1-transition">
+
+              <h4>Próximo: Parte 2 — A Ideia Central (Explorar + Desfazer)</h4>
+
+              <p>
+                Agora que definimos a estrutura do espaço de busca,
+                o próximo passo é entender o mecanismo que o explora.
+              </p>
+
+              <p>
+                Na Parte 2 estudaremos como a exploração recursiva funciona,
+                por que as escolhas são desfeitas
+                e como esse processo percorre sistematicamente a árvore de busca.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">
+                  Parte 2 — A Ideia Central (Explorar + Desfazer) →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
