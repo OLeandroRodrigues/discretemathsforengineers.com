@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 2 — The Core Idea (Explore + Undo)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2 — The Core Idea (Explore + Undo)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 2 — The Core Idea (Explore + Undo)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 2 of 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-3.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="bt-part2-roadmap">
+
+              <h3>2. The Core Idea (Explore + Undo)</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why backtracking is an incremental exploration method</li>
+                  <li>How the algorithm moves forward through choices</li>
+                  <li>Why invalid branches are abandoned early</li>
+                  <li>What it means to undo a choice</li>
+                  <li>How recursion matches the search tree structure</li>
+                </ol>
+              </div>
+
+              <p>
+                Once the search space is modeled as a tree of partial solutions,
+                the central question becomes:
+                <strong>how do we move through that tree efficiently?</strong>
+              </p>
+
+              <p>
+                The essential idea of backtracking is simple:
+                <strong>explore one choice, continue recursively, and undo it if necessary.</strong>
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="bt-part2-incremental">
+
+              <h3>2.1 Incremental Construction</h3>
+
+              <p>
+                Backtracking does not generate full solutions all at once.
+                It builds them step by step.
+              </p>
+
+              <p>
+                At each stage, the algorithm extends a partial solution by making
+                one additional decision.
+              </p>
+
+              <div class="math-block">
+                <span class="math">(x₁, …, xᵢ) → (x₁, …, xᵢ, xᵢ₊₁)</span>
+              </div>
+
+              <p>
+                This incremental structure is what makes pruning possible:
+                we can reject a bad direction before completing the whole assignment.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="bt-part2-explore">
+
+              <h3>2.2 Explore</h3>
+
+              <p>
+                To explore means:
+                choose one candidate extension for the current partial solution
+                and descend into the corresponding branch of the search tree.
+              </p>
+
+              <p>
+                If the current node is
+                <span class="math">(x₁, …, xᵢ)</span>,
+                then exploring corresponds to selecting a value for
+                <span class="math">xᵢ₊₁</span>.
+              </p>
+
+              <p class="math-note">
+                In tree language, this means moving from a node to one of its children.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="bt-part2-test">
+
+              <h3>2.3 Test Early</h3>
+
+              <p>
+                After making a choice, the algorithm checks whether the new partial solution
+                is still feasible.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, …, xᵢ, xᵢ₊₁)</span>
+              </div>
+
+              <p>
+                If the constraints are already violated, there is no reason to continue
+                deeper into that branch.
+              </p>
+
+              <div class="note">
+                <strong>Key principle:</strong>
+                detect failure as soon as possible.
+              </div>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="bt-part2-dead-end">
+
+              <h3>2.4 Dead Ends</h3>
+
+              <p>
+                A branch becomes a dead end when the current partial solution
+                cannot be extended into any valid complete solution.
+              </p>
+
+              <p>
+                This may happen because:
+              </p>
+
+              <ul>
+                <li>a constraint is violated immediately</li>
+                <li>no valid next choice remains</li>
+                <li>the branch structure makes completion impossible</li>
+              </ul>
+
+              <p>
+                At that point, the algorithm stops descending and returns.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="bt-part2-undo">
+
+              <h3>2.5 Undo</h3>
+
+              <p>
+                Undoing a choice means removing the most recent decision
+                and restoring the previous search state.
+              </p>
+
+              <p>
+                Conceptually:
+              </p>
+
+              <div class="math-block">
+                <span class="math">(x₁, …, xᵢ, xᵢ₊₁) → (x₁, …, xᵢ)</span>
+              </div>
+
+              <p>
+                This is why the technique is called <strong>backtracking</strong>:
+                the algorithm goes back to the previous level and tries another option.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="bt-part2-recursion">
+
+              <h3>2.6 Why Recursion Fits Naturally</h3>
+
+              <p>
+                The search space has a tree structure,
+                and recursion is the natural mechanism for traversing trees.
+              </p>
+
+              <p>
+                Each recursive call corresponds to:
+              </p>
+
+              <ul>
+                <li>one node in the search tree</li>
+                <li>one partial solution</li>
+                <li>one active level of decision-making</li>
+              </ul>
+
+              <p class="math-note">
+                Returning from recursion corresponds exactly to undoing the last choice.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="bt-part2-intuition">
+
+              <h3>2.7 The Full Intuition</h3>
+
+              <p>
+                The complete mechanism can be summarized as:
+              </p>
+
+              <ol>
+                <li>Build a partial solution</li>
+                <li>Try one possible next choice</li>
+                <li>Test whether the branch is still feasible</li>
+                <li>If yes, continue recursively</li>
+                <li>If no, undo the choice and try another one</li>
+              </ol>
+
+              <div class="note">
+                <strong>Core mental model:</strong>
+                backtracking is a disciplined walk through a search tree,
+                guided by feasibility tests and reversibility of choices.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part2-transition">
+
+              <h4>Next: Part 3 — Generic Backtracking Algorithm</h4>
+
+              <p>
+                Now that the central mechanism is clear,
+                we can move from intuition to formal structure.
+              </p>
+
+              <p>
+                In Part 3, we will write the generic backtracking algorithm
+                and identify its standard components:
+                state, choice generation, feasibility test, recursion, and undo step.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/part-3.html">
+                  Part 3 — Generic Backtracking Algorithm →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
