@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 2 — A Ideia Central (Explorar + Desfazer)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2 — A Ideia Central (Explorar + Desfazer)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 2 — A Ideia Central (Explorar + Desfazer)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 2 de 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="bt-part2-roadmap">
+
+              <h3>2. A Ideia Central (Explorar + Desfazer)</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que o backtracking é um método de exploração incremental</li>
+                  <li>Como o algoritmo avança por meio de escolhas</li>
+                  <li>Por que ramos inválidos são abandonados cedo</li>
+                  <li>O que significa desfazer uma escolha</li>
+                  <li>Como a recursão corresponde à estrutura da árvore de busca</li>
+                </ol>
+              </div>
+
+              <p>
+                Uma vez que o espaço de busca é modelado como uma árvore de soluções parciais,
+                a questão central passa a ser:
+                <strong>como percorremos essa árvore de forma eficiente?</strong>
+              </p>
+
+              <p>
+                A ideia essencial do backtracking é simples:
+                <strong>explorar uma escolha, continuar recursivamente e desfazê-la se necessário.</strong>
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="bt-part2-incremental">
+
+              <h3>2.1 Construção incremental</h3>
+
+              <p>
+                O backtracking não gera soluções completas de uma só vez.
+                Ele as constrói passo a passo.
+              </p>
+
+              <p>
+                Em cada etapa, o algoritmo estende uma solução parcial
+                fazendo uma nova decisão.
+              </p>
+
+              <div class="math-block">
+                <span class="math">(x₁, …, xᵢ) → (x₁, …, xᵢ, xᵢ₊₁)</span>
+              </div>
+
+              <p>
+                Essa estrutura incremental é o que torna a poda possível:
+                podemos rejeitar uma direção ruim antes de completar toda a atribuição.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="bt-part2-explore">
+
+              <h3>2.2 Explorar</h3>
+
+              <p>
+                Explorar significa:
+                escolher uma possível extensão da solução parcial atual
+                e descer para o ramo correspondente da árvore de busca.
+              </p>
+
+              <p>
+                Se o nó atual é
+                <span class="math">(x₁, …, xᵢ)</span>,
+                então explorar corresponde a selecionar um valor para
+                <span class="math">xᵢ₊₁</span>.
+              </p>
+
+              <p class="math-note">
+                Na linguagem de árvores, isso significa mover-se de um nó para um de seus filhos.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="bt-part2-test">
+
+              <h3>2.3 Testar cedo</h3>
+
+              <p>
+                Depois de fazer uma escolha, o algoritmo verifica se a nova solução parcial
+                ainda é viável.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, …, xᵢ, xᵢ₊₁)</span>
+              </div>
+
+              <p>
+                Se as restrições já foram violadas,
+                não há motivo para continuar aprofundando nesse ramo.
+              </p>
+
+              <div class="note">
+                <strong>Princípio-chave:</strong>
+                detectar falhas o mais cedo possível.
+              </div>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="bt-part2-dead-end">
+
+              <h3>2.4 Becos sem saída</h3>
+
+              <p>
+                Um ramo se torna um beco sem saída quando a solução parcial atual
+                não pode ser estendida para nenhuma solução completa válida.
+              </p>
+
+              <p>
+                Isso pode acontecer porque:
+              </p>
+
+              <ul>
+                <li>uma restrição é violada imediatamente</li>
+                <li>não resta nenhuma próxima escolha válida</li>
+                <li>a estrutura do ramo torna a conclusão impossível</li>
+              </ul>
+
+              <p>
+                Nesse ponto, o algoritmo para de descer e retorna.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="bt-part2-undo">
+
+              <h3>2.5 Desfazer</h3>
+
+              <p>
+                Desfazer uma escolha significa remover a decisão mais recente
+                e restaurar o estado anterior da busca.
+              </p>
+
+              <p>
+                Conceitualmente:
+              </p>
+
+              <div class="math-block">
+                <span class="math">(x₁, …, xᵢ, xᵢ₊₁) → (x₁, …, xᵢ)</span>
+              </div>
+
+              <p>
+                É por isso que a técnica se chama <strong>backtracking</strong>:
+                o algoritmo volta ao nível anterior e tenta outra opção.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="bt-part2-recursion">
+
+              <h3>2.6 Por que a recursão se encaixa naturalmente</h3>
+
+              <p>
+                O espaço de busca tem uma estrutura de árvore,
+                e a recursão é o mecanismo natural para percorrer árvores.
+              </p>
+
+              <p>
+                Cada chamada recursiva corresponde a:
+              </p>
+
+              <ul>
+                <li>um nó na árvore de busca</li>
+                <li>uma solução parcial</li>
+                <li>um nível ativo de tomada de decisão</li>
+              </ul>
+
+              <p class="math-note">
+                Retornar da recursão corresponde exatamente a desfazer a última escolha.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="bt-part2-intuition">
+
+              <h3>2.7 A intuição completa</h3>
+
+              <p>
+                O mecanismo completo pode ser resumido assim:
+              </p>
+
+              <ol>
+                <li>Construir uma solução parcial</li>
+                <li>Tentar uma possível próxima escolha</li>
+                <li>Testar se o ramo ainda é viável</li>
+                <li>Se sim, continuar recursivamente</li>
+                <li>Se não, desfazer a escolha e tentar outra</li>
+              </ol>
+
+              <div class="note">
+                <strong>Modelo mental central:</strong>
+                backtracking é um percurso disciplinado por uma árvore de busca,
+                guiado por testes de viabilidade e pela reversibilidade das escolhas.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part2-transition">
+
+              <h4>Próximo: Parte 3 — Algoritmo Genérico de Backtracking</h4>
+
+              <p>
+                Agora que o mecanismo central está claro,
+                podemos passar da intuição para a estrutura formal.
+              </p>
+
+              <p>
+                Na Parte 3, escreveremos o algoritmo genérico de backtracking
+                e identificaremos seus componentes padrão:
+                estado, geração de escolhas, teste de viabilidade, recursão e etapa de desfazer.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">
+                  Parte 3 — Algoritmo Genérico de Backtracking →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

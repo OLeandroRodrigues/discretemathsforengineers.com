@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 3 — Generic Backtracking Algorithm</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3 — Generic Backtracking Algorithm</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 3 — Generic Backtracking Algorithm</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 3 of 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-4.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="bt-part3-roadmap">
+
+              <h3>3. Generic Backtracking Algorithm</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The generic structure of backtracking algorithms</li>
+                  <li>The role of recursive exploration</li>
+                  <li>Choice generation and feasibility testing</li>
+                  <li>How solutions are detected</li>
+                  <li>The canonical pseudocode template</li>
+                </ol>
+              </div>
+
+              <p>
+                Now that we understand the intuition behind backtracking,
+                we can formalize the technique as a generic algorithm.
+              </p>
+
+              <p>
+                Many classical problems share the same structure,
+                even though their constraints and search spaces differ.
+              </p>
+
+              <p>
+                For this reason, backtracking is best understood
+                through a <strong>generic algorithmic template</strong>.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="bt-part3-state">
+
+              <h3>3.1 State Representation</h3>
+
+              <p>
+                At any point in the algorithm, we maintain a
+                <strong>partial solution</strong>.
+              </p>
+
+              <div class="math-block">
+                <span class="math">(x₁, x₂, …, xᵢ)</span>
+              </div>
+
+              <p>
+                This sequence represents the decisions made so far.
+              </p>
+
+              <p>
+                The state of the algorithm therefore consists of:
+              </p>
+
+              <ul>
+                <li>the current partial assignment</li>
+                <li>the depth in the search tree</li>
+                <li>the remaining possible choices</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="bt-part3-choices">
+
+              <h3>3.2 Generating Choices</h3>
+
+              <p>
+                From a partial solution
+                <span class="math">(x₁, …, xᵢ)</span>,
+                the algorithm generates possible extensions
+                for the next decision variable.
+              </p>
+
+              <p>
+                These values typically come from a domain
+                of feasible candidates.
+              </p>
+
+              <p class="math-note">
+                Each candidate corresponds to a child node
+                in the search tree.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="bt-part3-feasibility">
+
+              <h3>3.3 Feasibility Test</h3>
+
+              <p>
+                Before exploring a branch further,
+                the algorithm verifies whether the new partial solution
+                still satisfies the constraints.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, …, xᵢ, xᵢ₊₁)</span>
+              </div>
+
+              <p>
+                If the constraint check fails,
+                the branch is pruned immediately.
+              </p>
+
+              <div class="note">
+                <strong>Goal:</strong>
+                eliminate impossible solutions early.
+              </div>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="bt-part3-solution">
+
+              <h3>3.4 Detecting a Complete Solution</h3>
+
+              <p>
+                A complete solution is obtained when
+                all decision variables have been assigned.
+              </p>
+
+              <p>
+                In other words, when the depth of the search tree
+                reaches the required level.
+              </p>
+
+              <p>
+                At that moment, the algorithm may:
+              </p>
+
+              <ul>
+                <li>record the solution</li>
+                <li>print the solution</li>
+                <li>update an optimal value</li>
+                <li>stop the search (if only one solution is needed)</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="bt-part3-template">
+
+              <h3>3.5 Generic Backtracking Template</h3>
+
+              <p>
+                The general structure of a backtracking algorithm
+                can be written as follows:
+              </p>
+
+<pre><code>BACKTRACK(state):
+
+    if state is a complete solution:
+        report solution
+        return
+
+    for each candidate choice c:
+        
+        if c is feasible:
+            apply choice c
+            
+            BACKTRACK(updated state)
+            
+            undo choice c</code></pre>
+
+              <p>
+                This template captures the entire mechanism:
+                explore a choice, recurse, and undo the choice afterward.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="bt-part3-structure">
+
+              <h3>3.6 Structure of the Search Tree</h3>
+
+              <p>
+                The algorithm implicitly explores a tree structure.
+              </p>
+
+              <ul>
+                <li>Each node represents a partial solution</li>
+                <li>Each edge represents a decision</li>
+                <li>Leaves correspond to complete assignments</li>
+              </ul>
+
+              <p>
+                The power of backtracking comes from the ability
+                to prune large portions of this tree
+                before fully exploring them.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="bt-part3-importance">
+
+              <h3>3.7 Why This Template Is Important</h3>
+
+              <p>
+                Many classical algorithms are direct instantiations
+                of this template.
+              </p>
+
+              <ul>
+                <li>N-Queens</li>
+                <li>Sudoku solvers</li>
+                <li>Permutation generation</li>
+                <li>Subset generation</li>
+                <li>Graph coloring</li>
+                <li>Hamiltonian path search</li>
+              </ul>
+
+              <p>
+                In each case, the differences lie in the
+                constraint checks and candidate generation,
+                not in the underlying search strategy.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part3-transition">
+
+              <h4>Next: Part 4 — Search Tree & Recursion Structure</h4>
+
+              <p>
+                Now that the generic algorithm has been defined,
+                the next step is to understand the structure it explores.
+              </p>
+
+              <p>
+                In Part 4, we analyze how the recursive calls correspond
+                to nodes of the search tree and how the exploration unfolds
+                across different levels of the decision process.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/backtracking/part-4.html">
+                  Part 4 — Search Tree & Recursion Structure →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
