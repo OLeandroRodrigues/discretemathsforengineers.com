@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 4 — Árvore de Busca & Estrutura da Recursão</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4 — Árvore de Busca & Estrutura da Recursão</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 4 — Árvore de Busca & Estrutura da Recursão</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 4 de 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="bt-part4-roadmap">
+
+              <h3>4. Árvore de Busca & Estrutura da Recursão</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Como a árvore de busca é estruturada</li>
+                  <li>Como a recursão se mapeia na árvore</li>
+                  <li>A relação entre profundidade e decisões</li>
+                  <li>Como a pilha de chamadas evolui durante a execução</li>
+                  <li>Por que o backtracking segue naturalmente DFS</li>
+                </ol>
+              </div>
+
+              <p>
+                Algoritmos de backtracking exploram uma estrutura conceitual:
+                a <strong>árvore de busca</strong>.
+              </p>
+
+              <p>
+                Ao mesmo tempo, eles são implementados usando recursão.
+                Entender como essas duas visões se alinham é essencial.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="bt-part4-tree">
+
+              <h3>4.1 A árvore de busca</h3>
+
+              <p>
+                O espaço de busca de um problema de backtracking pode ser visualizado
+                como uma árvore.
+              </p>
+
+              <ul>
+                <li>A raiz representa a solução vazia</li>
+                <li>Cada nível corresponde a uma decisão</li>
+                <li>Cada aresta representa uma escolha</li>
+                <li>Cada nó representa uma solução parcial</li>
+              </ul>
+
+              <p class="math-note">
+                Um nó na profundidade <span class="math">i</span> corresponde à sequência
+                <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bt-part4-depth">
+
+              <h3>4.2 Profundidade e níveis de decisão</h3>
+
+              <p>
+                A profundidade de um nó na árvore corresponde diretamente
+                ao número de decisões tomadas.
+              </p>
+
+              <p>
+                Se um problema possui <span class="math">n</span> variáveis,
+                a árvore tem no máximo <span class="math">n</span> níveis.
+              </p>
+
+              <div class="note">
+                <strong>Ideia-chave:</strong>
+                profundidade = número de variáveis atribuídas.
+              </div>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bt-part4-recursion">
+
+              <h3>4.3 Recursão como travessia da árvore</h3>
+
+              <p>
+                Cada chamada recursiva corresponde a um nó
+                na árvore de busca.
+              </p>
+
+              <ul>
+                <li>Entrar em uma chamada recursiva = descer na árvore</li>
+                <li>Retornar de uma chamada = subir na árvore</li>
+              </ul>
+
+              <p>
+                Portanto, o algoritmo realiza uma
+                <strong>travessia em profundidade (DFS)</strong>
+                da árvore de busca.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bt-part4-stack">
+
+              <h3>4.4 A pilha de chamadas</h3>
+
+              <p>
+                A pilha de recursão armazena o caminho da raiz
+                até o nó atual.
+              </p>
+
+              <p>
+                Em qualquer momento, a pilha contém:
+              </p>
+
+              <ul>
+                <li>a solução parcial atual</li>
+                <li>a sequência ativa de decisões</li>
+              </ul>
+
+              <p class="math-note">
+                Profundidade da pilha = profundidade da árvore.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bt-part4-dfs">
+
+              <h3>4.5 Por que backtracking usa DFS</h3>
+
+              <p>
+                O backtracking segue naturalmente uma estratégia em profundidade,
+                pois explora um ramo completamente antes de tentar outro.
+              </p>
+
+              <p>
+                Isso é eficiente porque:
+              </p>
+
+              <ul>
+                <li>usa pouca memória (apenas um caminho por vez)</li>
+                <li>permite poda antecipada de ramos inválidos</li>
+              </ul>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bt-part4-intuition">
+
+              <h3>4.6 Intuição visual</h3>
+
+              <p>
+                Você pode pensar no backtracking como:
+              </p>
+
+              <ol>
+                <li>Descer em um caminho (fazendo escolhas)</li>
+                <li>Encontrar um beco sem saída ou solução</li>
+                <li>Voltar (desfazer)</li>
+                <li>Tentar outro ramo</li>
+              </ol>
+
+              <div class="note">
+                Esse padrão de “descer → subir → tentar novamente”
+                é exatamente DFS com desfazer.
+              </div>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bt-part4-importance">
+
+              <h3>4.7 Por que isso importa</h3>
+
+              <p>
+                Entender essa estrutura é fundamental porque:
+              </p>
+
+              <ul>
+                <li>explica como a recursão funciona internamente</li>
+                <li>mostra como a poda reduz a complexidade</li>
+                <li>ajuda a analisar desempenho</li>
+              </ul>
+
+              <p>
+                Sem esse modelo mental,
+                o backtracking muitas vezes parece apenas “recursão mágica”.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part4-transition">
+
+              <h4>Próximo: Parte 5 — Poda</h4>
+
+              <p>
+                Agora que entendemos a estrutura da busca,
+                o próximo passo é torná-la eficiente.
+              </p>
+
+              <p>
+                Na Parte 5, estudamos como a poda elimina grandes partes
+                da árvore de busca e melhora drasticamente o desempenho.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">
+                  Parte 5 — Poda →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
