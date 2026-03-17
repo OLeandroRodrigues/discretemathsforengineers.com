@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 4 — Search Tree & Recursion Structure</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4 — Search Tree & Recursion Structure</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 4 — Search Tree & Recursion Structure</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 4 of 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-3.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-5.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="bt-part4-roadmap">
+
+              <h3>4. Search Tree & Recursion Structure</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>How the search tree is structured</li>
+                  <li>How recursion maps to the tree</li>
+                  <li>The relationship between depth and decisions</li>
+                  <li>How the call stack evolves during execution</li>
+                  <li>Why backtracking naturally follows DFS</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking algorithms explore a conceptual structure:
+                the <strong>search tree</strong>.
+              </p>
+
+              <p>
+                At the same time, they are implemented using recursion.
+                Understanding how these two views align is essential.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="bt-part4-tree">
+
+              <h3>4.1 The Search Tree</h3>
+
+              <p>
+                The search space of a backtracking problem can be visualized
+                as a tree.
+              </p>
+
+              <ul>
+                <li>The root represents the empty solution</li>
+                <li>Each level corresponds to one decision</li>
+                <li>Each edge represents a choice</li>
+                <li>Each node represents a partial solution</li>
+              </ul>
+
+              <p class="math-note">
+                A node at depth <span class="math">i</span> corresponds to
+                a sequence <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bt-part4-depth">
+
+              <h3>4.2 Depth and Decision Levels</h3>
+
+              <p>
+                The depth of a node in the tree corresponds directly
+                to the number of decisions made.
+              </p>
+
+              <p>
+                If a problem has <span class="math">n</span> variables,
+                the tree has at most <span class="math">n</span> levels.
+              </p>
+
+              <div class="note">
+                <strong>Key idea:</strong>
+                depth = number of assigned variables.
+              </div>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bt-part4-recursion">
+
+              <h3>4.3 Recursion as Tree Traversal</h3>
+
+              <p>
+                Each recursive call corresponds to one node
+                in the search tree.
+              </p>
+
+              <ul>
+                <li>Entering a recursive call = moving down the tree</li>
+                <li>Returning from a call = moving back up</li>
+              </ul>
+
+              <p>
+                Therefore, the algorithm performs a
+                <strong>depth-first traversal</strong> of the search tree.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bt-part4-stack">
+
+              <h3>4.4 The Call Stack</h3>
+
+              <p>
+                The recursion stack stores the path from the root
+                to the current node.
+              </p>
+
+              <p>
+                At any moment, the stack contains:
+              </p>
+
+              <ul>
+                <li>the current partial solution</li>
+                <li>the active sequence of decisions</li>
+              </ul>
+
+              <p class="math-note">
+                Stack depth = tree depth.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bt-part4-dfs">
+
+              <h3>4.5 Why Backtracking Uses DFS</h3>
+
+              <p>
+                Backtracking naturally follows a depth-first strategy
+                because it explores one branch fully before trying another.
+              </p>
+
+              <p>
+                This is efficient because:
+              </p>
+
+              <ul>
+                <li>it uses limited memory (only one path at a time)</li>
+                <li>it allows early pruning of invalid branches</li>
+              </ul>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bt-part4-intuition">
+
+              <h3>4.6 Visual Intuition</h3>
+
+              <p>
+                You can think of backtracking as:
+              </p>
+
+              <ol>
+                <li>Going down a path (making choices)</li>
+                <li>Reaching a dead end or solution</li>
+                <li>Going back up (undo)</li>
+                <li>Trying a different branch</li>
+              </ol>
+
+              <div class="note">
+                This “go down → go up → try again” pattern
+                is exactly DFS with undo.
+              </div>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bt-part4-importance">
+
+              <h3>4.7 Why This Matters</h3>
+
+              <p>
+                Understanding this structure is critical because:
+              </p>
+
+              <ul>
+                <li>it explains how recursion works internally</li>
+                <li>it clarifies how pruning reduces complexity</li>
+                <li>it helps reason about performance</li>
+              </ul>
+
+              <p>
+                Without this mental model,
+                backtracking often feels like “magic recursion”.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part4-transition">
+
+              <h4>Next: Part 5 — Pruning</h4>
+
+              <p>
+                Now that we understand the structure of the search,
+                the next step is to make it efficient.
+              </p>
+
+              <p>
+                In Part 5, we study how pruning eliminates large parts
+                of the search tree and dramatically improves performance.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/part-5.html">
+                  Part 5 — Pruning →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
