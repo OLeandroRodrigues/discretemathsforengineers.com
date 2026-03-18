@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 5 — Poda</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 5 — Poda</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 5 — Poda</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 5 de 6</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="bt-part5-roadmap">
+
+              <h3>5. Poda</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que a poda é essencial</li>
+                  <li>Como restrições reduzem o espaço de busca</li>
+                  <li>Poda antecipada vs tardia</li>
+                  <li>Limites (bounding) e otimização</li>
+                  <li>Impacto na complexidade</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking sem poda geralmente é impraticável.
+              </p>
+
+              <p>
+                A árvore de busca cresce exponencialmente,
+                e explorar todos os ramos rapidamente se torna inviável.
+              </p>
+
+              <p>
+                <strong>A poda é o que torna o backtracking eficiente.</strong>
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="bt-part5-why">
+
+              <h3>5.1 Por que a poda é importante</h3>
+
+              <p>
+                Em muitos problemas, a árvore de busca completa é enorme.
+              </p>
+
+              <p>
+                No entanto, a maioria dos ramos não leva a soluções válidas.
+              </p>
+
+              <div class="note">
+                <strong>Objetivo:</strong>
+                evitar explorar ramos inúteis.
+              </div>
+
+              <p>
+                A poda permite que o algoritmo ignore subárvores inteiras
+                que não podem produzir uma solução válida.
+              </p>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="bt-part5-constraints">
+
+              <h3>5.2 Poda baseada em restrições</h3>
+
+              <p>
+                A forma mais básica de poda vem das restrições.
+              </p>
+
+              <p>
+                Se uma solução parcial viola restrições,
+                paramos imediatamente a exploração.
+              </p>
+
+              <div class="math-block">
+                <span class="math">if ¬C(x₁, …, xᵢ) → poda</span>
+              </div>
+
+              <p>
+                Isso é chamado de <strong>poda antecipada</strong>.
+              </p>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="bt-part5-early-late">
+
+              <h3>5.3 Poda antecipada vs tardia</h3>
+
+              <p>
+                A poda pode ocorrer em diferentes momentos:
+              </p>
+
+              <ul>
+                <li><strong>Poda antecipada:</strong> rejeitar o mais cedo possível</li>
+                <li><strong>Poda tardia:</strong> rejeitar após explorar mais profundamente</li>
+              </ul>
+
+              <div class="note">
+                Quanto mais cedo podarmos, mais trabalho economizamos.
+              </div>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="bt-part5-bounding">
+
+              <h3>5.4 Limites (Bounding) em problemas de otimização</h3>
+
+              <p>
+                Em problemas de otimização, podemos usar limites para podar.
+              </p>
+
+              <p>
+                Se uma solução parcial não pode superar a melhor solução conhecida,
+                ela pode ser descartada.
+              </p>
+
+              <div class="math-block">
+                <span class="math">if bound(state) ≤ best → poda</span>
+              </div>
+
+              <p>
+                Essa ideia é a base do
+                <strong>Branch and Bound</strong>.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="bt-part5-effect">
+
+              <h3>5.5 Impacto na complexidade</h3>
+
+              <p>
+                Em teoria, backtracking é exponencial.
+              </p>
+
+              <p>
+                Mas com poda eficiente, o número real de nós explorados
+                pode ser drasticamente menor.
+              </p>
+
+              <ul>
+                <li>Pior caso: exponencial</li>
+                <li>Com poda: frequentemente muito mais rápido na prática</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="bt-part5-intuition">
+
+              <h3>5.6 Intuição</h3>
+
+              <p>
+                Sem poda:
+              </p>
+
+              <p class="math-note">
+                explorar tudo → lento
+              </p>
+
+              <p>
+                Com poda:
+              </p>
+
+              <p class="math-note">
+                explorar apenas caminhos promissores → rápido
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="bt-part5-summary">
+
+              <h3>5.7 Resumo</h3>
+
+              <ul>
+                <li>A poda elimina ramos inúteis</li>
+                <li>Restrições permitem poda antecipada</li>
+                <li>Limites permitem poda em otimização</li>
+                <li>A eficiência depende fortemente da qualidade da poda</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                backtracking só é realmente poderoso quando combinado com poda.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part5-transition">
+
+              <h4>Próximo: Parte 6 — Problemas Clássicos</h4>
+
+              <p>
+                Agora que entendemos como o backtracking funciona
+                e como torná-lo eficiente,
+                podemos estudar problemas reais.
+              </p>
+
+              <p>
+                Na Parte 6, aplicamos backtracking em problemas clássicos
+                como N-Queens, permutações e problemas em grafos.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">
+                  Parte 6 — Problemas Clássicos →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
