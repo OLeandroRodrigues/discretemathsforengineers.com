@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 6 — Classic Problems</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 6 — Classic Problems</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 6 — Classic Problems</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 6 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-5.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-7.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 6.0 -->
+            <section class="card" id="bt-part6-roadmap">
+
+              <h3>6. Classic Problems</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why backtracking appears in many classical problems</li>
+                  <li>How different problems share the same search structure</li>
+                  <li>What changes from one problem to another</li>
+                  <li>How constraints define pruning strategies</li>
+                  <li>Why these examples matter in algorithms and interviews</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking is not a single problem-specific trick.
+              </p>
+
+              <p>
+                It is a general search strategy that appears in many classical problems
+                from combinatorics, graph theory, and constraint satisfaction.
+              </p>
+
+              <p>
+                The purpose of this part is to connect the generic algorithm
+                with concrete and well-known applications.
+              </p>
+
+            </section>
+
+            <!-- 6.1 -->
+            <section class="card" id="bt-part6-permutations">
+
+              <h3>6.1 Permutation Generation</h3>
+
+              <p>
+                One of the simplest applications of backtracking is the generation
+                of all permutations of a set.
+              </p>
+
+              <p>
+                At each level, the algorithm chooses one element that has not yet
+                been used.
+              </p>
+
+              <ul>
+                <li>Partial solution = current permutation prefix</li>
+                <li>Choices = unused elements</li>
+                <li>Goal = complete permutation</li>
+              </ul>
+
+              <p class="math-note">
+                This is often the first problem used to introduce backtracking.
+              </p>
+
+            </section>
+
+            <!-- 6.2 -->
+            <section class="card" id="bt-part6-subsets">
+
+              <h3>6.2 Subset Generation</h3>
+
+              <p>
+                Another classical example is generating all subsets of a set.
+              </p>
+
+              <p>
+                Each decision answers a binary question:
+                include an element or exclude it.
+              </p>
+
+              <ul>
+                <li>Each level corresponds to one element</li>
+                <li>Each node branches into two possibilities</li>
+                <li>The leaves represent complete subsets</li>
+              </ul>
+
+              <p>
+                This makes the search tree especially clear and easy to visualize.
+              </p>
+
+            </section>
+
+            <!-- 6.3 -->
+            <section class="card" id="bt-part6-nqueens">
+
+              <h3>6.3 N-Queens</h3>
+
+              <p>
+                The N-Queens problem is one of the most famous backtracking problems.
+              </p>
+
+              <p>
+                The task is to place <span class="math">n</span> queens on an
+                <span class="math">n × n</span> chessboard so that no two queens attack each other.
+              </p>
+
+              <ul>
+                <li>Partial solution = queens placed so far</li>
+                <li>Choices = possible columns for the next row</li>
+                <li>Constraints = no shared column or diagonal</li>
+              </ul>
+
+              <div class="note">
+                N-Queens is a canonical example because pruning makes a dramatic difference.
+              </div>
+
+            </section>
+
+            <!-- 6.4 -->
+            <section class="card" id="bt-part6-sudoku">
+
+              <h3>6.4 Sudoku</h3>
+
+              <p>
+                Sudoku can also be solved with backtracking.
+              </p>
+
+              <p>
+                The algorithm fills empty cells one by one,
+                testing whether each placement respects the puzzle rules.
+              </p>
+
+              <ul>
+                <li>Choices = digits that can be placed in a cell</li>
+                <li>Constraints = row, column, and subgrid consistency</li>
+                <li>Goal = fill the entire board</li>
+              </ul>
+
+              <p>
+                This is a strong example of constraint-driven pruning.
+              </p>
+
+            </section>
+
+            <!-- 6.5 -->
+            <section class="card" id="bt-part6-coloring">
+
+              <h3>6.5 Graph Coloring</h3>
+
+              <p>
+                In graph coloring, we assign colors to vertices
+                so that adjacent vertices receive different colors.
+              </p>
+
+              <p>
+                A backtracking solution assigns colors one vertex at a time.
+              </p>
+
+              <ul>
+                <li>Partial solution = colors assigned so far</li>
+                <li>Choices = available colors</li>
+                <li>Constraint = adjacent vertices cannot share a color</li>
+              </ul>
+
+              <p class="math-note">
+                This example connects backtracking directly to graph theory.
+              </p>
+
+            </section>
+
+            <!-- 6.6 -->
+            <section class="card" id="bt-part6-hamiltonian">
+
+              <h3>6.6 Hamiltonian Path</h3>
+
+              <p>
+                The Hamiltonian Path problem asks whether a graph contains
+                a path that visits every vertex exactly once.
+              </p>
+
+              <p>
+                Backtracking explores possible vertex sequences while rejecting
+                branches that repeat vertices or break adjacency.
+              </p>
+
+              <ul>
+                <li>Partial solution = current path</li>
+                <li>Choices = admissible next vertices</li>
+                <li>Goal = a path containing all vertices</li>
+              </ul>
+
+              <div class="note">
+                This is a classical example where the search can become very expensive.
+              </div>
+
+            </section>
+
+            <!-- 6.7 -->
+            <section class="card" id="bt-part6-common-structure">
+
+              <h3>6.7 The Common Structure</h3>
+
+              <p>
+                Although these problems look different,
+                they all share the same abstract structure:
+              </p>
+
+              <ul>
+                <li>build a partial solution incrementally</li>
+                <li>generate possible next choices</li>
+                <li>test feasibility</li>
+                <li>recurse</li>
+                <li>undo and try another branch</li>
+              </ul>
+
+              <p>
+                What changes from one problem to another is not the search strategy,
+                but the definition of state, choices, and constraints.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part6-transition">
+
+              <h4>Next: Part 7 — Complexity</h4>
+
+              <p>
+                Now that we have seen classical applications,
+                the next step is to study the computational cost
+                of backtracking.
+              </p>
+
+              <p>
+                In Part 7, we analyze branching factor, depth,
+                worst-case behavior, and why pruning changes practice
+                more than theory.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/part-7.html">
+                  Part 7 — Complexity →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
