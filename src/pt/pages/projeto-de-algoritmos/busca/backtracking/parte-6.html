@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 6 — Problemas Clássicos</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 6 — Problemas Clássicos</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 6 — Problemas Clássicos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 6 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 6.0 -->
+            <section class="card" id="bt-part6-roadmap">
+
+              <h3>6. Problemas Clássicos</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que o backtracking aparece em muitos problemas clássicos</li>
+                  <li>Como diferentes problemas compartilham a mesma estrutura de busca</li>
+                  <li>O que muda de um problema para outro</li>
+                  <li>Como as restrições definem estratégias de poda</li>
+                  <li>Por que esses exemplos são importantes em algoritmos e entrevistas</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking não é um truque específico de um único problema.
+              </p>
+
+              <p>
+                É uma estratégia geral de busca que aparece em muitos problemas clássicos
+                de combinatória, teoria dos grafos e satisfação de restrições.
+              </p>
+
+              <p>
+                O objetivo desta parte é conectar o algoritmo genérico
+                com aplicações concretas e bem conhecidas.
+              </p>
+
+            </section>
+
+            <!-- 6.1 -->
+            <section class="card" id="bt-part6-permutations">
+
+              <h3>6.1 Geração de Permutações</h3>
+
+              <p>
+                Uma das aplicações mais simples de backtracking é gerar
+                todas as permutações de um conjunto.
+              </p>
+
+              <p>
+                Em cada nível, o algoritmo escolhe um elemento que ainda
+                não foi utilizado.
+              </p>
+
+              <ul>
+                <li>Solução parcial = prefixo da permutação</li>
+                <li>Escolhas = elementos não utilizados</li>
+                <li>Objetivo = permutação completa</li>
+              </ul>
+
+              <p class="math-note">
+                Este costuma ser o primeiro problema usado para introduzir backtracking.
+              </p>
+
+            </section>
+
+            <!-- 6.2 -->
+            <section class="card" id="bt-part6-subsets">
+
+              <h3>6.2 Geração de Subconjuntos</h3>
+
+              <p>
+                Outro exemplo clássico é gerar todos os subconjuntos de um conjunto.
+              </p>
+
+              <p>
+                Cada decisão responde a uma pergunta binária:
+                incluir ou não incluir um elemento.
+              </p>
+
+              <ul>
+                <li>Cada nível corresponde a um elemento</li>
+                <li>Cada nó gera dois ramos</li>
+                <li>As folhas representam subconjuntos completos</li>
+              </ul>
+
+              <p>
+                Isso torna a árvore de busca muito clara e fácil de visualizar.
+              </p>
+
+            </section>
+
+            <!-- 6.3 -->
+            <section class="card" id="bt-part6-nqueens">
+
+              <h3>6.3 N-Queens</h3>
+
+              <p>
+                O problema das N-Rainhas é um dos exemplos mais famosos de backtracking.
+              </p>
+
+              <p>
+                O objetivo é posicionar <span class="math">n</span> rainhas em um
+                tabuleiro <span class="math">n × n</span> sem que elas se ataquem.
+              </p>
+
+              <ul>
+                <li>Solução parcial = rainhas já posicionadas</li>
+                <li>Escolhas = colunas possíveis na próxima linha</li>
+                <li>Restrições = sem conflito em coluna ou diagonal</li>
+              </ul>
+
+              <div class="note">
+                N-Queens é um exemplo clássico onde a poda faz enorme diferença.
+              </div>
+
+            </section>
+
+            <!-- 6.4 -->
+            <section class="card" id="bt-part6-sudoku">
+
+              <h3>6.4 Sudoku</h3>
+
+              <p>
+                Sudoku também pode ser resolvido com backtracking.
+              </p>
+
+              <p>
+                O algoritmo preenche as células vazias uma a uma,
+                verificando se cada escolha respeita as regras.
+              </p>
+
+              <ul>
+                <li>Escolhas = números possíveis para a célula</li>
+                <li>Restrições = linha, coluna e subgrade</li>
+                <li>Objetivo = preencher todo o tabuleiro</li>
+              </ul>
+
+              <p>
+                Esse é um ótimo exemplo de poda baseada em restrições.
+              </p>
+
+            </section>
+
+            <!-- 6.5 -->
+            <section class="card" id="bt-part6-coloring">
+
+              <h3>6.5 Coloração de Grafos</h3>
+
+              <p>
+                Na coloração de grafos, atribuímos cores aos vértices
+                de forma que vértices adjacentes tenham cores diferentes.
+              </p>
+
+              <p>
+                O backtracking atribui cores vértice por vértice.
+              </p>
+
+              <ul>
+                <li>Solução parcial = cores atribuídas</li>
+                <li>Escolhas = cores disponíveis</li>
+                <li>Restrição = vértices adjacentes não podem ter a mesma cor</li>
+              </ul>
+
+              <p class="math-note">
+                Esse problema conecta backtracking diretamente à teoria dos grafos.
+              </p>
+
+            </section>
+
+            <!-- 6.6 -->
+            <section class="card" id="bt-part6-hamiltonian">
+
+              <h3>6.6 Caminho Hamiltoniano</h3>
+
+              <p>
+                O problema do caminho Hamiltoniano busca um caminho que visita
+                cada vértice exatamente uma vez.
+              </p>
+
+              <p>
+                O backtracking explora sequências possíveis de vértices,
+                descartando aquelas inválidas.
+              </p>
+
+              <ul>
+                <li>Solução parcial = caminho atual</li>
+                <li>Escolhas = próximos vértices válidos</li>
+                <li>Objetivo = visitar todos os vértices</li>
+              </ul>
+
+              <div class="note">
+                Esse é um exemplo clássico de alto custo computacional.
+              </div>
+
+            </section>
+
+            <!-- 6.7 -->
+            <section class="card" id="bt-part6-common-structure">
+
+              <h3>6.7 Estrutura Comum</h3>
+
+              <p>
+                Apesar das diferenças, todos esses problemas compartilham
+                a mesma estrutura:
+              </p>
+
+              <ul>
+                <li>construir solução incrementalmente</li>
+                <li>gerar escolhas</li>
+                <li>testar restrições</li>
+                <li>recursão</li>
+                <li>desfazer (backtrack)</li>
+              </ul>
+
+              <p>
+                O que muda não é o algoritmo,
+                mas a definição de estado, escolhas e restrições.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part6-transition">
+
+              <h4>Próximo: Parte 7 — Complexidade</h4>
+
+              <p>
+                Agora que vimos aplicações reais,
+                o próximo passo é analisar o custo computacional.
+              </p>
+
+              <p>
+                Na Parte 7, estudamos fator de ramificação, profundidade
+                e comportamento no pior caso.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">
+                  Parte 7 — Complexidade →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
