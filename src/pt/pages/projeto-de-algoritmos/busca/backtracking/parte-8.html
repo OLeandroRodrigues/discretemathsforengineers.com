@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 8 — Backtracking vs DFS vs Programação Dinâmica</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 8 — Backtracking vs DFS vs Programação Dinâmica</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 8 — Backtracking vs DFS vs Programação Dinâmica</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 8 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Índice →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card" id="bt-part8-roadmap">
+
+              <h3>8. Backtracking vs DFS vs Programação Dinâmica</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que essas técnicas são frequentemente confundidas</li>
+                  <li>Como backtracking difere de DFS puro</li>
+                  <li>Como backtracking difere de Programação Dinâmica</li>
+                  <li>Que tipo de problema cada método resolve melhor</li>
+                  <li>Como escolher a ferramenta certa na prática</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking, Busca em Profundidade (DFS) e Programação Dinâmica (DP)
+                são técnicas fundamentais em projeto de algoritmos.
+              </p>
+
+              <p>
+                Às vezes elas parecem semelhantes porque as três podem envolver recursão,
+                transições de estado e exploração estruturada.
+              </p>
+
+              <p>
+                No entanto, elas resolvem tipos diferentes de problemas
+                e se baseiam em ideias centrais diferentes.
+              </p>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="bt-part8-backtracking-vs-dfs">
+
+              <h3>8.1 Backtracking vs DFS</h3>
+
+              <p>
+                O backtracking frequentemente é implementado como uma travessia em profundidade
+                de uma árvore de busca.
+              </p>
+
+              <p>
+                É por isso que ele pode parecer DFS.
+              </p>
+
+              <ul>
+                <li><strong>DFS:</strong> estratégia de travessia para grafos ou árvores</li>
+                <li><strong>Backtracking:</strong> método de busca para construir soluções sob restrições</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal distinção:</strong>
+                DFS nos diz <em>como explorar</em>;
+                backtracking nos diz <em>o que explorar e quando desfazer</em>.
+              </div>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="bt-part8-dfs-role">
+
+              <h3>8.2 DFS como mecanismo de travessia</h3>
+
+              <p>
+                DFS é um padrão genérico de travessia:
+                ir fundo primeiro e depois retornar.
+              </p>
+
+              <p>
+                Ele é usado em:
+              </p>
+
+              <ul>
+                <li>travessia de grafos</li>
+                <li>detecção de ciclos</li>
+                <li>ordenação topológica</li>
+                <li>componentes conexas</li>
+              </ul>
+
+              <p>
+                DFS não define, por si só, restrições, escolhas candidatas
+                ou regras de construção de solução.
+              </p>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="bt-part8-backtracking-role">
+
+              <h3>8.3 Backtracking como busca com restrições</h3>
+
+              <p>
+                O backtracking usa um padrão em profundidade,
+                mas seu objetivo é diferente.
+              </p>
+
+              <p>
+                Ele constrói incrementalmente uma solução candidata,
+                verifica a viabilidade e desfaz escolhas quando necessário.
+              </p>
+
+              <ul>
+                <li>construir solução parcial</li>
+                <li>testar restrições</li>
+                <li>podar ramos inválidos</li>
+                <li>desfazer e tentar outra opção</li>
+              </ul>
+
+              <p class="math-note">
+                Assim, o backtracking pode ser visto como DFS + restrições + lógica de desfazer.
+              </p>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="bt-part8-backtracking-vs-dp">
+
+              <h3>8.4 Backtracking vs Programação Dinâmica</h3>
+
+              <p>
+                Backtracking e Programação Dinâmica são frequentemente comparados
+                porque ambos podem resolver problemas combinatórios.
+              </p>
+
+              <p>
+                Mas eles se baseiam em ideias muito diferentes:
+              </p>
+
+              <ul>
+                <li><strong>Backtracking:</strong> explorar possibilidades e podar</li>
+                <li><strong>Programação Dinâmica:</strong> reutilizar soluções de subproblemas sobrepostos</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal distinção:</strong>
+                backtracking busca;
+                DP armazena e reutiliza resultados já calculados.
+              </div>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="bt-part8-overlap">
+
+              <h3>8.5 Subproblemas sobrepostos</h3>
+
+              <p>
+                A Programação Dinâmica se torna poderosa quando o mesmo subproblema
+                aparece muitas vezes.
+              </p>
+
+              <p>
+                Nesse caso, recalculá-lo é desperdício.
+              </p>
+
+              <div class="math-block">
+                <span class="math">mesmo estado → mesma resposta</span>
+              </div>
+
+              <p>
+                DP evita trabalho repetido por meio de memoização ou tabulação.
+              </p>
+
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="bt-part8-when-dp">
+
+              <h3>8.6 Quando DP substitui o backtracking</h3>
+
+              <p>
+                Alguns problemas que parecem convidar ao backtracking
+                podem, na verdade, ser resolvidos de forma mais eficiente com DP.
+              </p>
+
+              <p>
+                Isso acontece quando:
+              </p>
+
+              <ul>
+                <li>há forte sobreposição de subproblemas</li>
+                <li>existe subestrutura ótima</li>
+                <li>o estado pode ser representado de forma compacta</li>
+              </ul>
+
+              <p>
+                Nesses casos, DP pode reduzir uma recursão exponencial
+                para tempo polinomial.
+              </p>
+
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="bt-part8-comparison-table">
+
+              <h3>8.7 Comparação prática</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Técnica</th>
+                      <th>Ideia principal</th>
+                      <th>Melhor para</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>DFS</strong></td>
+                      <td>Explorar em profundidade primeiro</td>
+                      <td>Travessia de grafos e árvores</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Backtracking</strong></td>
+                      <td>Busca com restrições e desfazer</td>
+                      <td>Satisfação de restrições e busca combinatória</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Programação Dinâmica</strong></td>
+                      <td>Reutilizar subproblemas repetidos</td>
+                      <td>Otimização e subproblemas sobrepostos</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="bt-part8-choice">
+
+              <h3>8.8 Como escolher</h3>
+
+              <p>
+                Uma regra prática útil é:
+              </p>
+
+              <ul>
+                <li>Use <strong>DFS</strong> quando o problema for principalmente de travessia</li>
+                <li>Use <strong>Backtracking</strong> quando for necessário construir soluções sob restrições</li>
+                <li>Use <strong>Programação Dinâmica</strong> quando subproblemas repetidos puderem ser reutilizados</li>
+              </ul>
+
+              <div class="note">
+                <strong>Importante:</strong>
+                alguns problemas combinam essas ideias.
+                Por exemplo, uma solução recursiva por backtracking pode depois ser otimizada com memoização.
+              </div>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="bt-part8-conclusion">
+
+              <h4>Conclusão da série</h4>
+
+              <p>
+                O backtracking é melhor entendido não como “apenas recursão”,
+                mas como um método disciplinado para explorar um espaço de busca com restrições.
+              </p>
+
+              <p>
+                Ao longo desta série, estudamos seu modelo de problema,
+                mecanismo recursivo, estrutura da árvore de busca, poda,
+                aplicações clássicas, complexidade e relação
+                com outras técnicas importantes.
+              </p>
+
+              <div class="note">
+                <strong>Próximo passo:</strong>
+                volte para o
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">
+                  índice de Backtracking
+                </a>
+                ou continue para tópicos relacionados em Busca.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

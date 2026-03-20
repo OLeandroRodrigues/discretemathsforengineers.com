@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Projeto de Algoritmos → Busca → Backtracking · Parte 7 — Complexidade</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 7 — Complexidade</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Parte 7 — Complexidade</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Backtracking</strong>
+            <span>Parte 7 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">Próxima →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/index.html">Visão Geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-6.html">6</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card" id="bt-part7-roadmap">
+
+              <h3>7. Complexidade</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Por que backtracking é geralmente exponencial</li>
+                  <li>O papel do fator de ramificação e da profundidade</li>
+                  <li>Complexidade no pior caso</li>
+                  <li>Complexidade de espaço e profundidade da recursão</li>
+                  <li>Por que a poda muda mais a prática do que a teoria</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking é poderoso, mas também é custoso.
+              </p>
+
+              <p>
+                Seu tempo de execução depende de quantos nós da árvore de busca
+                são realmente explorados.
+              </p>
+
+              <p>
+                No pior caso, esse número cresce exponencialmente.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bt-part7-tree-size">
+
+              <h3>7.1 A Complexidade Vem da Árvore de Busca</h3>
+
+              <p>
+                A complexidade do backtracking é determinada pelo tamanho
+                da árvore de busca.
+              </p>
+
+              <p>
+                Cada nó representa uma solução parcial,
+                e o algoritmo pode precisar visitar muitos desses nós.
+              </p>
+
+              <p class="math-note">
+                Complexidade de tempo ≈ número de nós explorados.
+              </p>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bt-part7-branching">
+
+              <h3>7.2 Fator de Ramificação</h3>
+
+              <p>
+                Seja <span class="math">b</span> o fator de ramificação,
+                ou seja, o número máximo de filhos que um nó pode ter.
+              </p>
+
+              <p>
+                Se cada decisão oferece muitas opções,
+                a árvore cresce muito rapidamente.
+              </p>
+
+              <div class="math-block">
+                <span class="math">b = número de escolhas possíveis por nível</span>
+              </div>
+
+              <p>
+                Quanto maior o fator de ramificação, maior tende a ser o tempo de execução.
+              </p>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bt-part7-depth">
+
+              <h3>7.3 Profundidade da Árvore</h3>
+
+              <p>
+                Seja <span class="math">d</span> a profundidade máxima
+                da árvore de busca.
+              </p>
+
+              <p>
+                Em muitos problemas, a profundidade corresponde ao número
+                de variáveis de decisão.
+              </p>
+
+              <div class="math-block">
+                <span class="math">d = número de decisões para uma solução completa</span>
+              </div>
+
+              <p>
+                Quanto mais profunda a árvore, mais caminhos possíveis existem.
+              </p>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bt-part7-worst-case">
+
+              <h3>7.4 Complexidade no Pior Caso</h3>
+
+              <p>
+                Se cada nó tem até <span class="math">b</span> filhos
+                e a árvore tem profundidade <span class="math">d</span>,
+                o número de nós pode ser da ordem de:
+              </p>
+
+              <div class="math-block">
+                <span class="math">O(b<sup>d</sup>)</span>
+              </div>
+
+              <p>
+                Essa é a complexidade padrão no pior caso
+                do backtracking.
+              </p>
+
+              <div class="note">
+                <strong>Importante:</strong>
+                é por isso que backtracking costuma ser exponencial.
+              </div>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bt-part7-examples">
+
+              <h3>7.5 Exemplos</h3>
+
+              <p>
+                Diferentes problemas levam a diferentes valores de
+                <span class="math">b</span> e <span class="math">d</span>.
+              </p>
+
+              <ul>
+                <li>Subconjuntos: <span class="math">b = 2</span>, <span class="math">d = n</span> → <span class="math">O(2<sup>n</sup>)</span></li>
+                <li>Permutações: aproximadamente <span class="math">O(n!)</span></li>
+                <li>N-Rainhas: exponencial no pior caso</li>
+                <li>Caminho Hamiltoniano: exponencial no pior caso</li>
+              </ul>
+
+              <p>
+                Ou seja, o custo depende fortemente do problema específico.
+              </p>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bt-part7-space">
+
+              <h3>7.6 Complexidade de Espaço</h3>
+
+              <p>
+                Backtracking geralmente usa menos memória que métodos em largura.
+              </p>
+
+              <p>
+                Como explora um caminho por vez,
+                o custo principal vem da pilha de recursão.
+              </p>
+
+              <div class="math-block">
+                <span class="math">Espaço = O(d)</span>
+              </div>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bt-part7-pruning">
+
+              <h3>7.7 O Efeito da Poda</h3>
+
+              <p>
+                Em teoria, a poda não muda a classe de complexidade:
+                continua sendo exponencial.
+              </p>
+
+              <p>
+                Mas na prática, ela pode reduzir drasticamente
+                o número de nós explorados.
+              </p>
+
+              <div class="note">
+                A poda muda muito mais o desempenho prático do que a teoria.
+              </div>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card" id="bt-part7-takeaway">
+
+              <h3>7.8 Conclusão</h3>
+
+              <p>
+                Backtracking é caro porque explora um espaço combinatório.
+              </p>
+
+              <p>
+                Seu custo depende de:
+              </p>
+
+              <ul>
+                <li>fator de ramificação</li>
+                <li>profundidade</li>
+                <li>qualidade da poda</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part7-transition">
+
+              <h4>Próximo: Parte 8 — Backtracking vs DFS vs Programação Dinâmica</h4>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/backtracking/parte-8.html">
+                  Parte 8 →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

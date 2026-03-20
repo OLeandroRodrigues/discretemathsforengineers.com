@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 8 — Backtracking vs DFS vs Dynamic Programming</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 8 — Backtracking vs DFS vs Dynamic Programming</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 8 — Backtracking vs DFS vs Dynamic Programming</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 8 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-7.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/index.html">Index →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card" id="bt-part8-roadmap">
+
+              <h3>8. Backtracking vs DFS vs Dynamic Programming</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why these techniques are often confused</li>
+                  <li>How backtracking differs from plain DFS</li>
+                  <li>How backtracking differs from Dynamic Programming</li>
+                  <li>What kind of problems each method solves best</li>
+                  <li>How to choose the right tool in practice</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking, Depth-First Search (DFS), and Dynamic Programming (DP)
+                are all fundamental techniques in algorithm design.
+              </p>
+
+              <p>
+                They sometimes look similar because all three may involve recursion,
+                state transitions, and structured exploration.
+              </p>
+
+              <p>
+                However, they solve different kinds of problems
+                and rely on different core ideas.
+              </p>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="bt-part8-backtracking-vs-dfs">
+
+              <h3>8.1 Backtracking vs DFS</h3>
+
+              <p>
+                Backtracking is often implemented as a depth-first traversal
+                of a search tree.
+              </p>
+
+              <p>
+                That is why it may look like DFS.
+              </p>
+
+              <ul>
+                <li><strong>DFS:</strong> traversal strategy for graphs or trees</li>
+                <li><strong>Backtracking:</strong> search method for constructing solutions under constraints</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main distinction:</strong>
+                DFS tells us <em>how to explore</em>;
+                backtracking tells us <em>what to explore and when to undo</em>.
+              </div>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="bt-part8-dfs-role">
+
+              <h3>8.2 DFS as a Traversal Mechanism</h3>
+
+              <p>
+                DFS is a generic traversal pattern:
+                go deep first, then return.
+              </p>
+
+              <p>
+                It is used in:
+              </p>
+
+              <ul>
+                <li>graph traversal</li>
+                <li>cycle detection</li>
+                <li>topological sorting</li>
+                <li>connected components</li>
+              </ul>
+
+              <p>
+                DFS does not, by itself, define constraints, candidate choices,
+                or solution construction rules.
+              </p>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="bt-part8-backtracking-role">
+
+              <h3>8.3 Backtracking as Constrained Search</h3>
+
+              <p>
+                Backtracking uses a depth-first pattern,
+                but its goal is different.
+              </p>
+
+              <p>
+                It incrementally builds a candidate solution,
+                checks feasibility, and undoes choices when necessary.
+              </p>
+
+              <ul>
+                <li>build partial solution</li>
+                <li>test constraints</li>
+                <li>prune invalid branches</li>
+                <li>undo and try another option</li>
+              </ul>
+
+              <p class="math-note">
+                So backtracking can be seen as DFS + constraints + undo logic.
+              </p>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="bt-part8-backtracking-vs-dp">
+
+              <h3>8.4 Backtracking vs Dynamic Programming</h3>
+
+              <p>
+                Backtracking and Dynamic Programming are often compared
+                because both may solve combinatorial problems.
+              </p>
+
+              <p>
+                But they are based on very different ideas:
+              </p>
+
+              <ul>
+                <li><strong>Backtracking:</strong> explore possibilities and prune</li>
+                <li><strong>Dynamic Programming:</strong> reuse solutions to overlapping subproblems</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main distinction:</strong>
+                backtracking searches;
+                DP stores and reuses computed results.
+              </div>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="bt-part8-overlap">
+
+              <h3>8.5 Overlapping Subproblems</h3>
+
+              <p>
+                Dynamic Programming becomes powerful when the same subproblem
+                appears many times.
+              </p>
+
+              <p>
+                In that case, recomputing it is wasteful.
+              </p>
+
+              <div class="math-block">
+                <span class="math">same state → same answer</span>
+              </div>
+
+              <p>
+                DP avoids repeated work by memoization or tabulation.
+              </p>
+
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="bt-part8-when-dp">
+
+              <h3>8.6 When DP Replaces Backtracking</h3>
+
+              <p>
+                Some problems that seem to invite backtracking
+                can actually be solved more efficiently with DP.
+              </p>
+
+              <p>
+                This happens when:
+              </p>
+
+              <ul>
+                <li>subproblems overlap heavily</li>
+                <li>optimal substructure exists</li>
+                <li>the state can be represented compactly</li>
+              </ul>
+
+              <p>
+                In such cases, DP may reduce exponential recursion
+                to polynomial time.
+              </p>
+
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="bt-part8-comparison-table">
+
+              <h3>8.7 Practical Comparison</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Technique</th>
+                      <th>Main Idea</th>
+                      <th>Best For</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>DFS</strong></td>
+                      <td>Traverse deeply first</td>
+                      <td>Graph and tree exploration</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Backtracking</strong></td>
+                      <td>Search with constraints and undo</td>
+                      <td>Constraint satisfaction and combinatorial search</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Dynamic Programming</strong></td>
+                      <td>Reuse repeated subproblems</td>
+                      <td>Optimization and overlapping subproblems</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="bt-part8-choice">
+
+              <h3>8.8 How to Choose</h3>
+
+              <p>
+                A useful practical rule is:
+              </p>
+
+              <ul>
+                <li>Use <strong>DFS</strong> when the problem is mainly traversal</li>
+                <li>Use <strong>Backtracking</strong> when you must build solutions under constraints</li>
+                <li>Use <strong>Dynamic Programming</strong> when repeated subproblems can be reused</li>
+              </ul>
+
+              <div class="note">
+                <strong>Important:</strong>
+                some problems combine these ideas.
+                For example, a recursive backtracking solution may later be optimized with memoization.
+              </div>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="bt-part8-conclusion">
+
+              <h4>Series Conclusion</h4>
+
+              <p>
+                Backtracking is best understood not as “just recursion,”
+                but as a disciplined method for exploring a constrained search space.
+              </p>
+
+              <p>
+                Across this series, we studied its problem model,
+                recursive mechanism, search tree structure, pruning,
+                classical applications, complexity, and relationship
+                to other major techniques.
+              </p>
+
+              <div class="note">
+                <strong>Next step:</strong>
+                return to the
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/index.html">
+                  Backtracking index
+                </a>
+                or continue to related topics in Search.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
