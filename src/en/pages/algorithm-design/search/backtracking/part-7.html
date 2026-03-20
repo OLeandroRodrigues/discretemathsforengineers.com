@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Backtracking · Part 7 — Complexity</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/backtracking/index.html">Backtracking</a>
+        <span class="sep">›</span>
+        <span class="current">Part 7 — Complexity</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Backtracking</h2>
+          <p>Part 7 — Complexity</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Backtracking</strong>
+            <span>Part 7 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-6.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/backtracking/part-8.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-6.html">6</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/backtracking/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/backtracking/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card" id="bt-part7-roadmap">
+
+              <h3>7. Complexity</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why backtracking is usually exponential</li>
+                  <li>The role of branching factor and depth</li>
+                  <li>Worst-case time complexity</li>
+                  <li>Space complexity and recursion depth</li>
+                  <li>Why pruning changes practice more than theory</li>
+                </ol>
+              </div>
+
+              <p>
+                Backtracking is powerful, but it is also expensive.
+              </p>
+
+              <p>
+                Its running time depends on how many nodes of the search tree
+                are actually explored.
+              </p>
+
+              <p>
+                In the worst case, this number grows exponentially.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bt-part7-tree-size">
+
+              <h3>7.1 Complexity Comes from the Search Tree</h3>
+
+              <p>
+                The complexity of backtracking is determined by the size
+                of the search tree.
+              </p>
+
+              <p>
+                Each node represents a partial solution,
+                and the algorithm may need to visit many such nodes.
+              </p>
+
+              <p class="math-note">
+                Time complexity ≈ number of explored nodes.
+              </p>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bt-part7-branching">
+
+              <h3>7.2 Branching Factor</h3>
+
+              <p>
+                Let <span class="math">b</span> be the branching factor,
+                that is, the maximum number of children a node may have.
+              </p>
+
+              <p>
+                If each decision offers many choices,
+                the tree expands very quickly.
+              </p>
+
+              <div class="math-block">
+                <span class="math">b = number of possible choices per level</span>
+              </div>
+
+              <p>
+                Larger branching factor usually means larger running time.
+              </p>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bt-part7-depth">
+
+              <h3>7.3 Depth of the Tree</h3>
+
+              <p>
+                Let <span class="math">d</span> be the maximum depth
+                of the search tree.
+              </p>
+
+              <p>
+                In many problems, depth corresponds to the number of decision variables.
+              </p>
+
+              <div class="math-block">
+                <span class="math">d = number of decisions required for a complete solution</span>
+              </div>
+
+              <p>
+                The deeper the tree, the more possible paths the algorithm may need to explore.
+              </p>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bt-part7-worst-case">
+
+              <h3>7.4 Worst-Case Time Complexity</h3>
+
+              <p>
+                If each node has up to <span class="math">b</span> children
+                and the tree has depth <span class="math">d</span>,
+                then the number of nodes may be on the order of:
+              </p>
+
+              <div class="math-block">
+                <span class="math">O(b<sup>d</sup>)</span>
+              </div>
+
+              <p>
+                This is the standard worst-case complexity
+                of backtracking.
+              </p>
+
+              <div class="note">
+                <strong>Important:</strong>
+                this is why backtracking is often exponential.
+              </div>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bt-part7-examples">
+
+              <h3>7.5 Examples</h3>
+
+              <p>
+                Different problems lead to different values of
+                <span class="math">b</span> and <span class="math">d</span>.
+              </p>
+
+              <ul>
+                <li>Subset generation: <span class="math">b = 2</span>, <span class="math">d = n</span> → <span class="math">O(2<sup>n</sup>)</span></li>
+                <li>Permutation generation: roughly <span class="math">O(n!)</span></li>
+                <li>N-Queens: exponential in the worst case</li>
+                <li>Hamiltonian Path: exponential in the worst case</li>
+              </ul>
+
+              <p>
+                So even though the generic template is the same,
+                the concrete cost depends strongly on the problem.
+              </p>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bt-part7-space">
+
+              <h3>7.6 Space Complexity</h3>
+
+              <p>
+                Backtracking usually uses much less memory than breadth-first methods.
+              </p>
+
+              <p>
+                Since it explores one path at a time,
+                the main memory cost comes from the recursion stack
+                and the current partial solution.
+              </p>
+
+              <div class="math-block">
+                <span class="math">Space = O(d)</span>
+              </div>
+
+              <p class="math-note">
+                More precisely, space is proportional to the maximum recursion depth,
+                plus the state representation.
+              </p>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bt-part7-pruning">
+
+              <h3>7.7 The Effect of Pruning</h3>
+
+              <p>
+                In theory, pruning does not change the worst-case class:
+                backtracking often remains exponential.
+              </p>
+
+              <p>
+                But in practice, pruning can reduce the number of explored nodes dramatically.
+              </p>
+
+              <ul>
+                <li>Worst-case complexity may stay exponential</li>
+                <li>Observed runtime may improve enormously</li>
+              </ul>
+
+              <div class="note">
+                <strong>Key distinction:</strong>
+                pruning often changes practical performance more than asymptotic theory.
+              </div>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card" id="bt-part7-takeaway">
+
+              <h3>7.8 Main Takeaway</h3>
+
+              <p>
+                Backtracking is expensive because it explores a combinatorial search tree.
+              </p>
+
+              <p>
+                Its cost is mainly controlled by:
+              </p>
+
+              <ul>
+                <li>branching factor</li>
+                <li>depth</li>
+                <li>quality of pruning</li>
+              </ul>
+
+              <p>
+                This is why problem modeling and constraint design
+                are just as important as the recursive code itself.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bt-part7-transition">
+
+              <h4>Next: Part 8 — Backtracking vs DFS vs Dynamic Programming</h4>
+
+              <p>
+                Now that we understand the cost of backtracking,
+                the final step is to compare it with related techniques.
+              </p>
+
+              <p>
+                In Part 8, we distinguish backtracking from DFS and Dynamic Programming,
+                and clarify when each method should be used.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/backtracking/part-8.html">
+                  Part 8 — Backtracking vs DFS vs Dynamic Programming →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
