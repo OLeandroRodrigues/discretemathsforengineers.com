@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Combinatorial Search → Branch &amp; Bound — Index</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Combinatorial Search</a>
+        <span class="sep">›</span>
+        <span class="current">Branch &amp; Bound</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Series overview — combinatorial optimization with intelligent pruning</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>8 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">Start →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>What Branch &amp; Bound Solves</h3>
+
+              <p class="math-note">
+                Branch &amp; Bound is a general technique for solving
+                <strong>combinatorial optimization problems</strong>
+                by exploring a search space and pruning branches that cannot
+                lead to an optimal solution.
+              </p>
+
+              <p>
+                Conceptually, it extends combinatorial search by associating
+                each partial solution with a <strong>bound</strong> that estimates
+                the best possible outcome reachable from that state.
+              </p>
+
+              <p>
+                Instead of exploring all possibilities, the algorithm focuses on
+                promising regions and discards those that cannot improve the
+                current best solution.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Reference:</strong>
+                the presentation follows the classical treatment used in
+                algorithm design and combinatorial optimization,
+                connecting search trees, bounds, and pruning strategies.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Parts</h3>
+
+              <ul class="search-list">
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">
+                    Part 1 — Problem Model &amp; Search Space
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">
+                    Part 2 — The Core Idea (Branch + Bound + Pruning)
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">
+                    Part 3 — Generic Branch &amp; Bound Algorithm
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">
+                    Part 4 — Bounding Functions
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">
+                    Part 5 — Node Selection Strategies
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">
+                    Part 6 — Classic Problems
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">
+                    Part 7 — Complexity
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">
+                    Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
