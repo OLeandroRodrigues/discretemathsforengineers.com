@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch &amp; Bound · Parte 2 — A Ideia Central (Branch + Bound + Poda)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2 — A Ideia Central (Branch + Bound + Poda)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Parte 2 — A Ideia Central (Branch + Bound + Poda)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch &amp; Bound</strong>
+            <span>Parte 2 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="bb-part2-roadmap">
+
+              <h3>2. A Ideia Central (Branch + Bound + Poda)</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você vai aprender nesta parte):</strong>
+                <ol>
+                  <li>O que significa “branch” no processo de busca</li>
+                  <li>O que é um bound e por que ele importa</li>
+                  <li>Como decisões de poda são tomadas</li>
+                  <li>O papel da melhor solução atual</li>
+                  <li>Por que Branch &amp; Bound continua sendo exato mesmo com poda</li>
+                </ol>
+              </div>
+
+              <p>
+                Na Parte 1, modelamos o problema como uma árvore de decisões parciais.
+                Isso nos deu a estrutura.
+              </p>
+
+              <p>
+                Agora estudamos o mecanismo que torna o Branch &amp; Bound poderoso:
+                ele não explora a árvore cegamente.
+                Em vez disso, expande regiões promissoras e corta regiões que
+                não podem melhorar a melhor solução atual.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="bb-part2-branch">
+
+              <h3>2.1 O que é “branch”?</h3>
+
+              <p>
+                O termo <strong>branch</strong> refere-se ao ato de dividir um problema
+                em subproblemas menores ao tomar uma nova decisão.
+              </p>
+
+              <p>
+                Em forma de árvore:
+              </p>
+
+              <ul>
+                <li>cada nó é uma solução parcial,</li>
+                <li>cada aresta representa uma escolha possível,</li>
+                <li>cada nó filho representa um refinamento do estado atual.</li>
+              </ul>
+
+              <p>
+                Por exemplo, na Mochila 0/1, ramificar em um item significa:
+              </p>
+
+              <ul>
+                <li>incluir o item, ou</li>
+                <li>não incluir o item.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                o branching gera a árvore de busca expandindo decisões parciais.
+              </div>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="bb-part2-bound">
+
+              <h3>2.2 O que é um bound?</h3>
+
+              <p>
+                Um <strong>bound</strong> é uma estimativa do melhor resultado que ainda pode ser
+                obtido a partir de uma solução parcial.
+              </p>
+
+              <p>
+                Como um nó ainda não é uma solução completa,
+                geralmente não conhecemos seu valor final exato.
+                Em vez disso, calculamos um limite que indica quão promissor ele é.
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">B(x₁, …, xᵢ)</span>
+              </div>
+
+              <p>
+                onde <span class="math">B</span> estima a melhor continuação possível
+                da solução parcial <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="bb-part2-upper-lower">
+
+              <h3>2.3 Limites superiores e inferiores</h3>
+
+              <p>
+                O significado do bound depende do tipo de problema.
+              </p>
+
+              <ul>
+                <li><strong>Maximização:</strong> usamos um limite superior</li>
+                <li><strong>Minimização:</strong> usamos um limite inferior</li>
+              </ul>
+
+              <p>
+                O princípio é o mesmo:
+                o bound indica se o nó ainda pode superar a melhor solução atual.
+              </p>
+
+              <div class="note">
+                <strong>Interpretação:</strong>
+                o bound não é a resposta — é uma estimativa segura.
+              </div>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="bb-part2-incumbent">
+
+              <h3>2.4 A melhor solução atual</h3>
+
+              <p>
+                O algoritmo mantém a melhor solução encontrada até o momento,
+                chamada de <strong>incumbent</strong>.
+              </p>
+
+              <ul>
+                <li>se um nó pode superar o incumbent → explorar</li>
+                <li>se não pode → podar</li>
+              </ul>
+
+              <p class="math-note">
+                Se <span class="math">B(node) ≤ best</span>, o nó pode ser podado (maximização).
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="bb-part2-pruning">
+
+              <h3>2.5 O que é poda?</h3>
+
+              <p>
+                <strong>Poda</strong> significa interromper a exploração de um ramo antes do fim.
+              </p>
+
+              <ul>
+                <li>ramo inviável</li>
+                <li>ramo não competitivo</li>
+              </ul>
+
+              <div class="note">
+                <strong>Princípio:</strong>
+                eliminar ramos impossíveis ou irrelevantes.
+              </div>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="bb-part2-logic">
+
+              <h3>2.6 Lógica central</h3>
+
+              <ol>
+                <li>Gerar solução parcial</li>
+                <li>Verificar viabilidade</li>
+                <li>Calcular bound</li>
+                <li>Comparar com o incumbent</li>
+                <li>Expandir ou podar</li>
+              </ol>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="bb-part2-why-exact">
+
+              <h3>2.7 Por que continua exato?</h3>
+
+              <p>
+                Branch &amp; Bound é um algoritmo <strong>exato</strong>.
+              </p>
+
+              <p>
+                Só poda quando é matematicamente impossível melhorar a solução.
+              </p>
+
+              <div class="note">
+                <strong>Garantia:</strong>
+                nenhuma solução ótima é perdida.
+              </div>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="bb-part2-backtracking-difference">
+
+              <h3>2.8 Diferença para backtracking</h3>
+
+              <ul>
+                <li>Backtracking → poda por viabilidade</li>
+                <li>Branch &amp; Bound → poda por qualidade</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part2-transition">
+
+              <h4>Próximo: Parte 3 — Algoritmo Genérico de Branch &amp; Bound</h4>
+
+              <p>
+                Na próxima parte, veremos a estrutura geral do algoritmo.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">
+                  Parte 3 — Algoritmo Genérico →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
