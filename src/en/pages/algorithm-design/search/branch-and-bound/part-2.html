@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 2 — The Core Idea (Branch + Bound + Pruning)</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2 — The Core Idea (Branch + Bound + Pruning)</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 2 — The Core Idea (Branch + Bound + Pruning)</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 2 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="bb-part2-roadmap">
+
+              <h3>2. The Core Idea (Branch + Bound + Pruning)</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What “branch” means in the search process</li>
+                  <li>What a bound is and why it matters</li>
+                  <li>How pruning decisions are made</li>
+                  <li>The role of the current best solution</li>
+                  <li>Why Branch &amp; Bound remains exact despite pruning</li>
+                </ol>
+              </div>
+
+              <p>
+                In Part 1, we modeled the problem as a search tree of partial decisions.
+                That gave us the structure.
+              </p>
+
+              <p>
+                Now we study the mechanism that makes Branch &amp; Bound powerful:
+                it does not explore the tree blindly.
+                Instead, it expands promising regions and cuts off regions that
+                cannot improve the current best solution.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="bb-part2-branch">
+
+              <h3>2.1 What is “branch”?</h3>
+
+              <p>
+                The word <strong>branch</strong> refers to the act of splitting a problem
+                into smaller subproblems by making one additional decision.
+              </p>
+
+              <p>
+                In tree form:
+              </p>
+
+              <ul>
+                <li>each node is a partial solution,</li>
+                <li>each outgoing edge is a possible next choice,</li>
+                <li>each child node represents one refinement of the current state.</li>
+              </ul>
+
+              <p>
+                For example, in 0/1 Knapsack, branching on one item usually means:
+              </p>
+
+              <ul>
+                <li>include the item, or</li>
+                <li>exclude the item.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main idea:</strong>
+                branching generates the search tree by expanding partial decisions.
+              </div>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="bb-part2-bound">
+
+              <h3>2.2 What is a bound?</h3>
+
+              <p>
+                A <strong>bound</strong> is an estimate of the best result that could still be
+                obtained from a given partial solution.
+              </p>
+
+              <p>
+                Since a node is not yet a complete solution, we usually do not know its final value exactly.
+                Instead, we compute a limit that tells us how promising that node is.
+              </p>
+
+              <p>
+                In abstract form, we may write:
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">B(x₁, …, xᵢ)</span>
+              </div>
+
+              <p>
+                where <span class="math">B</span> estimates the best achievable completion
+                of the partial assignment <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="bb-part2-upper-lower">
+
+              <h3>2.3 Upper bounds and lower bounds</h3>
+
+              <p>
+                The meaning of a bound depends on the type of optimization problem.
+              </p>
+
+              <ul>
+                <li>
+                  In <strong>maximization</strong>, we often compute an
+                  <strong>upper bound</strong> on what the node could still achieve.
+                </li>
+                <li>
+                  In <strong>minimization</strong>, we often compute a
+                  <strong>lower bound</strong> on the best cost still possible.
+                </li>
+              </ul>
+
+              <p>
+                The general principle is the same:
+                the bound tells us whether the node still has any chance of beating the current best solution.
+              </p>
+
+              <div class="note">
+                <strong>Interpretation:</strong>
+                a bound is not the answer — it is a safe estimate used for decision making.
+              </div>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="bb-part2-incumbent">
+
+              <h3>2.4 The current best solution</h3>
+
+              <p>
+                Branch &amp; Bound keeps track of the best complete feasible solution found so far.
+                This is often called the <strong>incumbent</strong>.
+              </p>
+
+              <p>
+                The incumbent gives us a concrete threshold for pruning:
+              </p>
+
+              <ul>
+                <li>if a node can still beat the incumbent, explore it;</li>
+                <li>if it cannot beat the incumbent, discard it.</li>
+              </ul>
+
+              <p>
+                In maximization problems, if the upper bound of a node is not better than the incumbent value,
+                then that node is useless.
+              </p>
+
+              <p class="math-note">
+                If <span class="math">B(node) ≤ best</span>, then the node can be pruned in maximization.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="bb-part2-pruning">
+
+              <h3>2.5 What is pruning?</h3>
+
+              <p>
+                <strong>Pruning</strong> means stopping the exploration of a branch before it reaches a leaf.
+              </p>
+
+              <p>
+                This happens when we can prove that continuing that branch is pointless.
+                In Branch &amp; Bound, this usually occurs for one of two reasons:
+              </p>
+
+              <ul>
+                <li>the branch is infeasible, or</li>
+                <li>the branch is feasible but cannot improve the incumbent.</li>
+              </ul>
+
+              <p>
+                The second reason is what distinguishes Branch &amp; Bound from ordinary backtracking.
+              </p>
+
+              <div class="note">
+                <strong>Core pruning principle:</strong>
+                eliminate branches that are impossible or uncompetitive.
+              </div>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="bb-part2-logic">
+
+              <h3>2.6 The core decision logic</h3>
+
+              <p>
+                At each node, the algorithm conceptually asks:
+              </p>
+
+              <ul>
+                <li>Is this partial solution feasible?</li>
+                <li>If completed optimally, could it beat the incumbent?</li>
+              </ul>
+
+              <p>
+                If the answer to the second question is no,
+                the branch is cut immediately.
+              </p>
+
+              <p>
+                So the search follows this pattern:
+              </p>
+
+              <ol>
+                <li>Generate a partial solution</li>
+                <li>Check feasibility</li>
+                <li>Compute its bound</li>
+                <li>Compare with the incumbent</li>
+                <li>Expand or prune</li>
+              </ol>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="bb-part2-why-exact">
+
+              <h3>2.7 Why pruning does not break correctness</h3>
+
+              <p>
+                Branch &amp; Bound is still an <strong>exact algorithm</strong>.
+                It does not rely on guessing or approximation alone.
+              </p>
+
+              <p>
+                Correctness is preserved because pruning is only performed when the bound proves
+                that no completion of that branch can improve the current best known solution.
+              </p>
+
+              <p>
+                In other words, the algorithm never discards a branch that could contain a better solution.
+              </p>
+
+              <div class="note">
+                <strong>Key guarantee:</strong>
+                pruning is safe because it is justified by a valid bound.
+              </div>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="bb-part2-backtracking-difference">
+
+              <h3>2.8 Branch &amp; Bound vs. Backtracking</h3>
+
+              <p>
+                The two techniques are related, but their goals differ.
+              </p>
+
+              <ul>
+                <li>
+                  <strong>Backtracking</strong> mainly prunes branches that violate constraints.
+                </li>
+                <li>
+                  <strong>Branch &amp; Bound</strong> also prunes branches that are valid,
+                  but not good enough to matter.
+                </li>
+              </ul>
+
+              <p>
+                So Branch &amp; Bound can be seen as:
+              </p>
+
+              <div class="math-block">
+                backtracking + optimization-aware pruning
+              </div>
+
+              <p>
+                That is why it is especially useful when the goal is not merely to find a solution,
+                but to find the optimal one.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part2-transition">
+
+              <h4>Next: Part 3 — Generic Branch &amp; Bound Algorithm</h4>
+
+              <p>
+                Now that we understand the core logic of branching, bounding, and pruning,
+                the next step is to put these ideas into a general algorithmic structure.
+              </p>
+
+              <p>
+                In Part 3, we will study the generic Branch &amp; Bound workflow:
+                how nodes are created, evaluated, selected, and expanded during the search.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">
+                  Part 3 — Generic Branch &amp; Bound Algorithm →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
