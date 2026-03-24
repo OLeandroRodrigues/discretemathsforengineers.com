@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 1 — Problem Model &amp; Search Space</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1 — Problem Model &amp; Search Space</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 1 — Problem Model &amp; Search Space</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 1 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">← Index</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card" id="bb-part1-roadmap">
+
+              <h3>1. Problem Model &amp; Search Space</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What kind of problems Branch &amp; Bound solves</li>
+                  <li>How candidate solutions are modeled</li>
+                  <li>Why the search space forms a tree</li>
+                  <li>The role of feasibility and the objective function</li>
+                  <li>Why exponential growth requires intelligent pruning</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch &amp; Bound is often introduced informally as a method
+                that explores possibilities and discards branches that cannot lead
+                to the optimal solution.
+              </p>
+
+              <p>
+                That intuition is useful, but to understand the technique rigorously,
+                we must first define the <strong>problem model</strong>
+                and the <strong>search space</strong> it explores.
+              </p>
+
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card" id="bb-part1-why-model">
+
+              <h3>1.1 Why start with the model?</h3>
+
+              <p>
+                Branch &amp; Bound is not tied to a single specific problem.
+                It is a general strategy for solving
+                <strong>combinatorial optimization problems</strong>.
+              </p>
+
+              <p>
+                Therefore, before discussing bounds, pruning, or implementation,
+                we must answer:
+              </p>
+
+              <ul>
+                <li>What is a candidate solution?</li>
+                <li>How is a partial solution represented?</li>
+                <li>What does it mean for a solution to be feasible?</li>
+                <li>What exactly are we optimizing?</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main idea:</strong>
+                Branch &amp; Bound is a method for exploring a structured search space
+                in optimization problems.
+              </div>
+
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card" id="bb-part1-candidates">
+
+              <h3>1.2 Candidate solutions</h3>
+
+              <p>
+                A candidate solution is typically constructed as a sequence of decisions:
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">x = (x₁, x₂, …, xₖ)</span>
+              </div>
+
+              <p>
+                Each variable <span class="math">xᵢ</span> represents a choice made
+                at step <span class="math">i</span>, usually selected from a domain
+                of possible values.
+              </p>
+
+              <p>
+                A complete assignment may represent a final solution,
+                while a prefix
+                <span class="math">(x₁, …, xᵢ)</span>
+                represents a <strong>partial solution</strong>.
+              </p>
+
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card" id="bb-part1-search-space">
+
+              <h3>1.3 The search space</h3>
+
+              <p>
+                The set of all candidate solutions defines the
+                <strong>search space</strong>.
+              </p>
+
+              <p>
+                This space is naturally modeled as a tree:
+              </p>
+
+              <ul>
+                <li>The root is the empty solution</li>
+                <li>Each level corresponds to one additional decision</li>
+                <li>Each edge represents a choice</li>
+                <li>Each node represents a partial assignment</li>
+              </ul>
+
+              <p class="math-note">
+                In abstract terms, a node can be written as
+                <span class="math">(x₁, …, xᵢ)</span>.
+              </p>
+
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card" id="bb-part1-feasibility">
+
+              <h3>1.4 Feasibility</h3>
+
+              <p>
+                Not every partial solution should be explored further.
+              </p>
+
+              <p>
+                A Branch &amp; Bound problem includes constraints that determine
+                whether a partial solution can still be extended into a valid full solution.
+              </p>
+
+              <div class="math-block">
+                <span class="math">C(x₁, x₂, …, xᵢ)</span>
+              </div>
+
+              <p>
+                If the current assignment already violates the problem structure,
+                that branch can be stopped immediately.
+              </p>
+
+              <div class="note">
+                <strong>First pruning idea:</strong>
+                reject infeasible branches as early as possible.
+              </div>
+
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card" id="bb-part1-objective">
+
+              <h3>1.5 Objective function</h3>
+
+              <p>
+                Unlike classical backtracking, in Branch &amp; Bound we are not satisfied
+                with just any valid solution: we want the <strong>best feasible solution</strong>
+                according to an objective function.
+              </p>
+
+              <p>
+                Formally, we want to find a solution
+                <span class="math">x*</span> such that:
+              </p>
+
+              <div class="math-block">
+                <span class="math">x* ∈ S</span> and <span class="math">f(x*)</span> is optimal
+              </div>
+
+              <p>
+                where <span class="math">S</span> is the set of feasible solutions
+                and <span class="math">f(x)</span> measures the value of a solution.
+              </p>
+
+            </section>
+
+            <!-- 1.6 -->
+            <section class="card" id="bb-part1-max-min">
+
+              <h3>1.6 Maximization and minimization</h3>
+
+              <p>
+                Branch &amp; Bound applies to two major types of problems:
+              </p>
+
+              <ul>
+                <li><strong>Maximization:</strong> maximize profit, value, or score</li>
+                <li><strong>Minimization:</strong> minimize cost, distance, or time</li>
+              </ul>
+
+              <p>
+                The structure of the search remains the same.
+                What changes is how we compare solutions and interpret bounds.
+              </p>
+
+            </section>
+
+            <!-- 1.7 -->
+            <section class="card" id="bb-part1-growth">
+
+              <h3>1.7 Why this matters</h3>
+
+              <p>
+                The search space often grows exponentially with the size of the input.
+                A brute-force method would examine all possibilities.
+              </p>
+
+              <div class="math-block">
+                <span class="math">O(2^n)</span>
+              </div>
+
+              <p>
+                In real problems, this quickly becomes infeasible.
+                That is why we need a strategy that preserves correctness
+                while drastically reducing the number of explored branches.
+              </p>
+
+              <div class="note">
+                <strong>Core motivation:</strong>
+                exploring everything guarantees correctness, but is too expensive.
+                Branch &amp; Bound aims to keep correctness with selective exploration.
+              </div>
+
+            </section>
+
+            <!-- 1.8 -->
+            <section class="card" id="bb-part1-examples">
+
+              <h3>1.8 Example problems</h3>
+
+              <p>
+                This model appears in many classical problems:
+              </p>
+
+              <ul>
+                <li>0/1 Knapsack</li>
+                <li>Traveling Salesman Problem</li>
+                <li>Scheduling</li>
+                <li>Assignment problems</li>
+                <li>Integer programming</li>
+              </ul>
+
+              <p>
+                In all of them, the core idea is the same:
+                build solutions incrementally,
+                evaluate feasibility and quality,
+                and avoid exploring regions that cannot contain the optimal solution.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part1-transition">
+
+              <h4>Next: Part 2 — The Core Idea (Branch + Bound + Pruning)</h4>
+
+              <p>
+                Now that we have defined the structure of the problem and the search space,
+                the next step is to understand the mechanism that decides
+                which branches to explore and which to discard.
+              </p>
+
+              <p>
+                In Part 2, we will study how bounds are defined,
+                how they guide pruning,
+                and why this makes the search significantly more efficient.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">
+                  Part 2 — The Core Idea (Branch + Bound + Pruning) →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
