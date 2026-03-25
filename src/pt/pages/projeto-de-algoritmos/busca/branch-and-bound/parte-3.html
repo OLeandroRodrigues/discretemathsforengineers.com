@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch &amp; Bound · Parte 3 — Algoritmo Genérico de Branch &amp; Bound</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3 — Algoritmo Genérico de Branch &amp; Bound</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Parte 3 — Algoritmo Genérico de Branch &amp; Bound</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch &amp; Bound</strong>
+            <span>Parte 3 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/algorithm-design/search/branch-and-bound/part-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/algorithm-design/search/branch-and-bound/part-4.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill active" href="/pt/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/pt/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="bb-part3-roadmap">
+
+              <h3>3. Algoritmo Genérico de Branch &amp; Bound</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você vai aprender nesta parte):</strong>
+                <ol>
+                  <li>A estrutura geral do algoritmo</li>
+                  <li>Como os nós são armazenados e selecionados</li>
+                  <li>Onde os bounds são calculados</li>
+                  <li>Como a poda se integra ao fluxo</li>
+                  <li>Diferentes estratégias de busca (DFS, BFS, Best-first)</li>
+                </ol>
+              </div>
+
+              <p>
+                Na Parte 2, introduzimos as ideias centrais: branching, bounding e poda.
+              </p>
+
+              <p>
+                Agora organizamos essas ideias em um <strong>algoritmo genérico</strong>
+                que pode ser aplicado a uma ampla variedade de problemas de otimização.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="bb-part3-structure">
+
+              <h3>3.1 Estrutura de Alto Nível</h3>
+
+              <p>
+                Branch &amp; Bound explora uma árvore de busca mantendo um conjunto
+                de nós candidatos à expansão.
+              </p>
+
+              <p>
+                Em alto nível, o algoritmo repete:
+              </p>
+
+              <ol>
+                <li>Selecionar um nó</li>
+                <li>Avaliar seu bound</li>
+                <li>Decidir entre podar ou expandir</li>
+                <li>Atualizar a melhor solução, se necessário</li>
+              </ol>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="bb-part3-pseudocode">
+
+              <h3>3.2 Pseudocódigo Genérico</h3>
+
+              <div class="math-block">
+                Inicializar best ← −∞ (ou +∞ para minimização) <br>
+                Inicializar conjunto de nós com a raiz <br><br>
+
+                enquanto o conjunto de nós não estiver vazio: <br>
+                &nbsp;&nbsp;selecionar um nó N <br>
+                &nbsp;&nbsp;se N for solução completa: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;atualizar best se for melhor <br>
+                &nbsp;&nbsp;senão: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;calcular bound B(N) <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;se B(N) for promissor: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ramificar e adicionar filhos ao conjunto <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;senão: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;podar N
+              </div>
+
+              <p>
+                Essa estrutura captura a essência do Branch &amp; Bound:
+                exploração sistemática guiada por bounds.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="bb-part3-node-selection">
+
+              <h3>3.3 Estratégia de Seleção de Nós</h3>
+
+              <ul>
+                <li><strong>DFS (profundidade):</strong> baixo uso de memória</li>
+                <li><strong>BFS (largura):</strong> explora por níveis</li>
+                <li><strong>Best-first:</strong> escolhe o nó mais promissor</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="bb-part3-node-set">
+
+              <h3>3.4 Conjunto de Nós (Fronteira)</h3>
+
+              <ul>
+                <li>Pilha → DFS</li>
+                <li>Fila → BFS</li>
+                <li>Fila de prioridade → Best-first</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="bb-part3-incumbent-update">
+
+              <h3>3.5 Atualização do Incumbent</h3>
+
+              <ul>
+                <li>atualiza a melhor solução</li>
+                <li>torna a poda mais agressiva</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="bb-part3-pruning">
+
+              <h3>3.6 Onde ocorre a poda</h3>
+
+              <p class="math-note">
+                Se o bound não supera o incumbent → descartar nó
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="bb-part3-properties">
+
+              <h3>3.7 Propriedades</h3>
+
+              <ul>
+                <li>Exploração sistemática</li>
+                <li>Guiada por bounds</li>
+                <li>Poda eficiente</li>
+                <li>Garantia de otimalidade</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part3-transition">
+
+              <h4>Próximo: Parte 4 — Funções de Bounding</h4>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/pt/pages/algorithm-design/search/branch-and-bound/part-4.html">
+                  Parte 4 — Funções de Bounding →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

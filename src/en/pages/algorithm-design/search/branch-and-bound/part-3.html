@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 3 — Generic Branch &amp; Bound Algorithm</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3 — Generic Branch &amp; Bound Algorithm</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 3 — Generic Branch &amp; Bound Algorithm</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 3 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="bb-part3-roadmap">
+
+              <h3>3. Generic Branch &amp; Bound Algorithm</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The generic structure of the algorithm</li>
+                  <li>How nodes are stored and selected</li>
+                  <li>Where bounds are computed</li>
+                  <li>How pruning integrates into the flow</li>
+                  <li>Different search strategies (DFS, BFS, Best-first)</li>
+                </ol>
+              </div>
+
+              <p>
+                In Part 2, we introduced the core ideas: branching, bounding,
+                and pruning.
+              </p>
+
+              <p>
+                Now we organize these ideas into a <strong>generic algorithm</strong>
+                that can be applied to a wide range of optimization problems.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="bb-part3-structure">
+
+              <h3>3.1 High-Level Structure</h3>
+
+              <p>
+                Branch &amp; Bound explores a search tree while maintaining a set
+                of nodes that are candidates for expansion.
+              </p>
+
+              <p>
+                At a high level, the algorithm repeatedly:
+              </p>
+
+              <ol>
+                <li>Selects a node</li>
+                <li>Evaluates its bound</li>
+                <li>Decides whether to prune or expand</li>
+                <li>Updates the best solution if needed</li>
+              </ol>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="bb-part3-pseudocode">
+
+              <h3>3.2 Generic Pseudocode</h3>
+
+              <div class="math-block">
+                Initialize best ← −∞ (or +∞ for minimization) <br>
+                Initialize node set with root <br><br>
+
+                while node set is not empty: <br>
+                &nbsp;&nbsp;select a node N <br>
+                &nbsp;&nbsp;if N is a complete solution: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;update best if better <br>
+                &nbsp;&nbsp;else: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;compute bound B(N) <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;if B(N) is promising: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;branch and add children to node set <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;else: <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prune N
+              </div>
+
+              <p>
+                This structure captures the essence of Branch &amp; Bound:
+                systematic exploration guided by bounds.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="bb-part3-node-selection">
+
+              <h3>3.3 Node Selection Strategy</h3>
+
+              <p>
+                The order in which nodes are explored has a major impact
+                on performance.
+              </p>
+
+              <ul>
+                <li><strong>DFS (Depth-first):</strong> low memory, fast to find a solution</li>
+                <li><strong>BFS (Breadth-first):</strong> explores level by level</li>
+                <li><strong>Best-first:</strong> expands the most promising node first</li>
+              </ul>
+
+              <p>
+                Best-first search is often preferred because it quickly finds
+                strong incumbents, improving pruning effectiveness.
+              </p>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="bb-part3-node-set">
+
+              <h3>3.4 The Node Set (Frontier)</h3>
+
+              <p>
+                The algorithm maintains a collection of nodes waiting to be explored.
+                This is often called the <strong>frontier</strong>.
+              </p>
+
+              <p>
+                The data structure depends on the strategy:
+              </p>
+
+              <ul>
+                <li>Stack → DFS</li>
+                <li>Queue → BFS</li>
+                <li>Priority Queue → Best-first</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="bb-part3-incumbent-update">
+
+              <h3>3.5 Updating the Incumbent</h3>
+
+              <p>
+                Whenever a complete feasible solution is found,
+                it is compared with the current best.
+              </p>
+
+              <p>
+                If it improves the objective:
+              </p>
+
+              <ul>
+                <li>update the incumbent</li>
+                <li>tighten pruning conditions</li>
+              </ul>
+
+              <p>
+                This makes the algorithm progressively more selective.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="bb-part3-pruning">
+
+              <h3>3.6 Where Pruning Happens</h3>
+
+              <p>
+                Pruning occurs immediately after computing the bound.
+              </p>
+
+              <p class="math-note">
+                If the bound cannot beat the incumbent → discard node
+              </p>
+
+              <p>
+                This avoids generating unnecessary children and reduces
+                the search space dramatically.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="bb-part3-properties">
+
+              <h3>3.7 Key Properties</h3>
+
+              <ul>
+                <li>Systematic exploration of the search space</li>
+                <li>Guided by bounds</li>
+                <li>Pruning guarantees efficiency</li>
+                <li>Still guarantees optimality</li>
+              </ul>
+
+              <div class="note">
+                <strong>Insight:</strong>
+                performance depends heavily on the quality of the bound
+                and the node selection strategy.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part3-transition">
+
+              <h4>Next: Part 4 — Bounding Functions</h4>
+
+              <p>
+                Now that we understand the algorithmic structure,
+                the next critical component is how bounds are computed.
+              </p>
+
+              <p>
+                In Part 4, we will study bounding functions in detail,
+                including how to design tight and efficient estimates.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">
+                  Part 4 — Bounding Functions →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
