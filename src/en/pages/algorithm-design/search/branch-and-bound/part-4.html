@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 4 — Bounding Functions</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4 — Bounding Functions</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 4 — Bounding Functions</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 4 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="bb-part4-roadmap">
+
+              <h3>4. Bounding Functions</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What a bounding function must do</li>
+                  <li>The difference between tight and loose bounds</li>
+                  <li>Upper bounds vs. lower bounds</li>
+                  <li>Trade-offs between bound quality and computation cost</li>
+                  <li>Why bounding functions determine practical performance</li>
+                </ol>
+              </div>
+
+              <p>
+                In Branch &amp; Bound, the search is not guided by brute force alone.
+                It is guided by <strong>estimates</strong>.
+              </p>
+
+              <p>
+                Those estimates come from <strong>bounding functions</strong>,
+                which tell us how promising a partial solution is and whether
+                it is still worth exploring.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="bb-part4-what-is-bound">
+
+              <h3>4.1 What is a bounding function?</h3>
+
+              <p>
+                A bounding function maps a partial solution to a numerical estimate
+                of its best possible completion.
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">B(node)</span>
+              </div>
+
+              <p>
+                The exact interpretation depends on the optimization problem:
+              </p>
+
+              <ul>
+                <li>in maximization, it is often an <strong>upper bound</strong></li>
+                <li>in minimization, it is often a <strong>lower bound</strong></li>
+              </ul>
+
+              <p>
+                In both cases, the purpose is the same:
+                determine whether the node can still produce a better solution than the incumbent.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bb-part4-safe-bound">
+
+              <h3>4.2 Safe bounds</h3>
+
+              <p>
+                A bounding function must be <strong>safe</strong>.
+              </p>
+
+              <p>
+                That means it must never underestimate what is possible in maximization,
+                and never overestimate what is possible in minimization,
+                if it is used for pruning.
+              </p>
+
+              <p>
+                Otherwise, the algorithm may incorrectly discard a branch
+                that actually contains the optimal solution.
+              </p>
+
+              <div class="note">
+                <strong>Key requirement:</strong>
+                a bound must justify pruning without breaking correctness.
+              </div>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bb-part4-tightness">
+
+              <h3>4.3 Tight vs. loose bounds</h3>
+
+              <p>
+                Not all valid bounds are equally useful.
+              </p>
+
+              <ul>
+                <li>
+                  A <strong>tight bound</strong> stays close to the true best achievable value.
+                </li>
+                <li>
+                  A <strong>loose bound</strong> is valid, but too optimistic or too conservative.
+                </li>
+              </ul>
+
+              <p>
+                Tight bounds enable more pruning because they distinguish promising
+                nodes from weak ones more precisely.
+              </p>
+
+              <p>
+                Loose bounds preserve correctness,
+                but often leave too many branches alive.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bb-part4-cost-tradeoff">
+
+              <h3>4.4 Bound quality vs. computation cost</h3>
+
+              <p>
+                A better bound is not always better in practice.
+              </p>
+
+              <p>
+                There is a trade-off:
+              </p>
+
+              <ul>
+                <li>a <strong>cheap bound</strong> may be weak but fast to compute</li>
+                <li>a <strong>strong bound</strong> may prune more, but cost more per node</li>
+              </ul>
+
+              <p>
+                Practical Branch &amp; Bound design often depends on balancing these two effects.
+              </p>
+
+              <div class="note">
+                <strong>Engineering insight:</strong>
+                the best bound is the one that reduces total search time,
+                not necessarily the mathematically strongest one.
+              </div>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bb-part4-max-min">
+
+              <h3>4.5 Bounding in maximization and minimization</h3>
+
+              <p>
+                The pruning rule depends on the optimization direction.
+              </p>
+
+              <p>
+                In maximization:
+              </p>
+
+              <div class="math-block">
+                if upperBound(node) ≤ incumbent, prune
+              </div>
+
+              <p>
+                In minimization:
+              </p>
+
+              <div class="math-block">
+                if lowerBound(node) ≥ incumbent, prune
+              </div>
+
+              <p>
+                These rules express the same principle:
+                discard nodes that cannot improve the best known solution.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bb-part4-design-sources">
+
+              <h3>4.6 Where bounds come from</h3>
+
+              <p>
+                Bounding functions are problem-specific.
+              </p>
+
+              <p>
+                They are often derived from:
+              </p>
+
+              <ul>
+                <li>relaxations of the original problem</li>
+                <li>greedy approximations</li>
+                <li>simplified subproblems</li>
+                <li>mathematical inequalities</li>
+              </ul>
+
+              <p>
+                For example, in 0/1 Knapsack,
+                a common upper bound comes from allowing fractional items,
+                which makes the problem easier and gives a safe optimistic estimate.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bb-part4-practical-role">
+
+              <h3>4.7 Why bounding functions matter so much</h3>
+
+              <p>
+                In theory, Branch &amp; Bound is defined by branching, bounding, and pruning.
+                In practice, its performance is often dominated by the quality of the bound.
+              </p>
+
+              <p>
+                Two algorithms with the same branching structure can behave very differently
+                if one uses a strong bound and the other uses a weak one.
+              </p>
+
+              <p>
+                This is why bounding functions are often the most important design decision
+                in a Branch &amp; Bound implementation.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="bb-part4-summary">
+
+              <h3>4.8 Summary</h3>
+
+              <ul>
+                <li>Bounds estimate the best possible completion of a partial solution</li>
+                <li>They must be safe to preserve correctness</li>
+                <li>Tight bounds improve pruning</li>
+                <li>Strong bounds may cost more to compute</li>
+                <li>Practical performance depends heavily on bound design</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main takeaway:</strong>
+                pruning is only as good as the bounding function behind it.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part4-transition">
+
+              <h4>Next: Part 5 — Node Selection Strategies</h4>
+
+              <p>
+                Once bounds are available, the next question is not only
+                which nodes are still alive, but also which live node
+                should be explored first.
+              </p>
+
+              <p>
+                In Part 5, we will study the main node selection strategies
+                and how they affect memory usage, incumbent discovery,
+                and overall pruning effectiveness.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">
+                  Part 5 — Node Selection Strategies →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

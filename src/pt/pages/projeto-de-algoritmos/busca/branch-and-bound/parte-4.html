@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch &amp; Bound · Parte 4 — Funções de Bounding</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4 — Funções de Bounding</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Parte 4 — Funções de Bounding</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch &amp; Bound</strong>
+            <span>Parte 4 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-3.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-5.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="bb-part4-roadmap">
+
+              <h3>4. Funções de Bounding</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O que uma função de bounding deve fazer</li>
+                  <li>A diferença entre limites apertados e frouxos</li>
+                  <li>Limites superiores vs. limites inferiores</li>
+                  <li>Trade-offs entre a qualidade do limite e o custo de computação</li>
+                  <li>Por que funções de bounding determinam o desempenho na prática</li>
+                </ol>
+              </div>
+
+              <p>
+                No Branch &amp; Bound, a busca não é guiada apenas por força bruta.
+                Ela é guiada por <strong>estimativas</strong>.
+              </p>
+
+              <p>
+                Essas estimativas vêm das <strong>funções de bounding</strong>,
+                que nos dizem quão promissora é uma solução parcial e se
+                ainda vale a pena explorá-la.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="bb-part4-what-is-bound">
+
+              <h3>4.1 O que é uma função de bounding?</h3>
+
+              <p>
+                Uma função de bounding mapeia uma solução parcial para uma estimativa numérica
+                de sua melhor conclusão possível.
+              </p>
+
+              <div class="math-block" role="math">
+                <span class="math">B(nó)</span>
+              </div>
+
+              <p>
+                A interpretação exata depende do problema de otimização:
+              </p>
+
+              <ul>
+                <li>em maximização, frequentemente é um <strong>limite superior</strong></li>
+                <li>em minimização, frequentemente é um <strong>limite inferior</strong></li>
+              </ul>
+
+              <p>
+                Em ambos os casos, o propósito é o mesmo:
+                determinar se o nó ainda pode produzir uma solução melhor do que a melhor solução atual.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="bb-part4-safe-bound">
+
+              <h3>4.2 Limites seguros</h3>
+
+              <p>
+                Uma função de bounding deve ser <strong>segura</strong>.
+              </p>
+
+              <p>
+                Isso significa que ela nunca deve subestimar o que é possível em maximização,
+                e nunca deve superestimar o que é possível em minimização,
+                se for usada para poda.
+              </p>
+
+              <p>
+                Caso contrário, o algoritmo pode descartar incorretamente um ramo
+                que de fato contém a solução ótima.
+              </p>
+
+              <div class="note">
+                <strong>Requisito principal:</strong>
+                um limite deve justificar a poda sem quebrar a corretude.
+              </div>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="bb-part4-tightness">
+
+              <h3>4.3 Limites apertados vs. frouxos</h3>
+
+              <p>
+                Nem todos os limites válidos são igualmente úteis.
+              </p>
+
+              <ul>
+                <li>
+                  Um <strong>limite apertado</strong> permanece próximo do verdadeiro melhor valor alcançável.
+                </li>
+                <li>
+                  Um <strong>limite frouxo</strong> é válido, mas otimista ou conservador demais.
+                </li>
+              </ul>
+
+              <p>
+                Limites apertados permitem mais poda porque distinguem nós promissores
+                de nós fracos de forma mais precisa.
+              </p>
+
+              <p>
+                Limites frouxos preservam a corretude,
+                mas frequentemente deixam muitos ramos ativos.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="bb-part4-cost-tradeoff">
+
+              <h3>4.4 Qualidade do limite vs. custo de computação</h3>
+
+              <p>
+                Um limite melhor nem sempre é melhor na prática.
+              </p>
+
+              <p>
+                Existe um trade-off:
+              </p>
+
+              <ul>
+                <li>um <strong>limite barato</strong> pode ser fraco, mas rápido de calcular</li>
+                <li>um <strong>limite forte</strong> pode podar mais, mas custar mais por nó</li>
+              </ul>
+
+              <p>
+                O design prático de Branch &amp; Bound frequentemente depende de equilibrar esses dois efeitos.
+              </p>
+
+              <div class="note">
+                <strong>Insight de engenharia:</strong>
+                o melhor limite é aquele que reduz o tempo total de busca,
+                não necessariamente o mais forte matematicamente.
+              </div>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="bb-part4-max-min">
+
+              <h3>4.5 Bounding em maximização e minimização</h3>
+
+              <p>
+                A regra de poda depende da direção da otimização.
+              </p>
+
+              <p>
+                Em maximização:
+              </p>
+
+              <div class="math-block">
+                se upperBound(nó) ≤ incumbent, podar
+              </div>
+
+              <p>
+                Em minimização:
+              </p>
+
+              <div class="math-block">
+                se lowerBound(nó) ≥ incumbent, podar
+              </div>
+
+              <p>
+                Essas regras expressam o mesmo princípio:
+                descartar nós que não podem melhorar a melhor solução conhecida.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="bb-part4-design-sources">
+
+              <h3>4.6 De onde vêm os limites</h3>
+
+              <p>
+                Funções de bounding são específicas do problema.
+              </p>
+
+              <p>
+                Elas são frequentemente derivadas de:
+              </p>
+
+              <ul>
+                <li>relaxações do problema original</li>
+                <li>aproximações gulosas</li>
+                <li>subproblemas simplificados</li>
+                <li>desigualdades matemáticas</li>
+              </ul>
+
+              <p>
+                Por exemplo, no problema da mochila 0/1,
+                um limite superior comum vem de permitir itens fracionários,
+                o que torna o problema mais fácil e fornece uma estimativa otimista segura.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="bb-part4-practical-role">
+
+              <h3>4.7 Por que funções de bounding importam tanto</h3>
+
+              <p>
+                Em teoria, Branch &amp; Bound é definido por branching, bounding e pruning.
+                Na prática, seu desempenho é frequentemente dominado pela qualidade do limite.
+              </p>
+
+              <p>
+                Dois algoritmos com a mesma estrutura de branching podem se comportar de forma muito diferente
+                se um usa um limite forte e o outro usa um limite fraco.
+              </p>
+
+              <p>
+                É por isso que funções de bounding são frequentemente a decisão de projeto mais importante
+                em uma implementação de Branch &amp; Bound.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="bb-part4-summary">
+
+              <h3>4.8 Resumo</h3>
+
+              <ul>
+                <li>Limites estimam a melhor conclusão possível de uma solução parcial</li>
+                <li>Eles devem ser seguros para preservar a corretude</li>
+                <li>Limites apertados melhoram a poda</li>
+                <li>Limites fortes podem custar mais para calcular</li>
+                <li>O desempenho prático depende fortemente do design do limite</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                a poda só é tão boa quanto a função de bounding por trás dela.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part4-transition">
+
+              <h4>Próximo: Parte 5 — Estratégias de Seleção de Nós</h4>
+
+              <p>
+                Uma vez que os limites estão disponíveis, a próxima questão não é apenas
+                quais nós ainda estão ativos, mas também qual nó ativo
+                deve ser explorado primeiro.
+              </p>
+
+              <p>
+                Na Parte 5, estudaremos as principais estratégias de seleção de nós
+                e como elas afetam o uso de memória, a descoberta da melhor solução atual,
+                e a eficácia geral da poda.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/projeto-de-algoritmos/busca/branch-and-bound/part-5.html">
+                  Parte 5 — Estratégias de Seleção de Nós →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
