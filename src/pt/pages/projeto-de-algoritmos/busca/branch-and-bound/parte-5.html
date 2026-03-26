@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch &amp; Bound · Parte 5 — Estratégias de Seleção de Nós</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 5 — Estratégias de Seleção de Nós</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Parte 5 — Estratégias de Seleção de Nós</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch &amp; Bound</strong>
+            <span>Parte 5 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">4</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="bb-part5-roadmap">
+
+              <h3>5. Estratégias de Seleção de Nós</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você vai aprender nesta parte):</strong>
+                <ol>
+                  <li>Por que a seleção de nós importa em Branch &amp; Bound</li>
+                  <li>As principais estratégias de exploração</li>
+                  <li>Como DFS, BFS e Best-first diferem</li>
+                  <li>Os trade-offs entre memória, velocidade e poda</li>
+                  <li>Por que a ordem de exploração afeta o desempenho na prática</li>
+                </ol>
+              </div>
+
+              <p>
+                Em Branch &amp; Bound, a poda depende dos limites,
+                mas o desempenho também depende de <strong>qual nó é explorado a seguir</strong>.
+              </p>
+
+              <p>
+                Mesmo com a mesma estrutura de branching e a mesma função de bounding,
+                diferentes estratégias de seleção de nós podem levar a comportamentos muito diferentes na busca.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="bb-part5-why-selection-matters">
+
+              <h3>5.1 Por que a seleção de nós importa</h3>
+
+              <p>
+                Em qualquer momento do algoritmo, vários nós ativos podem permanecer na fronteira.
+                O algoritmo deve decidir qual deles expandir a seguir.
+              </p>
+
+              <p>
+                Essa decisão importa porque:
+              </p>
+
+              <ul>
+                <li>afeta a rapidez com que uma boa solução atual é encontrada,</li>
+                <li>influencia a quantidade de memória necessária,</li>
+                <li>e altera o quão cedo a poda se torna eficaz.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Ideia principal:</strong>
+                a seleção de nós não altera a corretude,
+                mas pode alterar drasticamente a eficiência.
+              </div>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="bb-part5-frontier">
+
+              <h3>5.2 A fronteira de nós ativos</h3>
+
+              <p>
+                O algoritmo mantém um conjunto de nós que foram gerados
+                mas ainda não foram expandidos.
+              </p>
+
+              <p>
+                Esses nós são chamados de <strong>nós ativos</strong>,
+                e o conjunto completo é chamado de <strong>fronteira</strong>.
+              </p>
+
+              <p>
+                Uma estratégia de seleção de nós é essencialmente uma regra para escolher
+                um nó dessa fronteira.
+              </p>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="bb-part5-dfs">
+
+              <h3>5.3 Busca em profundidade (DFS)</h3>
+
+              <p>
+                Em uma estratégia de profundidade, o algoritmo sempre continua
+                pelo ramo mais recentemente gerado.
+              </p>
+
+              <p>
+                Isso normalmente é implementado com uma <strong>pilha</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Vantagem:</strong> baixo uso de memória</li>
+                <li><strong>Vantagem:</strong> frequentemente encontra uma solução completa rapidamente</li>
+                <li><strong>Desvantagem:</strong> pode passar muito tempo em regiões pouco promissoras</li>
+              </ul>
+
+              <p>
+                DFS é especialmente atrativo quando a memória é limitada
+                ou quando encontrar uma solução inicial cedo é útil.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="bb-part5-bfs">
+
+              <h3>5.4 Busca em largura (BFS)</h3>
+
+              <p>
+                Em uma estratégia de largura, o algoritmo explora os nós nível por nível.
+              </p>
+
+              <p>
+                Isso normalmente é implementado com uma <strong>fila</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Vantagem:</strong> exploração sistemática por níveis</li>
+                <li><strong>Vantagem:</strong> útil para certas análises estruturais</li>
+                <li><strong>Desvantagem:</strong> pode exigir muita memória</li>
+              </ul>
+
+              <p>
+                Em problemas combinatórios grandes, BFS costuma ser caro na prática
+                porque a fronteira pode crescer muito rapidamente.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="bb-part5-best-first">
+
+              <h3>5.5 Busca Best-first</h3>
+
+              <p>
+                Em uma estratégia best-first, o algoritmo escolhe o nó ativo
+                com o limite mais promissor.
+              </p>
+
+              <p>
+                Isso normalmente é implementado com uma <strong>fila de prioridade</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Vantagem:</strong> frequentemente encontra boas soluções cedo</li>
+                <li><strong>Vantagem:</strong> pode melhorar significativamente a poda</li>
+                <li><strong>Desvantagem:</strong> exige manutenção de prioridades ordenadas</li>
+              </ul>
+
+              <p>
+                Best-first é uma das estratégias mais comuns em implementações práticas
+                de Branch &amp; Bound.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="bb-part5-comparison">
+
+              <h3>5.6 Comparando as estratégias principais</h3>
+
+              <ul>
+                <li><strong>DFS:</strong> baixa memória, exploração profunda</li>
+                <li><strong>BFS:</strong> exploração ampla, alta memória</li>
+                <li><strong>Best-first:</strong> exploração guiada pela qualidade do limite</li>
+              </ul>
+
+              <p>
+                A melhor estratégia depende do problema,
+                da qualidade do limite,
+                e dos recursos computacionais disponíveis.
+              </p>
+
+              <div class="note">
+                <strong>Observação:</strong>
+                um bom limite é mais eficaz quando a estratégia de seleção
+                sabe utilizá-lo bem.
+              </div>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="bb-part5-incumbent-effect">
+
+              <h3>5.7 Interação com a solução atual</h3>
+
+              <p>
+                A seleção de nós afeta a rapidez com que a melhor solução atual melhora.
+              </p>
+
+              <p>
+                Se uma estratégia tende a encontrar boas soluções completas cedo,
+                então a solução atual se torna forte mais rapidamente,
+                tornando a poda mais agressiva depois.
+              </p>
+
+              <p>
+                Esse é um dos motivos pelos quais best-first costuma ter bom desempenho na prática:
+                ele prioriza nós com maior chance de gerar boas soluções.
+              </p>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card" id="bb-part5-summary">
+
+              <h3>5.8 Resumo</h3>
+
+              <ul>
+                <li>A seleção de nós determina a ordem de exploração</li>
+                <li>DFS usa pilha</li>
+                <li>BFS usa fila</li>
+                <li>Best-first usa fila de prioridade</li>
+                <li>A estratégia afeta memória, qualidade da solução e eficiência da poda</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                em Branch &amp; Bound, escolher o próximo nó certo é tão importante
+                quanto calcular o limite correto.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part5-transition">
+
+              <h4>Próximo: Parte 6 — Problemas Clássicos</h4>
+
+              <p>
+                Agora que vimos como a seleção de nós afeta o processo de busca,
+                o próximo passo é estudar os tipos de problemas
+                onde Branch &amp; Bound é aplicado.
+              </p>
+
+              <p>
+                Na Parte 6, analisaremos exemplos clássicos como Mochila,
+                Caixeiro Viajante e outros problemas de otimização
+                onde branching, bounding e seleção de nós trabalham juntos.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">
+                  Parte 6 — Problemas Clássicos →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

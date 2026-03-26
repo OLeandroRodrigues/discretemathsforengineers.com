@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 5 — Node Selection Strategies</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 5 — Node Selection Strategies</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 5 — Node Selection Strategies</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 5 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="bb-part5-roadmap">
+
+              <h3>5. Node Selection Strategies</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>Why node selection matters in Branch &amp; Bound</li>
+                  <li>The main exploration strategies</li>
+                  <li>How DFS, BFS, and Best-first differ</li>
+                  <li>The trade-offs between memory, speed, and pruning</li>
+                  <li>Why the exploration order affects practical performance</li>
+                </ol>
+              </div>
+
+              <p>
+                In Branch &amp; Bound, pruning depends on bounds,
+                but performance also depends on <strong>which node is explored next</strong>.
+              </p>
+
+              <p>
+                Even with the same branching structure and the same bounding function,
+                different node selection strategies can lead to very different search behavior.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="bb-part5-why-selection-matters">
+
+              <h3>5.1 Why node selection matters</h3>
+
+              <p>
+                At any point in the algorithm, several live nodes may remain in the frontier.
+                The algorithm must decide which one to expand next.
+              </p>
+
+              <p>
+                This decision matters because:
+              </p>
+
+              <ul>
+                <li>it affects how quickly a good incumbent is found,</li>
+                <li>it influences how much memory is required,</li>
+                <li>and it changes how early pruning becomes effective.</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main idea:</strong>
+                node selection does not change correctness,
+                but it can drastically change efficiency.
+              </div>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="bb-part5-frontier">
+
+              <h3>5.2 The frontier of live nodes</h3>
+
+              <p>
+                The algorithm keeps a set of nodes that have been generated
+                but not yet expanded.
+              </p>
+
+              <p>
+                These nodes are often called <strong>live nodes</strong>,
+                and the full set is called the <strong>frontier</strong>.
+              </p>
+
+              <p>
+                A node selection strategy is essentially a rule for choosing
+                one node from this frontier.
+              </p>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="bb-part5-dfs">
+
+              <h3>5.3 Depth-first search (DFS)</h3>
+
+              <p>
+                In a depth-first strategy, the algorithm always continues
+                along the most recently generated branch.
+              </p>
+
+              <p>
+                This is usually implemented with a <strong>stack</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Advantage:</strong> low memory usage</li>
+                <li><strong>Advantage:</strong> often finds a complete solution quickly</li>
+                <li><strong>Disadvantage:</strong> may spend a long time in an unpromising region</li>
+              </ul>
+
+              <p>
+                DFS is especially attractive when memory is limited
+                or when obtaining an initial incumbent early is useful.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="bb-part5-bfs">
+
+              <h3>5.4 Breadth-first search (BFS)</h3>
+
+              <p>
+                In a breadth-first strategy, the algorithm explores nodes level by level.
+              </p>
+
+              <p>
+                This is usually implemented with a <strong>queue</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Advantage:</strong> systematic level-by-level exploration</li>
+                <li><strong>Advantage:</strong> useful for certain structural analyses</li>
+                <li><strong>Disadvantage:</strong> can require a large amount of memory</li>
+              </ul>
+
+              <p>
+                In large combinatorial problems, BFS is often expensive in practice
+                because the frontier may grow very quickly.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="bb-part5-best-first">
+
+              <h3>5.5 Best-first search</h3>
+
+              <p>
+                In a best-first strategy, the algorithm chooses the live node
+                with the most promising bound.
+              </p>
+
+              <p>
+                This is usually implemented with a <strong>priority queue</strong>.
+              </p>
+
+              <ul>
+                <li><strong>Advantage:</strong> often finds strong incumbents early</li>
+                <li><strong>Advantage:</strong> can improve pruning significantly</li>
+                <li><strong>Disadvantage:</strong> requires maintaining ordered priorities</li>
+              </ul>
+
+              <p>
+                Best-first is one of the most common strategies in practical
+                Branch &amp; Bound implementations.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="bb-part5-comparison">
+
+              <h3>5.6 Comparing the main strategies</h3>
+
+              <ul>
+                <li><strong>DFS:</strong> low memory, deep exploration</li>
+                <li><strong>BFS:</strong> wide exploration, high memory</li>
+                <li><strong>Best-first:</strong> exploration guided by bound quality</li>
+              </ul>
+
+              <p>
+                The best strategy depends on the problem,
+                the quality of the bound,
+                and the computational resources available.
+              </p>
+
+              <div class="note">
+                <strong>Observation:</strong>
+                a strong bound is most effective when the node selection strategy
+                uses that information well.
+              </div>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="bb-part5-incumbent-effect">
+
+              <h3>5.7 Interaction with the incumbent</h3>
+
+              <p>
+                Node selection affects how quickly the incumbent improves.
+              </p>
+
+              <p>
+                If a strategy tends to find good complete solutions early,
+                then the incumbent becomes strong sooner,
+                which makes pruning more aggressive later.
+              </p>
+
+              <p>
+                This is one reason why best-first search often performs well in practice:
+                it tends to prioritize nodes that are likely to yield strong completions.
+              </p>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card" id="bb-part5-summary">
+
+              <h3>5.8 Summary</h3>
+
+              <ul>
+                <li>Node selection determines the exploration order</li>
+                <li>DFS uses a stack</li>
+                <li>BFS uses a queue</li>
+                <li>Best-first uses a priority queue</li>
+                <li>The strategy affects memory, incumbent quality, and pruning efficiency</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main takeaway:</strong>
+                in Branch &amp; Bound, finding the right node next is often as important
+                as computing the right bound.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part5-transition">
+
+              <h4>Next: Part 6 — Classic Problems</h4>
+
+              <p>
+                Now that we have seen how node selection affects the search process,
+                the next step is to study the kinds of problems
+                where Branch &amp; Bound is classically applied.
+              </p>
+
+              <p>
+                In Part 6, we will examine standard examples such as Knapsack,
+                Traveling Salesman, and other optimization problems
+                where branching, bounding, and node selection come together.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">
+                  Part 6 — Classic Problems →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
