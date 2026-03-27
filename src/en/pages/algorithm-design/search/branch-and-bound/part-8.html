@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 8 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Index →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card" id="bb-part8-roadmap">
+
+              <h3>8. Branch &amp; Bound vs Backtracking vs Dynamic Programming</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>How Branch &amp; Bound differs from Backtracking</li>
+                  <li>How it differs from Dynamic Programming</li>
+                  <li>When the three methods overlap</li>
+                  <li>When each method is most appropriate</li>
+                  <li>How to choose the right tool for a problem</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch &amp; Bound is often introduced near Backtracking
+                because both explore search trees.
+              </p>
+
+              <p>
+                It is also often compared with Dynamic Programming
+                because all three methods are used to solve difficult combinatorial problems.
+              </p>
+
+              <p>
+                But their goals, assumptions, and mechanisms are different.
+              </p>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="bb-part8-vs-backtracking">
+
+              <h3>8.1 Branch &amp; Bound vs Backtracking</h3>
+
+              <p>
+                Backtracking is mainly concerned with
+                <strong>feasibility</strong>.
+              </p>
+
+              <p>
+                It explores a search tree and prunes branches
+                when constraints are violated
+                or when no valid completion is possible.
+              </p>
+
+              <p>
+                Branch &amp; Bound goes further:
+                it may also prune branches that are still feasible,
+                but cannot lead to a solution better than the incumbent.
+              </p>
+
+              <ul>
+                <li><strong>Backtracking:</strong> prune because the branch is invalid</li>
+                <li><strong>Branch &amp; Bound:</strong> prune because the branch is uncompetitive</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main distinction:</strong>
+                Backtracking focuses on validity;
+                Branch &amp; Bound focuses on optimality.
+              </div>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="bb-part8-vs-dp">
+
+              <h3>8.2 Branch &amp; Bound vs Dynamic Programming</h3>
+
+              <p>
+                Dynamic Programming is based on
+                <strong>overlapping subproblems</strong>
+                and <strong>optimal substructure</strong>.
+              </p>
+
+              <p>
+                Instead of exploring a search tree with pruning,
+                it solves subproblems systematically
+                and stores their results for reuse.
+              </p>
+
+              <p>
+                Branch &amp; Bound, by contrast,
+                explores a search tree of partial solutions
+                and reduces work through pruning, not memoization.
+              </p>
+
+              <ul>
+                <li><strong>Dynamic Programming:</strong> avoid recomputation</li>
+                <li><strong>Branch &amp; Bound:</strong> avoid exploring irrelevant regions</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="bb-part8-overlap">
+
+              <h3>8.3 Where they overlap</h3>
+
+              <p>
+                These methods are not always completely separate.
+              </p>
+
+              <p>
+                For some optimization problems:
+              </p>
+
+              <ul>
+                <li>Backtracking can be extended into Branch &amp; Bound</li>
+                <li>Dynamic Programming can solve the same problem more efficiently when its assumptions hold</li>
+                <li>Branch &amp; Bound may still be preferred if exact DP is too large or memory-intensive</li>
+              </ul>
+
+              <p>
+                So the right method depends not only on the problem,
+                but also on the structure available to exploit.
+              </p>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="bb-part8-when-backtracking">
+
+              <h3>8.4 When Backtracking is the right choice</h3>
+
+              <p>
+                Backtracking is a natural choice when:
+              </p>
+
+              <ul>
+                <li>the goal is to find any valid solution,</li>
+                <li>or enumerate all valid solutions,</li>
+                <li>and pruning is mainly based on constraints.</li>
+              </ul>
+
+              <p>
+                Typical examples include:
+              </p>
+
+              <ul>
+                <li>N-Queens</li>
+                <li>Sudoku</li>
+                <li>Permutation generation</li>
+                <li>Constraint satisfaction problems</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="bb-part8-when-bb">
+
+              <h3>8.5 When Branch &amp; Bound is the right choice</h3>
+
+              <p>
+                Branch &amp; Bound is natural when:
+              </p>
+
+              <ul>
+                <li>the problem is an optimization problem,</li>
+                <li>the search space is combinatorial,</li>
+                <li>and useful bounds can eliminate large regions of the tree.</li>
+              </ul>
+
+              <p>
+                It is especially valuable when exact optimality matters,
+                but full exhaustive search is too expensive.
+              </p>
+
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="bb-part8-when-dp">
+
+              <h3>8.6 When Dynamic Programming is the right choice</h3>
+
+              <p>
+                Dynamic Programming is often the best choice when:
+              </p>
+
+              <ul>
+                <li>the problem has overlapping subproblems,</li>
+                <li>optimal substructure is present,</li>
+                <li>and the state space is manageable enough to store.</li>
+              </ul>
+
+              <p>
+                In such cases, DP may outperform Branch &amp; Bound
+                because it transforms exponential search
+                into structured computation over reusable states.
+              </p>
+
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="bb-part8-comparison-table">
+
+              <h3>8.7 Comparative summary</h3>
+
+              <ul>
+                <li><strong>Backtracking:</strong> search + feasibility pruning</li>
+                <li><strong>Branch &amp; Bound:</strong> search + optimality pruning</li>
+                <li><strong>Dynamic Programming:</strong> state reuse + recurrence structure</li>
+              </ul>
+
+              <p>
+                In short:
+              </p>
+
+              <ul>
+                <li>Backtracking asks: <em>can this branch still work?</em></li>
+                <li>Branch &amp; Bound asks: <em>can this branch still win?</em></li>
+                <li>Dynamic Programming asks: <em>have we already solved this state?</em></li>
+              </ul>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="bb-part8-summary">
+
+              <h3>8.8 Summary</h3>
+
+              <ul>
+                <li>Backtracking is about validity</li>
+                <li>Branch &amp; Bound is about optimality</li>
+                <li>Dynamic Programming is about reuse of overlapping work</li>
+                <li>The three methods may solve related problems</li>
+                <li>The right choice depends on the structure of the problem</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main takeaway:</strong>
+                these methods are best seen not as competitors,
+                but as different ways of exploiting problem structure.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part8-transition">
+
+              <h4>Series complete</h4>
+
+              <p>
+                We have now covered the full Branch &amp; Bound series:
+                from problem modeling and search trees
+                to bounding functions, node selection, complexity,
+                and comparisons with other algorithmic paradigms.
+              </p>
+
+              <p>
+                The next natural step is to study a concrete implementation,
+                usually starting with 0/1 Knapsack or Traveling Salesman.
+              </p>
+
+              <div class="note">
+                <strong>Back to overview:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/index.html">
+                  Branch &amp; Bound — Index →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

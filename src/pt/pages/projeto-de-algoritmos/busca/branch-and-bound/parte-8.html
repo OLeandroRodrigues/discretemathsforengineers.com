@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch & Bound · Parte 8 — Branch & Bound vs Backtracking vs Programação Dinâmica</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch & Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 8 — Branch & Bound vs Backtracking vs Programação Dinâmica</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch & Bound</h2>
+          <p>Parte 8 — Branch & Bound vs Backtracking vs Programação Dinâmica</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch & Bound</strong>
+            <span>Parte 8 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Índice →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">7</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 8.0 -->
+            <section class="card" id="bb-part8-roadmap">
+
+              <h3>8. Branch & Bound vs Backtracking vs Programação Dinâmica</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Como Branch & Bound difere de Backtracking</li>
+                  <li>Como difere de Programação Dinâmica</li>
+                  <li>Quando os três métodos se sobrepõem</li>
+                  <li>Quando cada método é mais apropriado</li>
+                  <li>Como escolher a ferramenta certa para um problema</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch & Bound é frequentemente apresentado junto com Backtracking
+                porque ambos exploram árvores de busca.
+              </p>
+
+              <p>
+                Ele também é frequentemente comparado com Programação Dinâmica
+                porque os três métodos são usados para resolver problemas combinatórios difíceis.
+              </p>
+
+              <p>
+                Mas seus objetivos, hipóteses e mecanismos são diferentes.
+              </p>
+
+            </section>
+
+            <!-- 8.1 -->
+            <section class="card" id="bb-part8-vs-backtracking">
+
+              <h3>8.1 Branch & Bound vs Backtracking</h3>
+
+              <p>
+                Backtracking está principalmente relacionado à
+                <strong>viabilidade</strong>.
+              </p>
+
+              <p>
+                Ele explora uma árvore de busca e poda ramos
+                quando restrições são violadas
+                ou quando nenhuma solução válida é possível.
+              </p>
+
+              <p>
+                Branch & Bound vai além:
+                ele também pode podar ramos que ainda são viáveis,
+                mas que não podem levar a uma solução melhor que a atual.
+              </p>
+
+              <ul>
+                <li><strong>Backtracking:</strong> poda porque o ramo é inválido</li>
+                <li><strong>Branch & Bound:</strong> poda porque o ramo não é competitivo</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal distinção:</strong>
+                Backtracking foca em validade;
+                Branch & Bound foca em otimalidade.
+              </div>
+
+            </section>
+
+            <!-- 8.2 -->
+            <section class="card" id="bb-part8-vs-dp">
+
+              <h3>8.2 Branch & Bound vs Programação Dinâmica</h3>
+
+              <p>
+                Programação Dinâmica é baseada em
+                <strong>subproblemas sobrepostos</strong>
+                e <strong>subestrutura ótima</strong>.
+              </p>
+
+              <p>
+                Em vez de explorar uma árvore de busca com poda,
+                ela resolve subproblemas sistematicamente
+                e armazena seus resultados para reutilização.
+              </p>
+
+              <p>
+                Branch & Bound, por outro lado,
+                explora uma árvore de soluções parciais
+                e reduz trabalho por meio de poda, não memoização.
+              </p>
+
+              <ul>
+                <li><strong>Programação Dinâmica:</strong> evita recomputação</li>
+                <li><strong>Branch & Bound:</strong> evita explorar regiões irrelevantes</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.3 -->
+            <section class="card" id="bb-part8-overlap">
+
+              <h3>8.3 Onde eles se sobrepõem</h3>
+
+              <p>
+                Esses métodos nem sempre são completamente separados.
+              </p>
+
+              <p>
+                Para alguns problemas de otimização:
+              </p>
+
+              <ul>
+                <li>Backtracking pode ser estendido para Branch & Bound</li>
+                <li>Programação Dinâmica pode resolver o mesmo problema de forma mais eficiente quando suas hipóteses são satisfeitas</li>
+                <li>Branch & Bound ainda pode ser preferido quando DP é inviável por memória ou tamanho de estado</li>
+              </ul>
+
+              <p>
+                Portanto, a escolha depende não apenas do problema,
+                mas da estrutura disponível para explorar.
+              </p>
+
+            </section>
+
+            <!-- 8.4 -->
+            <section class="card" id="bb-part8-when-backtracking">
+
+              <h3>8.4 Quando usar Backtracking</h3>
+
+              <p>
+                Backtracking é uma escolha natural quando:
+              </p>
+
+              <ul>
+                <li>o objetivo é encontrar qualquer solução válida,</li>
+                <li>ou enumerar todas as soluções válidas,</li>
+                <li>e a poda é baseada principalmente em restrições.</li>
+              </ul>
+
+              <p>
+                Exemplos típicos incluem:
+              </p>
+
+              <ul>
+                <li>N-Queens</li>
+                <li>Sudoku</li>
+                <li>Geração de permutações</li>
+                <li>Problemas de satisfação de restrições</li>
+              </ul>
+
+            </section>
+
+            <!-- 8.5 -->
+            <section class="card" id="bb-part8-when-bb">
+
+              <h3>8.5 Quando usar Branch & Bound</h3>
+
+              <p>
+                Branch & Bound é apropriado quando:
+              </p>
+
+              <ul>
+                <li>o problema é de otimização,</li>
+                <li>o espaço de busca é combinatório,</li>
+                <li>e existem bounds capazes de eliminar grandes partes da árvore.</li>
+              </ul>
+
+              <p>
+                É especialmente útil quando a solução ótima exata é necessária,
+                mas a busca exaustiva completa é inviável.
+              </p>
+
+            </section>
+
+            <!-- 8.6 -->
+            <section class="card" id="bb-part8-when-dp">
+
+              <h3>8.6 Quando usar Programação Dinâmica</h3>
+
+              <p>
+                Programação Dinâmica é a melhor escolha quando:
+              </p>
+
+              <ul>
+                <li>existem subproblemas sobrepostos,</li>
+                <li>há subestrutura ótima,</li>
+                <li>e o espaço de estados pode ser armazenado.</li>
+              </ul>
+
+              <p>
+                Nesses casos, DP pode superar Branch & Bound
+                pois transforma busca exponencial
+                em computação estruturada com reutilização de estados.
+              </p>
+
+            </section>
+
+            <!-- 8.7 -->
+            <section class="card" id="bb-part8-comparison-table">
+
+              <h3>8.7 Resumo comparativo</h3>
+
+              <ul>
+                <li><strong>Backtracking:</strong> busca + poda por viabilidade</li>
+                <li><strong>Branch & Bound:</strong> busca + poda por otimalidade</li>
+                <li><strong>Programação Dinâmica:</strong> reutilização de estados + recorrência</li>
+              </ul>
+
+              <p>
+                Em resumo:
+              </p>
+
+              <ul>
+                <li>Backtracking pergunta: <em>esse ramo ainda é válido?</em></li>
+                <li>Branch & Bound pergunta: <em>esse ramo ainda pode vencer?</em></li>
+                <li>Programação Dinâmica pergunta: <em>já resolvemos esse estado antes?</em></li>
+              </ul>
+
+            </section>
+
+            <!-- 8.8 -->
+            <section class="card" id="bb-part8-summary">
+
+              <h3>8.8 Resumo</h3>
+
+              <ul>
+                <li>Backtracking trata de validade</li>
+                <li>Branch & Bound trata de otimalidade</li>
+                <li>Programação Dinâmica trata de reutilização de trabalho</li>
+                <li>Os três métodos podem resolver problemas relacionados</li>
+                <li>A escolha depende da estrutura do problema</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                esses métodos devem ser vistos não como concorrentes,
+                mas como diferentes formas de explorar a estrutura de um problema.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part8-transition">
+
+              <h4>Série concluída</h4>
+
+              <p>
+                Agora cobrimos toda a série de Branch & Bound:
+                desde modelagem de problemas e árvores de busca
+                até bounding functions, estratégias de exploração,
+                complexidade e comparação com outros paradigmas.
+              </p>
+
+              <p>
+                O próximo passo natural é estudar uma implementação concreta,
+                geralmente começando com Mochila 0/1 ou TSP.
+              </p>
+
+              <div class="note">
+                <strong>Voltar ao índice:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">
+                  Branch & Bound — Índice →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

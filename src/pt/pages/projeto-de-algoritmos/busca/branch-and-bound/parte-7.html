@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch & Bound · Parte 7 — Complexidade</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch & Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 7 — Complexidade</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch & Bound</h2>
+          <p>Parte 7 — Complexidade</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch & Bound</strong>
+            <span>Parte 7 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">5</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">6</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card" id="bb-part7-roadmap">
+
+              <h3>7. Complexidade</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>A complexidade no pior caso do Branch & Bound</li>
+                  <li>Por que a poda pode ajudar drasticamente na prática</li>
+                  <li>A diferença entre complexidade teórica e prática</li>
+                  <li>O papel dos bounds e da seleção de nós no desempenho</li>
+                  <li>Por que a análise de complexidade é sutil nesse método</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch & Bound é frequentemente muito mais rápido do que força bruta na prática,
+                mas isso não significa que sua complexidade no pior caso desapareça.
+              </p>
+
+              <p>
+                Para entender corretamente o método,
+                devemos distinguir entre
+                <strong>complexidade teórica no pior caso</strong>
+                e <strong>redução prática da busca através de poda</strong>.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bb-part7-worst-case">
+
+              <h3>7.1 Complexidade no pior caso</h3>
+
+              <p>
+                No pior caso, Branch & Bound ainda pode explorar
+                toda a árvore de busca.
+              </p>
+
+              <p>
+                Isso significa que sua complexidade de tempo permanece exponencial:
+              </p>
+
+              <div class="math-block">
+                O(b^d)
+              </div>
+
+              <p>
+                onde:
+              </p>
+
+              <ul>
+                <li><span class="math">b</span> é o fator de ramificação</li>
+                <li><span class="math">d</span> é a profundidade da árvore de busca</li>
+              </ul>
+
+              <p>
+                Em problemas binários, isso é frequentemente escrito como:
+              </p>
+
+              <div class="math-block">
+                O(2^n)
+              </div>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bb-part7-why-still-useful">
+
+              <h3>7.2 Por que ainda é útil</h3>
+
+              <p>
+                Se o pior caso ainda é exponencial,
+                por que usar Branch & Bound?
+              </p>
+
+              <p>
+                Porque, em muitos casos práticos,
+                o algoritmo evita explorar grande parte da árvore.
+              </p>
+
+              <p>
+                Bounds fortes e boas soluções incumbentes podem eliminar
+                grandes porções do espaço de busca antes mesmo de serem exploradas.
+              </p>
+
+              <div class="note">
+                <strong>Ponto principal:</strong>
+                Branch & Bound não melhora o pior caso,
+                mas frequentemente melhora drasticamente o caso prático médio.
+              </div>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bb-part7-pruning-effect">
+
+              <h3>7.3 O efeito da poda</h3>
+
+              <p>
+                Quanto mais nós são podados,
+                menor se torna a árvore de busca efetiva.
+              </p>
+
+              <p>
+                Isso significa que o tempo de execução prático depende de:
+              </p>
+
+              <ul>
+                <li>a qualidade da função de bound,</li>
+                <li>a rapidez em encontrar boas soluções incumbentes,</li>
+                <li>e a estratégia de seleção de nós.</li>
+              </ul>
+
+              <p>
+                Portanto, duas implementações de Branch & Bound para o mesmo problema
+                podem ter a mesma complexidade teórica,
+                mas comportamentos práticos muito diferentes.
+              </p>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bb-part7-space">
+
+              <h3>7.4 Complexidade de espaço</h3>
+
+              <p>
+                A complexidade de espaço depende fortemente da estratégia de seleção de nós.
+              </p>
+
+              <ul>
+                <li><strong>DFS:</strong> geralmente baixo uso de memória, pois mantém apenas um caminho e uma pequena fronteira</li>
+                <li><strong>BFS:</strong> pode exigir muita memória, pois muitos nós no mesmo nível permanecem armazenados</li>
+                <li><strong>Best-first:</strong> frequentemente requer bastante memória, já que muitos nós ativos ficam na fila de prioridade</li>
+              </ul>
+
+              <p>
+                Na prática, memória pode ser tão importante quanto tempo
+                ao avaliar um algoritmo de Branch & Bound.
+              </p>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bb-part7-bound-cost">
+
+              <h3>7.5 Custo de cálculo dos bounds</h3>
+
+              <p>
+                A complexidade não depende apenas do número de nós visitados.
+              </p>
+
+              <p>
+                Cada nó pode exigir trabalho adicional para calcular seu bound.
+              </p>
+
+              <p>
+                Assim, o tempo total depende de:
+              </p>
+
+              <ol>
+                <li>o número de nós visitados,</li>
+                <li>e o custo por nó.</li>
+              </ol>
+
+              <p>
+                Por isso, um bound mais forte nem sempre é melhor:
+                ele pode reduzir a árvore,
+                mas aumentar o custo por nó.
+              </p>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bb-part7-instance-dependence">
+
+              <h3>7.6 Dependência da instância</h3>
+
+              <p>
+                Branch & Bound é altamente dependente da instância.
+              </p>
+
+              <p>
+                Em alguns casos, a poda é extremamente eficiente.
+                Em outros, quase nenhuma poda ocorre.
+              </p>
+
+              <p>
+                Isso torna difícil prever a complexidade com precisão.
+              </p>
+
+              <div class="note">
+                <strong>Observação:</strong>
+                Branch & Bound é um daqueles algoritmos
+                onde a complexidade assintótica conta apenas parte da história.
+              </div>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bb-part7-practical-view">
+
+              <h3>7.7 Visão prática da complexidade</h3>
+
+              <p>
+                Na prática, Branch & Bound é avaliado por:
+              </p>
+
+              <ul>
+                <li>número de nós expandidos,</li>
+                <li>número de nós podados,</li>
+                <li>uso de memória,</li>
+                <li>tempo total de execução em instâncias representativas.</li>
+              </ul>
+
+              <p>
+                Essa perspectiva prática é especialmente importante
+                em engenharia de otimização e desenvolvimento de solvers.
+              </p>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card" id="bb-part7-summary">
+
+              <h3>7.8 Resumo</h3>
+
+              <ul>
+                <li>O tempo no pior caso permanece exponencial</li>
+                <li>A poda pode reduzir drasticamente a busca na prática</li>
+                <li>O espaço depende fortemente da estratégia de exploração</li>
+                <li>O custo total inclui nós visitados e cálculo de bounds</li>
+                <li>O desempenho depende fortemente da instância</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                Branch & Bound não é poderoso porque muda a complexidade exponencial,
+                mas porque frequentemente torna a busca exata viável na prática.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part7-transition">
+
+              <h4>Próximo: Parte 8 — Branch & Bound vs Backtracking vs Programação Dinâmica</h4>
+
+              <p>
+                Agora que entendemos a complexidade do Branch & Bound,
+                o próximo passo é compará-lo com outras técnicas importantes.
+              </p>
+
+              <p>
+                Na Parte 8, iremos comparar Branch & Bound
+                com Backtracking e Programação Dinâmica,
+                destacando quando cada abordagem é mais adequada.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">
+                  Parte 8 — Branch & Bound vs Backtracking vs Programação Dinâmica →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <title>Projeto de Algoritmos → Busca → Branch & Bound · Parte 6 — Problemas Clássicos</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Branch & Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 6 — Problemas Clássicos</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch & Bound</h2>
+          <p>Parte 6 — Problemas Clássicos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Série: Branch & Bound</strong>
+            <span>Parte 6 de 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">Próximo →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-5.html">5</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-6.html">6</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">7</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 6.0 -->
+            <section class="card" id="bb-part6-roadmap">
+
+              <h3>6. Problemas Clássicos</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Quais problemas são classicamente resolvidos com Branch & Bound</li>
+                  <li>Por que esses problemas se encaixam no modelo de Branch & Bound</li>
+                  <li>Como branching, bounding e pruning aparecem em cada caso</li>
+                  <li>O que torna alguns problemas mais difíceis que outros</li>
+                  <li>Como o framework se adapta a diferentes cenários de otimização</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch & Bound não está associado a um único problema.
+                Ele é um framework geral que se aplica sempre que temos:
+              </p>
+
+              <ul>
+                <li>um espaço de busca combinatório,</li>
+                <li>uma função objetivo,</li>
+                <li>e limites úteis para poda.</li>
+              </ul>
+
+              <p>
+                Nesta parte, examinamos os problemas clássicos
+                onde Branch & Bound é mais estudado e aplicado.
+              </p>
+
+            </section>
+
+            <!-- 6.1 -->
+            <section class="card" id="bb-part6-knapsack">
+
+              <h3>6.1 Mochila 0/1</h3>
+
+              <p>
+                O problema da Mochila 0/1 é um dos exemplos mais clássicos
+                de Branch & Bound.
+              </p>
+
+              <p>
+                Cada item pode ser:
+              </p>
+
+              <ul>
+                <li>incluído, ou</li>
+                <li>excluído.</li>
+              </ul>
+
+              <p>
+                Isso naturalmente gera uma árvore de busca binária.
+              </p>
+
+              <p>
+                Um limite comum é obtido a partir da
+                <strong>relaxação da mochila fracionária</strong>,
+                onde os itens podem ser escolhidos parcialmente.
+              </p>
+
+              <div class="note">
+                <strong>Por que se encaixa bem:</strong>
+                o branching é simples, e o bound é forte e fácil de calcular.
+              </div>
+
+            </section>
+
+            <!-- 6.2 -->
+            <section class="card" id="bb-part6-tsp">
+
+              <h3>6.2 Problema do Caixeiro Viajante (TSP)</h3>
+
+              <p>
+                No Problema do Caixeiro Viajante,
+                o objetivo é encontrar o ciclo Hamiltoniano mais curto
+                visitando cada cidade exatamente uma vez.
+              </p>
+
+              <p>
+                Branch & Bound é frequentemente usado explorando tours parciais
+                e podando aqueles que não podem levar a uma solução ótima completa.
+              </p>
+
+              <p>
+                Limites típicos podem vir de:
+              </p>
+
+              <ul>
+                <li>estimativas de arestas mínimas,</li>
+                <li>matrizes de custo reduzido,</li>
+                <li>ou relaxações como limites baseados em assignment.</li>
+              </ul>
+
+              <p>
+                O TSP é um exemplo clássico de como bounds fortes
+                podem reduzir drasticamente o espaço de busca.
+              </p>
+
+            </section>
+
+            <!-- 6.3 -->
+            <section class="card" id="bb-part6-assignment">
+
+              <h3>6.3 Problemas de Atribuição</h3>
+
+              <p>
+                Problemas de atribuição tratam de como associar agentes a tarefas
+                minimizando custo ou maximizando valor.
+              </p>
+
+              <p>
+                Uma solução com Branch & Bound normalmente ramifica
+                uma decisão de atribuição por vez,
+                enquanto o bound vem de uma versão relaxada
+                do subproblema restante.
+              </p>
+
+              <p>
+                Esses problemas são especialmente úteis para entender
+                como limites inferiores guiam problemas de minimização.
+              </p>
+
+            </section>
+
+            <!-- 6.4 -->
+            <section class="card" id="bb-part6-scheduling">
+
+              <h3>6.4 Problemas de Escalonamento</h3>
+
+              <p>
+                Muitos problemas de escalonamento também podem ser resolvidos com Branch & Bound.
+              </p>
+
+              <p>
+                Aqui, os nós normalmente representam cronogramas parciais,
+                e o bound estima o melhor tempo de conclusão
+                ou o menor custo restante.
+              </p>
+
+              <p>
+                Escalonamento é um bom exemplo de como o mesmo framework
+                se adapta a restrições e objetivos específicos de domínio.
+              </p>
+
+            </section>
+
+            <!-- 6.5 -->
+            <section class="card" id="bb-part6-integer-programming">
+
+              <h3>6.5 Programação Inteira</h3>
+
+              <p>
+                Branch & Bound é uma das técnicas fundamentais
+                por trás dos solucionadores modernos de programação inteira.
+              </p>
+
+              <p>
+                Nesse contexto, o algoritmo ramifica sobre variáveis inteiras
+                e utiliza relaxações de programação linear para calcular bounds.
+              </p>
+
+              <p>
+                Isso mostra o Branch & Bound em um nível mais avançado:
+                ele se torna um mecanismo geral de otimização exata.
+              </p>
+
+            </section>
+
+            <!-- 6.6 -->
+            <section class="card" id="bb-part6-common-pattern">
+
+              <h3>6.6 O padrão comum entre os problemas</h3>
+
+              <p>
+                Embora esses problemas pareçam diferentes na superfície,
+                todos compartilham o mesmo padrão estrutural:
+              </p>
+
+              <ol>
+                <li>Representar soluções parciais como nós</li>
+                <li>Ramificar refinando uma decisão</li>
+                <li>Calcular um bound para a melhor continuação possível</li>
+                <li>Podar nós que não melhoram a solução atual</li>
+              </ol>
+
+              <div class="note">
+                <strong>Ideia central:</strong>
+                Branch & Bound é independente do problema no nível do framework,
+                mas específico do problema na forma de construir os bounds.
+              </div>
+
+            </section>
+
+            <!-- 6.7 -->
+            <section class="card" id="bb-part6-why-classic">
+
+              <h3>6.7 Por que são chamados de “problemas clássicos”</h3>
+
+              <p>
+                Esses exemplos são considerados clássicos porque ilustram claramente:
+              </p>
+
+              <ul>
+                <li>a explosão combinatória,</li>
+                <li>a necessidade de otimização exata,</li>
+                <li>e o valor da poda inteligente.</li>
+              </ul>
+
+              <p>
+                Eles também aparecem frequentemente em livros,
+                pesquisas em otimização e sistemas reais de engenharia.
+              </p>
+
+            </section>
+
+            <!-- 6.8 -->
+            <section class="card" id="bb-part6-summary">
+
+              <h3>6.8 Resumo</h3>
+
+              <ul>
+                <li>Mochila é o exemplo introdutório padrão</li>
+                <li>TSP mostra a importância de bounds fortes</li>
+                <li>Assignment e escalonamento mostram casos de minimização</li>
+                <li>Programação inteira revela o poder geral do framework</li>
+                <li>As três ideias sempre aparecem: branch, bound e prune</li>
+              </ul>
+
+              <div class="note">
+                <strong>Principal conclusão:</strong>
+                Branch & Bound deve ser entendido não como um algoritmo específico,
+                mas como um framework reutilizável para muitos problemas de otimização.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part6-transition">
+
+              <h4>Próximo: Parte 7 — Complexidade</h4>
+
+              <p>
+                Agora que vimos onde Branch & Bound é aplicado,
+                a próxima questão é: qual o custo disso?
+              </p>
+
+              <p>
+                Na Parte 7, estudaremos a complexidade do método,
+                incluindo o pior caso e o papel da poda na prática.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/branch-and-bound/parte-7.html">
+                  Parte 7 — Complexidade →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>

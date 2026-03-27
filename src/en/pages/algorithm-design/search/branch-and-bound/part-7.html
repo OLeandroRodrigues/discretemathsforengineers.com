@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Search → Branch &amp; Bound · Part 7 — Complexity</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Branch &amp; Bound</a>
+        <span class="sep">›</span>
+        <span class="current">Part 7 — Complexity</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Branch &amp; Bound</h2>
+          <p>Part 7 — Complexity</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+
+          <div class="series-title">
+            <strong>Series: Branch &amp; Bound</strong>
+            <span>Part 7 of 8</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">Next →</a>
+          </div>
+
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-5.html">5</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-6.html">6</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/branch-and-bound/part-7.html">7</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">8</a>
+        </div>
+
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 7.0 -->
+            <section class="card" id="bb-part7-roadmap">
+
+              <h3>7. Complexity</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The worst-case complexity of Branch &amp; Bound</li>
+                  <li>Why pruning can help dramatically in practice</li>
+                  <li>The difference between theoretical and practical complexity</li>
+                  <li>The role of bounds and node selection in performance</li>
+                  <li>Why complexity analysis is subtle for this method</li>
+                </ol>
+              </div>
+
+              <p>
+                Branch &amp; Bound is often much faster than brute force in practice,
+                but that does not mean its worst-case complexity disappears.
+              </p>
+
+              <p>
+                To understand the method properly,
+                we must distinguish between
+                <strong>worst-case theoretical complexity</strong>
+                and <strong>practical search reduction through pruning</strong>.
+              </p>
+
+            </section>
+
+            <!-- 7.1 -->
+            <section class="card" id="bb-part7-worst-case">
+
+              <h3>7.1 Worst-case complexity</h3>
+
+              <p>
+                In the worst case, Branch &amp; Bound may still explore
+                the entire search tree.
+              </p>
+
+              <p>
+                That means its time complexity can remain exponential:
+              </p>
+
+              <div class="math-block">
+                O(b^d)
+              </div>
+
+              <p>
+                where:
+              </p>
+
+              <ul>
+                <li><span class="math">b</span> is the branching factor</li>
+                <li><span class="math">d</span> is the depth of the search tree</li>
+              </ul>
+
+              <p>
+                In binary decision problems, this is often written as:
+              </p>
+
+              <div class="math-block">
+                O(2^n)
+              </div>
+
+            </section>
+
+            <!-- 7.2 -->
+            <section class="card" id="bb-part7-why-still-useful">
+
+              <h3>7.2 Why it is still useful</h3>
+
+              <p>
+                If the worst case is still exponential,
+                why use Branch &amp; Bound at all?
+              </p>
+
+              <p>
+                Because in many practical instances,
+                the algorithm avoids exploring most of the tree.
+              </p>
+
+              <p>
+                Strong bounds and good incumbents can cut away huge portions
+                of the search space before they are ever expanded.
+              </p>
+
+              <div class="note">
+                <strong>Main point:</strong>
+                Branch &amp; Bound does not improve the worst case,
+                but it often improves the average practical case dramatically.
+              </div>
+
+            </section>
+
+            <!-- 7.3 -->
+            <section class="card" id="bb-part7-pruning-effect">
+
+              <h3>7.3 The effect of pruning</h3>
+
+              <p>
+                The more nodes are pruned,
+                the smaller the effective search tree becomes.
+              </p>
+
+              <p>
+                This means practical running time depends on:
+              </p>
+
+              <ul>
+                <li>the quality of the bounding function,</li>
+                <li>the speed of finding strong incumbents,</li>
+                <li>and the node selection strategy.</li>
+              </ul>
+
+              <p>
+                So two Branch &amp; Bound implementations for the same problem
+                can have the same worst-case complexity
+                but very different practical behavior.
+              </p>
+
+            </section>
+
+            <!-- 7.4 -->
+            <section class="card" id="bb-part7-space">
+
+              <h3>7.4 Space complexity</h3>
+
+              <p>
+                Space complexity depends strongly on the node selection strategy.
+              </p>
+
+              <ul>
+                <li><strong>DFS:</strong> usually low memory, because only a path and a small frontier are kept</li>
+                <li><strong>BFS:</strong> can require very large memory, because many nodes at the same level remain stored</li>
+                <li><strong>Best-first:</strong> often requires substantial memory, since many live nodes may stay in the priority queue</li>
+              </ul>
+
+              <p>
+                In practice, memory can be as important as time
+                when evaluating a Branch &amp; Bound method.
+              </p>
+
+            </section>
+
+            <!-- 7.5 -->
+            <section class="card" id="bb-part7-bound-cost">
+
+              <h3>7.5 Cost of computing bounds</h3>
+
+              <p>
+                Complexity is not determined only by how many nodes are visited.
+              </p>
+
+              <p>
+                Each node may also require nontrivial work to compute its bound.
+              </p>
+
+              <p>
+                So total running time depends on both:
+              </p>
+
+              <ol>
+                <li>the number of visited nodes,</li>
+                <li>and the cost per node.</li>
+              </ol>
+
+              <p>
+                This is why a stronger bound is not automatically better:
+                it may reduce the tree,
+                but increase the work done at each node.
+              </p>
+
+            </section>
+
+            <!-- 7.6 -->
+            <section class="card" id="bb-part7-instance-dependence">
+
+              <h3>7.6 Instance-dependent behavior</h3>
+
+              <p>
+                Branch &amp; Bound is highly instance-dependent.
+              </p>
+
+              <p>
+                On some inputs, pruning may be extremely effective.
+                On others, almost no pruning may happen at all.
+              </p>
+
+              <p>
+                This makes precise complexity prediction difficult.
+              </p>
+
+              <div class="note">
+                <strong>Observation:</strong>
+                Branch &amp; Bound is one of those algorithms
+                where asymptotic complexity alone tells only part of the story.
+              </div>
+
+            </section>
+
+            <!-- 7.7 -->
+            <section class="card" id="bb-part7-practical-view">
+
+              <h3>7.7 Practical view of complexity</h3>
+
+              <p>
+                In practice, Branch &amp; Bound is often evaluated by:
+              </p>
+
+              <ul>
+                <li>number of expanded nodes,</li>
+                <li>number of pruned nodes,</li>
+                <li>memory usage,</li>
+                <li>and total running time on representative instances.</li>
+              </ul>
+
+              <p>
+                This practical perspective is especially important
+                in optimization engineering and solver design.
+              </p>
+
+            </section>
+
+            <!-- 7.8 -->
+            <section class="card" id="bb-part7-summary">
+
+              <h3>7.8 Summary</h3>
+
+              <ul>
+                <li>Worst-case time remains exponential</li>
+                <li>Pruning can drastically reduce search in practice</li>
+                <li>Space depends strongly on the exploration strategy</li>
+                <li>Total cost includes both visited nodes and bound computation</li>
+                <li>Performance is highly instance-dependent</li>
+              </ul>
+
+              <div class="note">
+                <strong>Main takeaway:</strong>
+                Branch &amp; Bound is not powerful because it changes exponential worst-case complexity,
+                but because it often makes exact search practically feasible.
+              </div>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="bb-part7-transition">
+
+              <h4>Next: Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming</h4>
+
+              <p>
+                Now that we understand the complexity of Branch &amp; Bound,
+                the final step is to position it relative to other major techniques.
+              </p>
+
+              <p>
+                In Part 8, we will compare Branch &amp; Bound
+                with Backtracking and Dynamic Programming,
+                highlighting where each one is most appropriate.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/branch-and-bound/part-8.html">
+                  Part 8 — Branch &amp; Bound vs Backtracking vs Dynamic Programming →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+
+    </main>
+  </div>
+
+</body>
+</html>
