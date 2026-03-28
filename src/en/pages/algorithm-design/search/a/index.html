@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Index</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/graph-search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <span class="current">A*</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>A*</h2>
+          <p>Series overview — informed graph search with heuristics and shortest paths</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Start →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>What A* Solves</h3>
+
+              <p class="math-note">
+                A* is a classical algorithm for solving
+                <strong>shortest-path search problems</strong>
+                in weighted graphs by combining path cost and heuristic guidance.
+              </p>
+
+              <p>
+                Conceptually, it extends graph search by evaluating each state
+                through the function <strong>f(n) = g(n) + h(n)</strong>,
+                where <strong>g(n)</strong> is the cost accumulated so far and
+                <strong>h(n)</strong> is an estimate of the remaining cost to the goal.
+              </p>
+
+              <p>
+                Instead of exploring nodes only by distance from the source,
+                A* prioritizes states that appear most promising, often reducing
+                unnecessary exploration while preserving optimality under suitable
+                conditions on the heuristic.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Reference:</strong>
+                the presentation follows the classical treatment used in
+                algorithm design and artificial intelligence, connecting
+                weighted graph search, heuristics, and optimal pathfinding.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Parts</h3>
+
+              <ul class="search-list">
+                <li>Part 1 — Problem Model</li>
+                <li>Part 2 — Heuristic Functions</li>
+                <li>Part 3 — The A* Algorithm</li>
+                <li>Part 4 — Optimality &amp; Complexity</li>
+                <li>Part 5 — Comparisons &amp; Applications</li>
+              </ul>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card">
+              <h3>Section Status</h3>
+
+              <p>
+                This section is currently <strong>under construction</strong>.
+              </p>
+
+              <p>
+                The structure is already defined, and the content will be added
+                progressively in the next iterations.
+              </p>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
