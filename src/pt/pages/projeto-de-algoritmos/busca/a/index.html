@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Índice</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">A*</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>A*</h2>
+          <p>Visão geral da série — busca em grafos informada com heurísticas e caminhos mínimos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Iniciar →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>O que o A* resolve</h3>
+
+              <p class="math-note">
+                A* é um algoritmo clássico para resolver
+                <strong>problemas de caminho mínimo</strong>
+                em grafos ponderados, combinando custo de caminho e orientação heurística.
+              </p>
+
+              <p>
+                Conceitualmente, ele estende a busca em grafos ao avaliar cada estado
+                através da função <strong>f(n) = g(n) + h(n)</strong>,
+                onde <strong>g(n)</strong> é o custo acumulado até o momento e
+                <strong>h(n)</strong> é uma estimativa do custo restante até o objetivo.
+              </p>
+
+              <p>
+                Em vez de explorar os nós apenas pela distância à origem,
+                o A* prioriza estados que parecem mais promissores, frequentemente reduzindo
+                explorações desnecessárias enquanto preserva a otimalidade sob condições
+                adequadas da heurística.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Referência:</strong>
+                a apresentação segue o tratamento clássico utilizado em
+                projeto de algoritmos e inteligência artificial, conectando
+                busca em grafos ponderados, heurísticas e caminhos ótimos.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Partes</h3>
+
+              <ul class="search-list">
+                <li>Parte 1 — Modelo do Problema</li>
+                <li>Parte 2 — Funções Heurísticas</li>
+                <li>Parte 3 — O Algoritmo A*</li>
+                <li>Parte 4 — Otimalidade &amp; Complexidade</li>
+                <li>Parte 5 — Comparações &amp; Aplicações</li>
+              </ul>
+            </section>
+
+            <!-- Card 3 -->
+            <section class="card">
+              <h3>Status da Seção</h3>
+
+              <p>
+                Esta seção está atualmente <strong>em construção</strong>.
+              </p>
+
+              <p>
+                A estrutura já está definida e o conteúdo será adicionado
+                progressivamente nas próximas iterações.
+              </p>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
