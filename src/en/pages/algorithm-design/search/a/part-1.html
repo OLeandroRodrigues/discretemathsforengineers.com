@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Part 1</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 1 — Problem Model</h2>
+          <p>Formalizing shortest-path search with cost and heuristic structure</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/a/index.html">← Index</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-2.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/index.html">Overview</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/as/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+                <!-- 1.0 -->
+                <section class="card" id="astar-part1-overview">
+
+                  <h3>1. Problem Model</h3>
+                  <hr class="soft" />
+
+                  <div class="note">
+                    <strong>Roadmap (what you will learn in this part):</strong>
+                    <ol>
+                      <li>How shortest-path problems are modeled</li>
+                      <li>State representation in graph search</li>
+                      <li>The role of path cost</li>
+                      <li>The role of heuristic estimation</li>
+                      <li>The evaluation function of A*</li>
+                    </ol>
+                  </div>
+
+                  <p>
+                    A* operates on a formal model of search where the goal is to find
+                    an optimal path between two nodes in a weighted graph.
+                  </p>
+
+                  <p>
+                    Understanding this model is essential before analyzing
+                    the algorithm itself.
+                  </p>
+
+                </section>
+
+                <!-- 1.1 -->
+                <section class="card" id="astar-part1-graph">
+
+                  <h3>1.1 Graph Model</h3>
+
+                  <p>
+                    The problem is defined over a weighted graph:
+                  </p>
+
+                  <div class="math-block">
+                    <span class="math">G = (V, E)</span>
+                  </div>
+
+                  <p>
+                    where each edge has an associated cost:
+                  </p>
+
+                  <div class="math-block">
+                    <span class="math">w: E → ℝ⁺</span>
+                  </div>
+
+                  <p>
+                    The objective is to find a minimum-cost path
+                    from a start node <span class="math">s</span>
+                    to a goal node <span class="math">t</span>.
+                  </p>
+
+                </section>
+
+                <!-- 1.2 -->
+                <section class="card" id="astar-part1-state">
+
+                  <h3>1.2 State Representation</h3>
+
+                  <p>
+                    Each node in the graph corresponds to a
+                    <strong>state</strong> in the search space.
+                  </p>
+
+                  <p>
+                    A state contains:
+                  </p>
+
+                  <ul>
+                    <li>current node</li>
+                    <li>accumulated path cost</li>
+                    <li>parent reference (for reconstruction)</li>
+                  </ul>
+
+                  <p>
+                    The algorithm explores states by expanding neighbors.
+                  </p>
+
+                </section>
+
+                <!-- 1.3 -->
+                <section class="card" id="astar-part1-cost">
+
+                  <h3>1.3 Path Cost</h3>
+
+                  <p class="math-note">
+                    The function <span class="math">g(n)</span>
+                    represents the exact cost from the start node to <span class="math">n</span>.
+                  </p>
+
+                  <p>
+                    It is computed incrementally as the search progresses.
+                  </p>
+
+                  <p>
+                    This is the same cost function used in Dijkstra’s algorithm.
+                  </p>
+
+                </section>
+
+                <!-- 1.4 -->
+                <section class="card" id="astar-part1-heuristic">
+
+                  <h3>1.4 Heuristic Estimate</h3>
+
+                  <p class="math-note">
+                    The function <span class="math">h(n)</span>
+                    estimates the remaining cost from <span class="math">n</span> to the goal.
+                  </p>
+
+                  <p>
+                    It is not exact, but provides directional guidance.
+                  </p>
+
+                  <p>
+                    The effectiveness of A* depends heavily on this estimate.
+                  </p>
+
+                </section>
+
+                <!-- 1.5 -->
+                <section class="card" id="astar-part1-evaluation">
+
+                  <h3>1.5 Evaluation Function</h3>
+
+                  <p class="math-note">
+                    A* evaluates nodes using:
+                  </p>
+
+                  <div class="math-block">
+                    <span class="math">f(n) = g(n) + h(n)</span>
+                  </div>
+
+                  <p>
+                    This represents the estimated total cost of a solution path
+                    passing through node <span class="math">n</span>.
+                  </p>
+
+                  <p>
+                    The algorithm expands the node with the smallest value of <span class="math">f(n)</span>.
+                  </p>
+
+                </section>
+
+                <!-- 1.6 -->
+                <section class="card" id="astar-part1-insight">
+
+                  <h3>1.6 Key Insight</h3>
+
+                  <p>
+                    A* balances two components:
+                  </p>
+
+                  <ul>
+                    <li><strong>g(n)</strong>: cost already incurred</li>
+                    <li><strong>h(n)</strong>: estimated remaining cost</li>
+                  </ul>
+
+                  <p>
+                    This allows A* to interpolate between:
+                  </p>
+
+                  <ul>
+                    <li>Dijkstra (when <span class="math">h(n) = 0</span>)</li>
+                    <li>Greedy Search (when <span class="math">g(n)</span> is ignored)</li>
+                  </ul>
+
+                </section>
+
+                <!-- Transition -->
+                <section class="card full" id="astar-part1-transition">
+
+                  <h4>Next: Part 2 — Heuristic Functions</h4>
+
+                  <p>
+                    The heuristic function is the core component that makes A*
+                    an informed search algorithm.
+                  </p>
+
+                  <p>
+                    In the next part, we formalize what heuristics are,
+                    how they guide the search, and introduce key properties
+                    such as admissibility and consistency.
+                  </p>
+
+                  <div class="note">
+                    <strong>Continue:</strong>
+                    <a class="next-link"
+                      href="/en/pages/algorithm-design/search/a/part-2.html">
+                      Part 2 — Heuristic Functions →
+                    </a>
+                  </div>
+
+                </section>
+
+              </div>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

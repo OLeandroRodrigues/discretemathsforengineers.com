@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Parte 1</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 1 — Modelo do Problema</h2>
+          <p>Formalizando a busca de caminho mínimo com custo e estrutura heurística</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">← Índice</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">Visão geral</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card" id="astar-part1-overview">
+
+              <h3>1. Modelo do Problema</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Como problemas de caminho mínimo são modelados</li>
+                  <li>Representação de estados na busca em grafos</li>
+                  <li>O papel do custo de caminho</li>
+                  <li>O papel da estimativa heurística</li>
+                  <li>A função de avaliação do A*</li>
+                </ol>
+              </div>
+
+              <p>
+                O A* opera sobre um modelo formal de busca cujo objetivo é encontrar
+                um caminho ótimo entre dois nós em um grafo ponderado.
+              </p>
+
+              <p>
+                Compreender esse modelo é essencial antes de analisar
+                o algoritmo em si.
+              </p>
+
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card" id="astar-part1-graph">
+
+              <h3>1.1 Modelo de Grafo</h3>
+
+              <p>
+                O problema é definido sobre um grafo ponderado:
+              </p>
+
+              <div class="math-block">
+                <span class="math">G = (V, E)</span>
+              </div>
+
+              <p>
+                onde cada aresta possui um custo associado:
+              </p>
+
+              <div class="math-block">
+                <span class="math">w: E → ℝ⁺</span>
+              </div>
+
+              <p>
+                O objetivo é encontrar um caminho de custo mínimo
+                de um nó inicial <span class="math">s</span>
+                até um nó objetivo <span class="math">t</span>.
+              </p>
+
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card" id="astar-part1-state">
+
+              <h3>1.2 Representação de Estado</h3>
+
+              <p>
+                Cada nó do grafo corresponde a um
+                <strong>estado</strong> no espaço de busca.
+              </p>
+
+              <p>
+                Um estado contém:
+              </p>
+
+              <ul>
+                <li>nó atual</li>
+                <li>custo acumulado do caminho</li>
+                <li>referência ao pai (para reconstrução do caminho)</li>
+              </ul>
+
+              <p>
+                O algoritmo explora estados expandindo seus vizinhos.
+              </p>
+
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card" id="astar-part1-cost">
+
+              <h3>1.3 Custo do Caminho</h3>
+
+              <p class="math-note">
+                A função <span class="math">g(n)</span>
+                representa o custo exato do nó inicial até <span class="math">n</span>.
+              </p>
+
+              <p>
+                Esse custo é calculado incrementalmente conforme a busca avança.
+              </p>
+
+              <p>
+                Essa componente é idêntica à utilizada no algoritmo de Dijkstra.
+              </p>
+
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card" id="astar-part1-heuristic">
+
+              <h3>1.4 Estimativa Heurística</h3>
+
+              <p class="math-note">
+                A função <span class="math">h(n)</span>
+                estima o custo restante de <span class="math">n</span> até o objetivo.
+              </p>
+
+              <p>
+                Ela não é exata, mas fornece uma direção para a busca.
+              </p>
+
+              <p>
+                A eficiência do A* depende fortemente dessa estimativa.
+              </p>
+
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card" id="astar-part1-evaluation">
+
+              <h3>1.5 Função de Avaliação</h3>
+
+              <p class="math-note">
+                O A* avalia os nós usando:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                Isso representa o custo total estimado de um caminho solução
+                passando pelo nó <span class="math">n</span>.
+              </p>
+
+              <p>
+                O algoritmo expande o nó com menor valor de <span class="math">f(n)</span>.
+              </p>
+
+            </section>
+
+            <!-- 1.6 -->
+            <section class="card" id="astar-part1-insight">
+
+              <h3>1.6 Intuição Principal</h3>
+
+              <p>
+                O A* equilibra dois componentes:
+              </p>
+
+              <ul>
+                <li><strong>g(n)</strong>: custo já acumulado</li>
+                <li><strong>h(n)</strong>: custo estimado restante</li>
+              </ul>
+
+              <p>
+                Isso permite que o A* se comporte como:
+              </p>
+
+              <ul>
+                <li>Dijkstra (quando <span class="math">h(n) = 0</span>)</li>
+                <li>Busca Gulosa (quando <span class="math">g(n)</span> é ignorado)</li>
+              </ul>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="astar-part1-transition">
+
+              <h4>Próximo: Parte 2 — Funções Heurísticas</h4>
+
+              <p>
+                A função heurística é o componente central que torna o A*
+                um algoritmo de busca informada.
+              </p>
+
+              <p>
+                Na próxima parte, formalizamos o que são heurísticas,
+                como elas guiam a busca e introduzimos propriedades fundamentais
+                como admissibilidade e consistência.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">
+                  Parte 2 — Funções Heurísticas →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
