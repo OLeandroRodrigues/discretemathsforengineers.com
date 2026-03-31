@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Part 3</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 3 — The A* Algorithm</h2>
+          <p>How informed shortest-path search is executed in practice</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="astar-part3-overview">
+
+              <h3>3. The A* Algorithm</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The main control structure of A*</li>
+                  <li>The role of the open set and closed set</li>
+                  <li>How nodes are selected and expanded</li>
+                  <li>How path updates are performed</li>
+                  <li>The canonical pseudocode template</li>
+                </ol>
+              </div>
+
+              <p>
+                Once the problem model and heuristic function are defined,
+                the next step is to understand how A* actually executes the search.
+              </p>
+
+              <p>
+                At its core, A* repeatedly selects the most promising node,
+                expands it, and updates the frontier using exact costs
+                and heuristic estimates.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="astar-part3-frontier">
+
+              <h3>3.1 Frontier and Explored States</h3>
+
+              <p>
+                A* maintains two conceptual sets during execution:
+              </p>
+
+              <ul>
+                <li><strong>open set</strong>: nodes discovered but not yet fully explored</li>
+                <li><strong>closed set</strong>: nodes already expanded</li>
+              </ul>
+
+              <p>
+                The open set stores the current frontier of the search.
+              </p>
+
+              <p>
+                The closed set prevents redundant expansion of states
+                already processed.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="astar-part3-selection">
+
+              <h3>3.2 Node Selection Rule</h3>
+
+              <p class="math-note">
+                At each step, A* selects the node
+                with minimum value of
+                <span class="math">f(n) = g(n) + h(n)</span>.
+              </p>
+
+              <p>
+                This choice balances the exact path cost accumulated so far
+                with the estimated cost remaining to the goal.
+              </p>
+
+              <p>
+                In practice, this is usually implemented
+                with a priority queue.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="astar-part3-expansion">
+
+              <h3>3.3 Expanding a Node</h3>
+
+              <p>
+                When a node is expanded, the algorithm examines
+                all its outgoing neighbors.
+              </p>
+
+              <p>
+                For each neighbor, A* computes a tentative new cost:
+              </p>
+
+              <div class="math-block">
+                <span class="math">g'(m) = g(n) + c(n, m)</span>
+              </div>
+
+              <p>
+                This represents the cost of reaching neighbor
+                <span class="math">m</span> through the current node
+                <span class="math">n</span>.
+              </p>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="astar-part3-update">
+
+              <h3>3.4 Updating a Neighbor</h3>
+
+              <p>
+                If the new path to a neighbor is better than any previously known path,
+                the algorithm updates:
+              </p>
+
+              <ul>
+                <li>its parent reference</li>
+                <li>its value of <span class="math">g(n)</span></li>
+                <li>its value of <span class="math">f(n)</span></li>
+              </ul>
+
+              <p>
+                The node is then inserted into the open set
+                or reprioritized if it was already there.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="astar-part3-goal">
+
+              <h3>3.5 Goal Detection</h3>
+
+              <p>
+                The search stops when the goal node is selected
+                for expansion.
+              </p>
+
+              <p>
+                At that point, the optimal path can be reconstructed
+                by following parent pointers backward
+                from the goal to the start.
+              </p>
+
+              <p class="math-note">
+                Path reconstruction is therefore a backward traversal
+                over predecessor references.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="astar-part3-template">
+
+              <h3>3.6 Canonical A* Template</h3>
+
+              <p>
+                The generic structure of A* can be written as follows:
+              </p>
+
+<pre><code>A*(start, goal):
+
+    open_set = priority queue ordered by f
+    closed_set = empty set
+
+    g(start) = 0
+    f(start) = h(start)
+    insert start into open_set
+
+    while open_set is not empty:
+
+        n = extract node with minimum f
+
+        if n is goal:
+            return reconstructed path
+
+        move n to closed_set
+
+        for each neighbor m of n:
+
+            tentative_g = g(n) + c(n, m)
+
+            if m is in closed_set and tentative_g is not better:
+                continue
+
+            if m is new or tentative_g is better:
+                parent(m) = n
+                g(m) = tentative_g
+                f(m) = g(m) + h(m)
+
+                insert or update m in open_set
+
+    return failure</code></pre>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="astar-part3-queue">
+
+              <h3>3.7 Why a Priority Queue Matters</h3>
+
+              <p>
+                The efficiency of A* depends strongly on how the open set is managed.
+              </p>
+
+              <p>
+                Since the algorithm repeatedly extracts the node
+                with minimum estimated total cost,
+                the natural data structure is a min-priority queue.
+              </p>
+
+              <ul>
+                <li>binary heap</li>
+                <li>Fibonacci heap</li>
+                <li>other efficient priority structures</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.8 -->
+            <section class="card" id="astar-part3-summary">
+
+              <h3>3.8 Operational Summary</h3>
+
+              <p>
+                The algorithm alternates between three operations:
+              </p>
+
+              <ul>
+                <li>select the most promising frontier node</li>
+                <li>expand its neighbors</li>
+                <li>update costs and predecessor structure</li>
+              </ul>
+
+              <p>
+                This process continues until the goal is reached
+                or the frontier becomes empty.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="astar-part3-transition">
+
+              <h4>Next: Part 4 — Optimality &amp; Complexity</h4>
+
+              <p>
+                Now that the mechanics of A* are clear,
+                the next step is to analyze its theoretical guarantees.
+              </p>
+
+              <p>
+                In Part 4, we study when A* is optimal,
+                how admissibility and consistency support correctness,
+                and what complexity bounds can be expected in practice.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/a/part-4.html">
+                  Part 4 — Optimality &amp; Complexity →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Parte 3</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 3 — O Algoritmo A*</h2>
+          <p>Como a busca de menor caminho informada é executada na prática</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card">
+
+              <h3>3. O Algoritmo A*</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Estrutura principal do A*</li>
+                  <li>Papel do open set e do closed set</li>
+                  <li>Como nós são selecionados e expandidos</li>
+                  <li>Como as atualizações de caminho são feitas</li>
+                  <li>Template clássico em pseudocódigo</li>
+                </ol>
+              </div>
+
+              <p>
+                Uma vez definidos o modelo do problema e a função heurística,
+                o próximo passo é entender como o A* executa a busca.
+              </p>
+
+              <p>
+                No núcleo do algoritmo, o A* seleciona repetidamente
+                o nó mais promissor, expande seus vizinhos e atualiza
+                a fronteira usando custos exatos e estimativas heurísticas.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card">
+
+              <h3>3.1 Fronteira e Estados Explorados</h3>
+
+              <p>
+                O A* mantém dois conjuntos principais durante a execução:
+              </p>
+
+              <ul>
+                <li><strong>open set</strong>: nós descobertos mas ainda não explorados</li>
+                <li><strong>closed set</strong>: nós já expandidos</li>
+              </ul>
+
+              <p>
+                O open set representa a fronteira da busca.
+              </p>
+
+              <p>
+                O closed set evita a reexploração de estados já processados.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card">
+
+              <h3>3.2 Regra de Seleção</h3>
+
+              <p class="math-note">
+                Em cada passo, o A* seleciona o nó com menor valor de
+                <span class="math">f(n) = g(n) + h(n)</span>.
+              </p>
+
+              <p>
+                Essa escolha equilibra o custo já percorrido
+                com a estimativa do custo restante.
+              </p>
+
+              <p>
+                Na prática, isso é implementado com uma fila de prioridade.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card">
+
+              <h3>3.3 Expansão de Nós</h3>
+
+              <p>
+                Ao expandir um nó, o algoritmo analisa todos os seus vizinhos.
+              </p>
+
+              <p>
+                Para cada vizinho, calcula-se:
+              </p>
+
+              <div class="math-block">
+                <span class="math">g'(m) = g(n) + c(n, m)</span>
+              </div>
+
+              <p>
+                Esse valor representa o custo de alcançar o nó vizinho
+                passando pelo nó atual.
+              </p>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card">
+
+              <h3>3.4 Atualização de Caminho</h3>
+
+              <p>
+                Se o novo caminho para um vizinho for melhor,
+                o algoritmo atualiza:
+              </p>
+
+              <ul>
+                <li>o pai (predecessor)</li>
+                <li>o valor de <span class="math">g(n)</span></li>
+                <li>o valor de <span class="math">f(n)</span></li>
+              </ul>
+
+              <p>
+                O nó é então inserido ou atualizado no open set.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card">
+
+              <h3>3.5 Detecção do Objetivo</h3>
+
+              <p>
+                A busca termina quando o nó objetivo é selecionado
+                para expansão.
+              </p>
+
+              <p>
+                O caminho ótimo é reconstruído seguindo os ponteiros
+                de predecessores do objetivo até a origem.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card">
+
+              <h3>3.6 Template do A*</h3>
+
+<pre><code>A*(início, objetivo):
+
+    open_set = fila de prioridade ordenada por f
+    closed_set = conjunto vazio
+
+    g(início) = 0
+    f(início) = h(início)
+
+    enquanto open_set não estiver vazio:
+
+        n = extrair nó com menor f
+
+        se n é objetivo:
+            retornar caminho
+
+        para cada vizinho m:
+
+            custo = g(n) + c(n, m)
+
+            se melhor caminho:
+                atualizar m
+
+    retornar falha
+</code></pre>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card">
+
+              <h3>3.7 Fila de Prioridade</h3>
+
+              <p>
+                A eficiência do A* depende diretamente da estrutura usada
+                no open set.
+              </p>
+
+              <ul>
+                <li>heap binário</li>
+                <li>Fibonacci heap</li>
+              </ul>
+
+            </section>
+
+            <!-- 3.8 -->
+            <section class="card">
+
+              <h3>3.8 Resumo Operacional</h3>
+
+              <ul>
+                <li>selecionar o melhor nó</li>
+                <li>expandir vizinhos</li>
+                <li>atualizar custos</li>
+              </ul>
+
+            </section>
+
+            <!-- Next -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 4 — Otimalidade &amp; Complexidade</h4>
+
+              <p>
+                Agora que entendemos como o algoritmo funciona,
+                vamos analisar suas garantias teóricas.
+              </p>
+
+              <div class="note">
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">
+                  Parte 4 — Otimalidade &amp; Complexidade →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
