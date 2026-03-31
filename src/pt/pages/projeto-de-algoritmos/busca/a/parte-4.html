@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Parte 4</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 4 — Otimalidade &amp; Complexidade</h2>
+          <p>Quando o A* é ótimo e quais custos computacionais esperar</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card">
+
+              <h3>4. Otimalidade &amp; Complexidade</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Quando o A* retorna soluções ótimas</li>
+                  <li>O papel da admissibilidade</li>
+                  <li>O papel da consistência</li>
+                  <li>Como analisar sua complexidade</li>
+                  <li>Por que a qualidade da heurística importa</li>
+                </ol>
+              </div>
+
+              <p>
+                O A* não é apenas um algoritmo prático de busca,
+                mas também um algoritmo com fortes garantias teóricas.
+              </p>
+
+              <p>
+                Essas garantias dependem diretamente das propriedades
+                da heurística e da estrutura do espaço de busca.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card">
+
+              <h3>4.1 O que significa otimalidade</h3>
+
+              <p>
+                O A* é <strong>ótimo</strong> se sempre retorna
+                um caminho de custo mínimo do nó inicial até o objetivo.
+              </p>
+
+              <p class="math-note">
+                Se <span class="math">C*</span> é o custo do caminho ótimo,
+                então a solução retornada pelo A* tem custo <span class="math">C*</span>.
+              </p>
+
+              <p>
+                A pergunta central é: sob quais condições isso é garantido?
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card">
+
+              <h3>4.2 Admissibilidade</h3>
+
+              <p>
+                Uma heurística é admissível se nunca superestima
+                o custo real restante.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                Isso garante que
+                <span class="math">f(n) = g(n) + h(n)</span>
+                nunca seja uma subestimação otimista indevida
+                do custo real de uma solução.
+              </p>
+
+              <p>
+                Com heurísticas admissíveis, o A* (em busca em árvore)
+                é garantido encontrar uma solução ótima.
+              </p>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card">
+
+              <h3>4.3 Consistência</h3>
+
+              <p>
+                Consistência é uma condição mais forte do que admissibilidade.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ c(n, n') + h(n')</span>
+              </div>
+
+              <p>
+                para toda aresta <span class="math">(n, n')</span>.
+              </p>
+
+              <p>
+                Isso impõe uma propriedade análoga à desigualdade triangular
+                sobre a heurística.
+              </p>
+
+              <p class="math-note">
+                Com consistência, os valores de
+                <span class="math">f(n)</span> são não decrescentes ao longo dos caminhos.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card">
+
+              <h3>4.4 Busca em árvore vs busca em grafo</h3>
+
+              <p>
+                Em busca em árvore, estados podem ser revisitados várias vezes.
+              </p>
+
+              <p>
+                Em busca em grafo, um closed set é usado para evitar
+                expansões redundantes.
+              </p>
+
+              <p>
+                A consistência garante que, uma vez que um nó é expandido
+                com valor mínimo de <span class="math">f</span>,
+                seu custo ótimo já foi encontrado.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card">
+
+              <h3>4.5 Completeza</h3>
+
+              <p>
+                O A* também é <strong>completo</strong>
+                sob hipóteses padrão.
+              </p>
+
+              <p>
+                Isso significa que, se uma solução existir,
+                o algoritmo eventualmente irá encontrá-la.
+              </p>
+
+              <p>
+                Isso normalmente vale em grafos finitos
+                com custos de arestas positivos.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card">
+
+              <h3>4.6 Complexidade de tempo</h3>
+
+              <p>
+                No pior caso, o A* pode explorar
+                um número exponencial de nós.
+              </p>
+
+              <p class="math-note">
+                Assim, a complexidade de tempo no pior caso
+                permanece exponencial na profundidade da solução.
+              </p>
+
+              <p>
+                No entanto, boas heurísticas reduzem drasticamente
+                o número de estados explorados na prática.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card">
+
+              <h3>4.7 Complexidade de espaço</h3>
+
+              <p>
+                O A* possui exigências significativas de memória.
+              </p>
+
+              <p>
+                Ele armazena a fronteira, custos, predecessores
+                e, muitas vezes, o conjunto de estados explorados.
+              </p>
+
+              <p class="math-note">
+                Portanto, a complexidade de espaço também é tipicamente exponencial.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card">
+
+              <h3>4.8 Qualidade da heurística</h3>
+
+              <p>
+                A eficiência do A* depende fortemente
+                de quão informativa a heurística é.
+              </p>
+
+              <ul>
+                <li>heurística fraca → mais exploração</li>
+                <li>heurística forte → menos exploração</li>
+              </ul>
+
+              <p>
+                Idealmente, a heurística deve ser o mais próxima possível
+                do custo real, permanecendo admissível.
+              </p>
+
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card">
+
+              <h3>4.9 Casos extremos</h3>
+
+              <ul>
+                <li><span class="math">h(n) = 0</span> → A* se torna Dijkstra</li>
+                <li><span class="math">h(n) = h*(n)</span> → heurística perfeita</li>
+              </ul>
+
+              <p>
+                Esses casos ilustram o espectro
+                entre busca não informada e busca perfeitamente informada.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Próximo: Parte 5 — Comparações &amp; Aplicações</h4>
+
+              <p>
+                Agora que entendemos correção e complexidade,
+                o próximo passo é posicionar o A* entre outros algoritmos.
+              </p>
+
+              <p>
+                Na Parte 5, comparamos o A* com algoritmos clássicos de busca
+                e exploramos aplicações do mundo real.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">
+                  Parte 5 — Comparações &amp; Aplicações →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

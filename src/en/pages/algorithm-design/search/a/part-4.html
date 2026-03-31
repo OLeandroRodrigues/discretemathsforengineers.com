@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Part 4</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 4 — Optimality &amp; Complexity</h2>
+          <p>When A* is optimal and what computational costs to expect</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-3.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-5.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card">
+
+              <h3>4. Optimality &amp; Complexity</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>When A* returns optimal solutions</li>
+                  <li>The role of admissibility</li>
+                  <li>The role of consistency</li>
+                  <li>How to analyze its complexity</li>
+                  <li>Why heuristic quality matters</li>
+                </ol>
+              </div>
+
+              <p>
+                A* is not only a practical search algorithm,
+                but also one with strong theoretical guarantees.
+              </p>
+
+              <p>
+                These guarantees depend directly on the properties
+                of the heuristic and the structure of the search space.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card">
+
+              <h3>4.1 What Optimality Means</h3>
+
+              <p>
+                A* is <strong>optimal</strong> if it always returns
+                a path of minimum cost from the start node to the goal.
+              </p>
+
+              <p class="math-note">
+                If <span class="math">C*</span> is the optimal path cost,
+                then the solution returned by A* has cost <span class="math">C*</span>.
+              </p>
+
+              <p>
+                The key question is: under what conditions is this guaranteed?
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card">
+
+              <h3>4.2 Admissibility</h3>
+
+              <p>
+                A heuristic is admissible if it never overestimates
+                the true remaining cost.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                This ensures that
+                <span class="math">f(n) = g(n) + h(n)</span>
+                is never an optimistic underestimate of the true solution cost.
+              </p>
+
+              <p>
+                With admissible heuristics, A* (in tree search)
+                is guaranteed to find an optimal solution.
+              </p>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card">
+
+              <h3>4.3 Consistency</h3>
+
+              <p>
+                Consistency is a stronger condition than admissibility.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ c(n, n') + h(n')</span>
+              </div>
+
+              <p>
+                for every edge <span class="math">(n, n')</span>.
+              </p>
+
+              <p>
+                This enforces a triangle-inequality-like property
+                over the heuristic.
+              </p>
+
+              <p class="math-note">
+                With consistency, the values of
+                <span class="math">f(n)</span> are non-decreasing along paths.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card">
+
+              <h3>4.4 Tree Search vs Graph Search</h3>
+
+              <p>
+                In tree search, states may be revisited multiple times.
+              </p>
+
+              <p>
+                In graph search, a closed set is used to prevent
+                redundant expansions.
+              </p>
+
+              <p>
+                Consistency ensures that once a node is expanded
+                with minimal <span class="math">f</span>,
+                its optimal cost has already been found.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card">
+
+              <h3>4.5 Completeness</h3>
+
+              <p>
+                A* is also <strong>complete</strong>
+                under standard assumptions.
+              </p>
+
+              <p>
+                This means that if a solution exists,
+                the algorithm will eventually find it.
+              </p>
+
+              <p>
+                This typically holds in finite graphs
+                with positive edge costs.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card">
+
+              <h3>4.6 Time Complexity</h3>
+
+              <p>
+                In the worst case, A* may explore
+                an exponential number of nodes.
+              </p>
+
+              <p class="math-note">
+                Thus, worst-case time complexity remains exponential
+                in the depth of the solution.
+              </p>
+
+              <p>
+                However, good heuristics drastically reduce
+                the number of explored states in practice.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card">
+
+              <h3>4.7 Space Complexity</h3>
+
+              <p>
+                A* has significant memory requirements.
+              </p>
+
+              <p>
+                It stores the frontier, costs, predecessors,
+                and often the explored set.
+              </p>
+
+              <p class="math-note">
+                Therefore, space complexity is also typically exponential.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card">
+
+              <h3>4.8 Heuristic Quality</h3>
+
+              <p>
+                The efficiency of A* depends heavily
+                on how informative the heuristic is.
+              </p>
+
+              <ul>
+                <li>weak heuristic → more exploration</li>
+                <li>strong heuristic → less exploration</li>
+              </ul>
+
+              <p>
+                Ideally, the heuristic should be as close as possible
+                to the true cost while remaining admissible.
+              </p>
+
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card">
+
+              <h3>4.9 Extreme Cases</h3>
+
+              <ul>
+                <li><span class="math">h(n) = 0</span> → A* becomes Dijkstra</li>
+                <li><span class="math">h(n) = h*(n)</span> → perfect heuristic</li>
+              </ul>
+
+              <p>
+                These cases illustrate the spectrum
+                between uninformed and perfectly informed search.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full">
+
+              <h4>Next: Part 5 — Comparisons &amp; Applications</h4>
+
+              <p>
+                Now that we understand correctness and complexity,
+                the next step is to position A* among other algorithms.
+              </p>
+
+              <p>
+                In Part 5, we compare A* with classical search algorithms
+                and explore real-world applications.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/a/part-5.html">
+                  Part 5 — Comparisons &amp; Applications →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
