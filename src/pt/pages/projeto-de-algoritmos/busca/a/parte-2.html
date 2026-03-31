@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Parte 2</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 2 — Funções Heurísticas</h2>
+          <p>Entendendo como estimativas heurísticas guiam a busca informada</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="astar-part2-overview">
+
+              <h3>2. Funções Heurísticas</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O que é uma função heurística</li>
+                  <li>Por que heurísticas são importantes no A*</li>
+                  <li>A diferença entre custo exato e custo estimado</li>
+                  <li>O conceito de admissibilidade</li>
+                  <li>O conceito de consistência</li>
+                </ol>
+              </div>
+
+              <p>
+                A função heurística é o componente que transforma o A*
+                de uma busca de caminho mínimo não informada em uma busca informada.
+              </p>
+
+              <p>
+                Ela fornece conhecimento direcional sobre o objetivo,
+                ajudando o algoritmo a priorizar estados mais promissores.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="astar-part2-definition">
+
+              <h3>2.1 Definição de Heurística</h3>
+
+              <p class="math-note">
+                Uma heurística é uma função
+                <span class="math">h(n)</span>
+                que estima o custo do caminho mais barato
+                do nó <span class="math">n</span> até um nó objetivo.
+              </p>
+
+              <p>
+                Trata-se de uma estimativa, não de um valor exato.
+              </p>
+
+              <p>
+                Seu objetivo é guiar a busca em direção ao objetivo
+                sem explorar completamente o grafo restante.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="astar-part2-role">
+
+              <h3>2.2 Papel no A*</h3>
+
+              <p>
+                O A* avalia estados usando:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                Aqui, <span class="math">g(n)</span> mede o custo exato
+                acumulado até o momento, enquanto <span class="math">h(n)</span>
+                estima o custo restante.
+              </p>
+
+              <p>
+                A heurística, portanto, influencia qual nó
+                será explorado a seguir.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="astar-part2-intuition">
+
+              <h3>2.3 Intuição</h3>
+
+              <p>
+                Sem heurística, o algoritmo não possui preferência direcional
+                em relação ao objetivo.
+              </p>
+
+              <p>
+                Com uma heurística, a busca passa a ter uma noção de
+                <strong>quão distante um estado está do sucesso</strong>.
+              </p>
+
+              <p class="math-note">
+                Heurísticas melhores geralmente reduzem o número de nós explorados.
+              </p>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="astar-part2-examples">
+
+              <h3>2.4 Exemplos Típicos</h3>
+
+              <p>
+                Em problemas de pathfinding em grids, heurísticas comuns incluem:
+              </p>
+
+              <ul>
+                <li>Distância de Manhattan</li>
+                <li>Distância Euclidiana</li>
+                <li>Distância de Chebyshev</li>
+              </ul>
+
+              <p>
+                Essas funções não calculam o custo exato do caminho restante,
+                mas fornecem uma boa aproximação baseada em geometria.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="astar-part2-admissibility">
+
+              <h3>2.5 Admissibilidade</h3>
+
+              <p class="math-note">
+                Uma heurística é <strong>admissível</strong> se nunca superestima
+                o custo real restante.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                onde <span class="math">h*(n)</span> representa o custo ótimo real
+                de <span class="math">n</span> até o objetivo.
+              </p>
+
+              <p>
+                A admissibilidade é uma condição fundamental para a otimalidade do A*.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="astar-part2-consistency">
+
+              <h3>2.6 Consistência</h3>
+
+              <p class="math-note">
+                Uma heurística é <strong>consistente</strong> se, para toda aresta
+                <span class="math">(n, n')</span>, vale:
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ c(n, n') + h(n')</span>
+              </div>
+
+              <p>
+                Essa condição é análoga à desigualdade triangular.
+              </p>
+
+              <p>
+                A consistência garante que o custo estimado total
+                não diminua inesperadamente ao longo de um caminho.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="astar-part2-comparison">
+
+              <h3>2.7 Heurísticas Fracas vs Fortes</h3>
+
+              <p>
+                Nem todas as heurísticas admissíveis são igualmente informativas.
+              </p>
+
+              <p>
+                Uma heurística é considerada mais forte quando se aproxima mais
+                do custo real sem violar a admissibilidade.
+              </p>
+
+              <ul>
+                <li>heurística fraca → mais nós explorados</li>
+                <li>heurística forte → menos nós explorados</li>
+              </ul>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="astar-part2-boundaries">
+
+              <h3>2.8 Casos Extremos</h3>
+
+              <p>
+                Alguns casos especiais ajudam a entender o papel da heurística:
+              </p>
+
+              <ul>
+                <li>
+                  <span class="math">h(n) = 0</span> para todo <span class="math">n</span>
+                  → A* se reduz ao algoritmo de Dijkstra
+                </li>
+                <li>
+                  <span class="math">g(n)</span> ignorado
+                  → a busca se comporta como busca gulosa (Greedy Best-First Search)
+                </li>
+              </ul>
+
+              <p>
+                O A* equilibra esses extremos combinando custo exato
+                com custo estimado futuro.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="astar-part2-transition">
+
+              <h4>Próximo: Parte 3 — O Algoritmo A*</h4>
+
+              <p>
+                Agora que as funções heurísticas foram definidas,
+                o próximo passo é estudar como o A* realmente opera.
+              </p>
+
+              <p>
+                Na Parte 3, apresentamos a estrutura do algoritmo A*,
+                incluindo expansão de nós, seleção baseada em prioridade
+                e o papel das estruturas open e closed.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">
+                  Parte 3 — O Algoritmo A* →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

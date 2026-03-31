@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Part 5</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 5</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 5 — Comparisons &amp; Applications</h2>
+          <p>Positioning A* among search algorithms and exploring real-world use cases</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-4.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">End →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/a/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card">
+
+              <h3>5. Comparisons &amp; Applications</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>How A* compares to classical search algorithms</li>
+                  <li>Trade-offs between informed and uninformed search</li>
+                  <li>When A* is the right choice</li>
+                  <li>Typical real-world applications</li>
+                  <li>How A* fits into the broader algorithmic landscape</li>
+                </ol>
+              </div>
+
+              <p>
+                A* sits at the intersection of graph algorithms and artificial intelligence,
+                combining optimal pathfinding with heuristic guidance.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card">
+
+              <h3>5.1 A* vs Dijkstra</h3>
+
+              <p>
+                Dijkstra explores nodes based solely on accumulated cost
+                <span class="math">g(n)</span>.
+              </p>
+
+              <p>
+                A* extends this by incorporating a heuristic
+                <span class="math">h(n)</span>.
+              </p>
+
+              <ul>
+                <li>Dijkstra → uninformed</li>
+                <li>A* → informed</li>
+              </ul>
+
+              <p class="math-note">
+                If <span class="math">h(n) = 0</span>, A* reduces to Dijkstra.
+              </p>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card">
+
+              <h3>5.2 A* vs Greedy Best-First Search</h3>
+
+              <p>
+                Greedy search selects nodes based only on
+                <span class="math">h(n)</span>.
+              </p>
+
+              <p>
+                It is often faster but does not guarantee optimal solutions.
+              </p>
+
+              <ul>
+                <li>Greedy → fast, not optimal</li>
+                <li>A* → balanced, optimal (with conditions)</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card">
+
+              <h3>5.3 A* vs BFS</h3>
+
+              <p>
+                Breadth-First Search explores nodes level by level.
+              </p>
+
+              <p>
+                It guarantees shortest paths only in unweighted graphs.
+              </p>
+
+              <p>
+                A* generalizes this idea to weighted graphs
+                using cost and heuristic guidance.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card">
+
+              <h3>5.4 Trade-offs</h3>
+
+              <p>
+                A* introduces a key trade-off:
+              </p>
+
+              <ul>
+                <li>better heuristics → faster search</li>
+                <li>more computation per node → higher overhead</li>
+              </ul>
+
+              <p>
+                Designing good heuristics is often the central challenge.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card">
+
+              <h3>5.5 When to Use A*</h3>
+
+              <p>
+                A* is particularly effective when:
+              </p>
+
+              <ul>
+                <li>the problem can be modeled as a graph</li>
+                <li>a meaningful heuristic is available</li>
+                <li>optimal paths are required</li>
+              </ul>
+
+              <p>
+                Without a good heuristic, its advantage diminishes.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card">
+
+              <h3>5.6 Applications</h3>
+
+              <p>
+                A* is widely used across domains:
+              </p>
+
+              <ul>
+                <li>pathfinding in games</li>
+                <li>robot navigation</li>
+                <li>GPS and routing systems</li>
+                <li>AI planning problems</li>
+              </ul>
+
+              <p>
+                Its flexibility makes it a standard tool in both theory and practice.
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card">
+
+              <h3>5.7 Beyond A*</h3>
+
+              <p>
+                Several extensions of A* exist:
+              </p>
+
+              <ul>
+                <li>IDA* (Iterative Deepening A*)</li>
+                <li>Weighted A*</li>
+                <li>Bidirectional A*</li>
+              </ul>
+
+              <p>
+                These variants aim to reduce memory usage or improve performance.
+              </p>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="astar-part5-conclusion">
+
+              <h4>Series Conclusion</h4>
+
+              <p>
+                A* is best understood not just as a pathfinding algorithm,
+                but as a principled framework that combines exact cost
+                and heuristic estimation.
+              </p>
+
+              <p>
+                Throughout this series, we explored its problem model,
+                heuristic foundations, algorithmic structure,
+                optimality guarantees, complexity, and practical applications.
+              </p>
+
+              <div class="note">
+                <strong>Next step:</strong>
+                return to the
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/a/index.html">
+                  A* index
+                </a>
+                or continue exploring other search techniques.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

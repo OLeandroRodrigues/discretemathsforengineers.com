@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → A* — Parte 5</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 5</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 5 — Comparações &amp; Aplicações</h2>
+          <p>Posicionando o A* entre algoritmos de busca e explorando aplicações reais</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: A*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Fim →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-4.html">4</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/a/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card">
+
+              <h3>5. Comparações &amp; Aplicações</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Como o A* se compara com algoritmos clássicos</li>
+                  <li>Trade-offs entre busca informada e não informada</li>
+                  <li>Quando o A* é a melhor escolha</li>
+                  <li>Aplicações no mundo real</li>
+                  <li>Como o A* se encaixa no ecossistema de algoritmos</li>
+                </ol>
+              </div>
+
+              <p>
+                O A* está na interseção entre algoritmos de grafos
+                e inteligência artificial, combinando busca ótima
+                com orientação heurística.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card">
+
+              <h3>5.1 A* vs Dijkstra</h3>
+
+              <p>
+                O algoritmo de Dijkstra explora nós baseado apenas
+                no custo acumulado <span class="math">g(n)</span>.
+              </p>
+
+              <p>
+                O A* estende essa ideia incorporando uma heurística
+                <span class="math">h(n)</span>.
+              </p>
+
+              <ul>
+                <li>Dijkstra → não informado</li>
+                <li>A* → informado</li>
+              </ul>
+
+              <p class="math-note">
+                Se <span class="math">h(n) = 0</span>, o A* se reduz a Dijkstra.
+              </p>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card">
+
+              <h3>5.2 A* vs Greedy Best-First Search</h3>
+
+              <p>
+                A busca gulosa seleciona nós apenas com base em
+                <span class="math">h(n)</span>.
+              </p>
+
+              <p>
+                Ela costuma ser mais rápida, mas não garante otimalidade.
+              </p>
+
+              <ul>
+                <li>Greedy → rápido, não ótimo</li>
+                <li>A* → balanceado, ótimo (sob condições)</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card">
+
+              <h3>5.3 A* vs BFS</h3>
+
+              <p>
+                A busca em largura (BFS) explora níveis do grafo.
+              </p>
+
+              <p>
+                Ela garante caminhos mínimos apenas em grafos não ponderados.
+              </p>
+
+              <p>
+                O A* generaliza essa ideia para grafos ponderados,
+                combinando custo e heurística.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card">
+
+              <h3>5.4 Trade-offs</h3>
+
+              <p>
+                O A* introduz um trade-off importante:
+              </p>
+
+              <ul>
+                <li>heurística melhor → busca mais rápida</li>
+                <li>mais cálculo por nó → maior custo computacional</li>
+              </ul>
+
+              <p>
+                Projetar boas heurísticas é o principal desafio.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card">
+
+              <h3>5.5 Quando usar A*</h3>
+
+              <p>
+                O A* é ideal quando:
+              </p>
+
+              <ul>
+                <li>o problema pode ser modelado como grafo</li>
+                <li>existe uma heurística útil</li>
+                <li>é necessário um caminho ótimo</li>
+              </ul>
+
+              <p>
+                Sem uma boa heurística, sua vantagem diminui.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card">
+
+              <h3>5.6 Aplicações</h3>
+
+              <p>
+                O A* é amplamente utilizado em:
+              </p>
+
+              <ul>
+                <li>pathfinding em jogos</li>
+                <li>navegação de robôs</li>
+                <li>sistemas de GPS e rotas</li>
+                <li>planejamento em IA</li>
+              </ul>
+
+              <p>
+                Sua flexibilidade o torna um algoritmo padrão
+                tanto na teoria quanto na prática.
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card">
+
+              <h3>5.7 Além do A*</h3>
+
+              <p>
+                Existem várias extensões do A*:
+              </p>
+
+              <ul>
+                <li>IDA* (Iterative Deepening A*)</li>
+                <li>Weighted A*</li>
+                <li>A* bidirecional</li>
+              </ul>
+
+              <p>
+                Essas variações buscam reduzir memória
+                ou melhorar desempenho.
+              </p>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="astar-part5-conclusion">
+
+              <h4>Conclusão da Série</h4>
+
+              <p>
+                O A* deve ser entendido não apenas como um algoritmo de caminho mínimo,
+                mas como um framework que combina custo exato
+                e estimativa heurística.
+              </p>
+
+              <p>
+                Ao longo desta série, estudamos o modelo do problema,
+                as heurísticas, a estrutura do algoritmo,
+                suas garantias de otimalidade, complexidade
+                e aplicações práticas.
+              </p>
+
+              <div class="note">
+                <strong>Próximo passo:</strong>
+                voltar para o
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/a/index.html">
+                  índice do A*
+                </a>
+                ou continuar explorando outros algoritmos de busca.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

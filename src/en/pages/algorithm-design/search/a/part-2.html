@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → A* — Part 2</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/a/index.html">A*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 2 — Heuristic Functions</h2>
+          <p>Understanding how heuristic estimates guide informed search</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: A*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/a/part-3.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/a/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/a/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/a/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="astar-part2-overview">
+
+              <h3>2. Heuristic Functions</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What a heuristic function is</li>
+                  <li>Why heuristics matter in A*</li>
+                  <li>The difference between exact cost and estimated cost</li>
+                  <li>The notion of admissibility</li>
+                  <li>The notion of consistency</li>
+                </ol>
+              </div>
+
+              <p>
+                The heuristic function is the component that transforms A*
+                from uninformed shortest-path search into informed search.
+              </p>
+
+              <p>
+                It provides directional knowledge about the goal,
+                helping the algorithm prioritize more promising states.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="astar-part2-definition">
+
+              <h3>2.1 Definition of a Heuristic</h3>
+
+              <p class="math-note">
+                A heuristic is a function
+                <span class="math">h(n)</span>
+                that estimates the cost of the cheapest path
+                from node <span class="math">n</span> to a goal node.
+              </p>
+
+              <p>
+                It is an estimate, not an exact value.
+              </p>
+
+              <p>
+                Its purpose is to guide the search toward the goal
+                without fully exploring the remaining graph.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="astar-part2-role">
+
+              <h3>2.2 Role in A*</h3>
+
+              <p>
+                A* evaluates states using:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                Here, <span class="math">g(n)</span> measures the exact cost
+                accumulated so far, while <span class="math">h(n)</span>
+                estimates the remaining cost.
+              </p>
+
+              <p>
+                The heuristic therefore influences which node
+                will be explored next.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="astar-part2-intuition">
+
+              <h3>2.3 Intuition</h3>
+
+              <p>
+                Without a heuristic, the algorithm has no directional preference
+                toward the goal.
+              </p>
+
+              <p>
+                With a heuristic, the search gains a notion of
+                <strong>how far a state appears to be from success</strong>.
+              </p>
+
+              <p class="math-note">
+                Better heuristics usually reduce the number of explored nodes.
+              </p>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="astar-part2-examples">
+
+              <h3>2.4 Typical Examples</h3>
+
+              <p>
+                In pathfinding on grids, common heuristics include:
+              </p>
+
+              <ul>
+                <li>Manhattan distance</li>
+                <li>Euclidean distance</li>
+                <li>Chebyshev distance</li>
+              </ul>
+
+              <p>
+                These functions do not compute the exact remaining path cost,
+                but give a useful approximation based on geometry.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="astar-part2-admissibility">
+
+              <h3>2.5 Admissibility</h3>
+
+              <p class="math-note">
+                A heuristic is <strong>admissible</strong> if it never overestimates
+                the true remaining cost.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                where <span class="math">h*(n)</span> denotes the actual optimal cost
+                from <span class="math">n</span> to the goal.
+              </p>
+
+              <p>
+                Admissibility is a key condition for the optimality of A*.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="astar-part2-consistency">
+
+              <h3>2.6 Consistency</h3>
+
+              <p class="math-note">
+                A heuristic is <strong>consistent</strong> if, for every edge
+                <span class="math">(n, n')</span>,
+                it satisfies:
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ c(n, n') + h(n')</span>
+              </div>
+
+              <p>
+                This is a triangle-inequality-type condition.
+              </p>
+
+              <p>
+                Consistency implies that the estimated total cost
+                does not decrease unexpectedly along a path.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="astar-part2-comparison">
+
+              <h3>2.7 Weak vs Strong Heuristics</h3>
+
+              <p>
+                Not all admissible heuristics are equally informative.
+              </p>
+
+              <p>
+                A heuristic is considered stronger when it stays closer
+                to the true remaining cost while remaining admissible.
+              </p>
+
+              <ul>
+                <li>weak heuristic → more nodes explored</li>
+                <li>strong heuristic → fewer nodes explored</li>
+              </ul>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="astar-part2-boundaries">
+
+              <h3>2.8 Extreme Cases</h3>
+
+              <p>
+                Some special cases help clarify the role of heuristics:
+              </p>
+
+              <ul>
+                <li>
+                  <span class="math">h(n) = 0</span> for all <span class="math">n</span>
+                  → A* reduces to Dijkstra’s algorithm
+                </li>
+                <li>
+                  <span class="math">g(n)</span> ignored
+                  → the search behaves like Greedy Best-First Search
+                </li>
+              </ul>
+
+              <p>
+                A* balances these extremes by combining exact cost
+                and estimated future cost.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="astar-part2-transition">
+
+              <h4>Next: Part 3 — The A* Algorithm</h4>
+
+              <p>
+                Now that heuristic functions have been defined,
+                the next step is to study how A* actually operates.
+              </p>
+
+              <p>
+                In Part 3, we present the algorithmic structure of A*,
+                including node expansion, priority-based selection,
+                and the role of the open and closed sets.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/a/part-3.html">
+                  Part 3 — The A* Algorithm →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
