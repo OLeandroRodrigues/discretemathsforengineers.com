@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Índice</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">IDA*</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>IDA*</h2>
+          <p>Visão geral da série — busca heurística eficiente em memória com aprofundamento iterativo</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Iniciar →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-stack">
+
+            <!-- Card 1 -->
+            <section class="card">
+              <h3>O que o IDA* resolve</h3>
+
+              <p class="math-note">
+                IDA* é um algoritmo clássico para resolver
+                <strong>problemas de caminho mínimo e busca em espaço de estados</strong>
+                com orientação heurística, utilizando significativamente menos memória que o A*.
+              </p>
+
+              <p>
+                Conceitualmente, ele combina a função de avaliação
+                <strong>f(n) = g(n) + h(n)</strong> com aprofundamento iterativo.
+                Em vez de manter uma fronteira completa em uma fila de prioridade,
+                o IDA* realiza buscas em profundidade repetidas sob
+                limiares de custo progressivamente crescentes.
+              </p>
+
+              <p>
+                Isso torna o IDA* especialmente útil em espaços de busca grandes,
+                onde o A* se torna impraticável devido ao consumo de memória,
+                mantendo ainda a otimalidade sob condições adequadas da heurística.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Referência:</strong>
+                a apresentação segue o tratamento clássico utilizado em
+                projeto de algoritmos e inteligência artificial, conectando
+                avaliação heurística, aprofundamento iterativo e busca eficiente em memória.
+              </div>
+            </section>
+
+            <!-- Card 2 -->
+            <section class="card">
+              <h3>Partes</h3>
+
+              <ul class="search-list">
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">
+                    Parte 1 — Modelo do Problema
+                  </a>
+                </li>
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">
+                    Parte 2 — Limiar de Custo &amp; Aprofundamento Iterativo
+                  </a>
+                </li>
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">
+                    Parte 3 — O Algoritmo IDA*
+                  </a>
+                </li>
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">
+                    Parte 4 — Otimalidade &amp; Complexidade
+                  </a>
+                </li>
+                <li>
+                  <a href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">
+                    Parte 5 — Comparações &amp; Aplicações
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
