@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → IDA* — Part 1</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 1 — Problem Model</h2>
+          <p>Formalizing search as cost-bounded exploration with heuristic guidance</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: IDA*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/index.html">← Index</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-2.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/en/pages/algorithm-design/search/ida/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card">
+              <h3>1. Problem Model</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Goal:</strong>
+                understand how search problems are modeled when using IDA*,
+                and how cost thresholds guide exploration.
+              </div>
+
+              <p>
+                We consider a search problem defined over a state space
+                represented as a graph or tree, where each node corresponds
+                to a configuration and edges represent valid transitions.
+              </p>
+
+              <p>
+                Each transition has an associated cost, and the objective
+                is to find a path from an initial state to a goal state
+                with minimum total cost.
+              </p>
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card">
+              <h3>1.1 State Space</h3>
+
+              <p>
+                The problem is modeled as a state space
+                <span class="math">(S, E)</span>,
+                where:
+              </p>
+
+              <ul>
+                <li><span class="math">S</span>: set of states</li>
+                <li><span class="math">E</span>: transitions between states</li>
+              </ul>
+
+              <p>
+                The search starts from an initial state
+                <span class="math">s₀</span> and aims to reach
+                a goal state <span class="math">s*</span>.
+              </p>
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card">
+              <h3>1.2 Cost Function</h3>
+
+              <p>
+                Each path has an associated cost:
+              </p>
+
+              <p class="math">
+                g(n) = cost from the start node to n
+              </p>
+
+              <p>
+                The goal is to minimize the total path cost.
+              </p>
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card">
+              <h3>1.3 Heuristic Function</h3>
+
+              <p>
+                A heuristic function estimates the remaining cost:
+              </p>
+
+              <p class="math">
+                h(n) ≈ cost from n to goal
+              </p>
+
+              <p>
+                The evaluation function is:
+              </p>
+
+              <p class="math">
+                f(n) = g(n) + h(n)
+              </p>
+
+              <p>
+                This function guides the search toward promising regions.
+              </p>
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card">
+              <h3>1.4 Cost-Bounded Search</h3>
+
+              <p>
+                Unlike A*, IDA* does not expand nodes globally
+                using a priority queue.
+              </p>
+
+              <p>
+                Instead, it performs depth-first searches
+                limited by a cost threshold:
+              </p>
+
+              <p class="math">
+                f(n) ≤ threshold
+              </p>
+
+              <p>
+                Nodes exceeding the threshold are pruned.
+              </p>
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card">
+              <h3>1.5 Iterative Deepening on Cost</h3>
+
+              <p>
+                The algorithm runs multiple iterations,
+                each increasing the threshold.
+              </p>
+
+              <ul>
+                <li>Start with initial threshold = h(s₀)</li>
+                <li>Run DFS with cost bound</li>
+                <li>Increase threshold to next minimum exceeded value</li>
+              </ul>
+
+              <p>
+                This process continues until the goal is found.
+              </p>
+            </section>
+
+            <!-- Next -->
+            <section class="card full">
+              <h4>Next</h4>
+
+              <p>
+                Now that the problem model is defined,
+                we study how thresholds evolve and how
+                iterative deepening works in practice.
+              </p>
+
+              <div class="note">
+                <strong>Continue to:</strong>
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/ida/part-2.html">
+                  Part 2 — Cost Threshold &amp; Iterative Deepening
+                </a>
+              </div>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
