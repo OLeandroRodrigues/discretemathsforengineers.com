@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Parte 1</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 1 — Modelo do Problema</h2>
+          <p>Formalizando a busca como exploração limitada por custo com orientação heurística</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">← Índice</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 1.0 -->
+            <section class="card">
+              <h3>1. Modelo do Problema</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Objetivo:</strong>
+                entender como problemas de busca são modelados ao usar IDA*,
+                e como limiares de custo guiam a exploração.
+              </div>
+
+              <p>
+                Consideramos um problema de busca definido sobre um espaço de estados
+                representado como um grafo ou árvore, onde cada nó corresponde
+                a uma configuração e as arestas representam transições válidas.
+              </p>
+
+              <p>
+                Cada transição possui um custo associado, e o objetivo
+                é encontrar um caminho do estado inicial até um estado objetivo
+                com custo total mínimo.
+              </p>
+            </section>
+
+            <!-- 1.1 -->
+            <section class="card">
+              <h3>1.1 Espaço de Estados</h3>
+
+              <p>
+                O problema é modelado como um espaço de estados
+                <span class="math">(S, E)</span>,
+                onde:
+              </p>
+
+              <ul>
+                <li><span class="math">S</span>: conjunto de estados</li>
+                <li><span class="math">E</span>: transições entre estados</li>
+              </ul>
+
+              <p>
+                A busca começa em um estado inicial
+                <span class="math">s₀</span> e busca alcançar
+                um estado objetivo <span class="math">s*</span>.
+              </p>
+            </section>
+
+            <!-- 1.2 -->
+            <section class="card">
+              <h3>1.2 Função de Custo</h3>
+
+              <p>
+                Cada caminho possui um custo associado:
+              </p>
+
+              <p class="math">
+                g(n) = custo do nó inicial até n
+              </p>
+
+              <p>
+                O objetivo é minimizar o custo total do caminho.
+              </p>
+            </section>
+
+            <!-- 1.3 -->
+            <section class="card">
+              <h3>1.3 Função Heurística</h3>
+
+              <p>
+                Uma função heurística estima o custo restante:
+              </p>
+
+              <p class="math">
+                h(n) ≈ custo de n até o objetivo
+              </p>
+
+              <p>
+                A função de avaliação é:
+              </p>
+
+              <p class="math">
+                f(n) = g(n) + h(n)
+              </p>
+
+              <p>
+                Essa função guia a busca para regiões promissoras.
+              </p>
+            </section>
+
+            <!-- 1.4 -->
+            <section class="card">
+              <h3>1.4 Busca Limitada por Custo</h3>
+
+              <p>
+                Diferente do A*, o IDA* não expande nós globalmente
+                usando uma fila de prioridade.
+              </p>
+
+              <p>
+                Em vez disso, ele realiza buscas em profundidade
+                limitadas por um limiar de custo:
+              </p>
+
+              <p class="math">
+                f(n) ≤ limite
+              </p>
+
+              <p>
+                Nós que excedem esse limite são podados.
+              </p>
+            </section>
+
+            <!-- 1.5 -->
+            <section class="card">
+              <h3>1.5 Aprofundamento Iterativo por Custo</h3>
+
+              <p>
+                O algoritmo executa múltiplas iterações,
+                cada uma aumentando o limite de custo.
+              </p>
+
+              <ul>
+                <li>Inicia com limite inicial = h(s₀)</li>
+                <li>Executa DFS com limite de custo</li>
+                <li>Aumenta o limite para o menor valor excedido</li>
+              </ul>
+
+              <p>
+                Esse processo continua até encontrar o objetivo.
+              </p>
+            </section>
+
+            <!-- Next -->
+            <section class="card full">
+              <h4>Próximo</h4>
+
+              <p>
+                Agora que o modelo do problema está definido,
+                estudamos como os limites evoluem e como
+                o aprofundamento iterativo funciona na prática.
+              </p>
+
+              <div class="note">
+                <strong>Continuar para:</strong>
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">
+                  Parte 2 — Limiar de Custo &amp; Aprofundamento Iterativo
+                </a>
+              </div>
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
