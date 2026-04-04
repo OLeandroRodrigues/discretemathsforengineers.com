@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Parte 2</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 2 — Limiar de Custo &amp; Aprofundamento Iterativo</h2>
+          <p>Como o IDA* controla a exploração por limites de custo em vez de uma fronteira global</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="ida-parte2-overview">
+
+              <h3>2. Limiar de Custo &amp; Aprofundamento Iterativo</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>O que significa o limiar de custo</li>
+                  <li>Como a poda é baseada em <span class="math">f(n)</span></li>
+                  <li>Por que o IDA* repete a busca em profundidade</li>
+                  <li>Como o limiar é atualizado</li>
+                  <li>Por que isso economiza memória</li>
+                </ol>
+              </div>
+
+              <p>
+                A ideia central do IDA* é substituir a fronteira global baseada em prioridade do A*
+                por buscas em profundidade repetidas limitadas por custo.
+              </p>
+
+              <p>
+                Em vez de armazenar todos os nós da fronteira,
+                o algoritmo explora apenas caminhos cujo custo estimado total
+                permanece dentro de um limiar atual.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="ida-parte2-limiar">
+
+              <h3>2.1 Significado do Limiar</h3>
+
+              <p>
+                No IDA*, cada iteração é controlada por um valor escalar chamado
+                <strong>limiar de custo</strong>.
+              </p>
+
+              <p class="math-note">
+                Um nó <span class="math">n</span> é expandido apenas se
+                <span class="math">f(n) = g(n) + h(n) ≤ T</span>,
+                onde <span class="math">T</span> é o limiar atual.
+              </p>
+
+              <p>
+                Assim, o limiar determina qual parte do espaço de busca
+                pode ser explorada na iteração atual.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="ida-parte2-poda">
+
+              <h3>2.2 Poda Baseada em Custo</h3>
+
+              <p>
+                Sempre que o custo estimado total de um nó excede o limiar,
+                o ramo é interrompido imediatamente.
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) &gt; T ⇒ poda</span>
+              </div>
+
+              <p>
+                Essa regra de poda torna a busca seletiva
+                sem exigir uma ordenação global dos nós da fronteira.
+              </p>
+
+              <p>
+                Os nós não são descartados permanentemente;
+                eles podem ser reconsiderados em iterações futuras.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="ida-parte2-inicial">
+
+              <h3>2.3 Limiar Inicial</h3>
+
+              <p>
+                O primeiro limiar geralmente é definido como a avaliação
+                do estado inicial.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T₀ = h(s₀)</span>
+              </div>
+
+              <p>
+                Como o custo acumulado inicial é zero,
+                temos:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(s₀) = g(s₀) + h(s₀) = 0 + h(s₀)</span>
+              </div>
+
+              <p>
+                A busca começa então com o menor limite significativo possível.
+              </p>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="ida-parte2-iteracao">
+
+              <h3>2.4 Uma Iteração do IDA*</h3>
+
+              <p>
+                Para um limiar fixo, o IDA* realiza uma travessia em profundidade.
+              </p>
+
+              <p>
+                Durante essa travessia:
+              </p>
+
+              <ul>
+                <li>nós dentro do limite são explorados recursivamente</li>
+                <li>nós além do limite são podados</li>
+                <li>o menor valor excedido é registrado</li>
+              </ul>
+
+              <p>
+                Se o objetivo não for encontrado,
+                esse menor valor excedido se torna o próximo limiar.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="ida-parte2-proximo">
+
+              <h3>2.5 Atualização do Limiar</h3>
+
+              <p>
+                O IDA* não aumenta o limiar arbitrariamente.
+              </p>
+
+              <p class="math-note">
+                O próximo limiar é escolhido como o menor valor de
+                <span class="math">f(n)</span> entre todos os nós podados
+                na iteração atual.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = min { f(n) | f(n) &gt; T }</span>
+              </div>
+
+              <p>
+                Isso garante progresso com o menor aumento possível.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="ida-parte2-repeticao">
+
+              <h3>2.6 Por que Repetir a Busca</h3>
+
+              <p>
+                Como o limiar restringe a exploração,
+                uma única passagem em profundidade não é suficiente.
+              </p>
+
+              <p>
+                Alguns nós relevantes estão logo além do limite atual
+                e só podem ser explorados quando o limiar aumenta.
+              </p>
+
+              <p>
+                Por isso, o IDA* revisita a busca múltiplas vezes,
+                expandindo gradualmente a região explorada.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="ida-parte2-memoria">
+
+              <h3>2.7 Vantagem de Memória</h3>
+
+              <p>
+                A principal vantagem dessa estratégia é a eficiência de memória.
+              </p>
+
+              <p>
+                Como cada iteração é em profundidade,
+                o algoritmo armazena apenas o caminho atual
+                e poucas informações auxiliares.
+              </p>
+
+              <p class="math-note">
+                Diferente do A*, o IDA* não precisa manter toda a fronteira na memória.
+              </p>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="ida-parte2-tradeoff">
+
+              <h3>2.8 Principal Trade-off</h3>
+
+              <p>
+                O preço da baixa utilização de memória é o retrabalho.
+              </p>
+
+              <ul>
+                <li>uso de memória diminui</li>
+                <li>revisitação de estados aumenta</li>
+              </ul>
+
+              <p>
+                O IDA* pode explorar os mesmos prefixos várias vezes
+                ao longo das iterações.
+              </p>
+
+              <p>
+                Esse é o trade-off fundamental entre A* e IDA*.
+              </p>
+
+            </section>
+
+            <!-- Next -->
+            <section class="card full" id="ida-parte2-next">
+
+              <h4>Próximo: Parte 3 — O Algoritmo IDA*</h4>
+
+              <p>
+                Agora que o mecanismo de limiar está claro,
+                o próximo passo é estudar a estrutura completa do algoritmo.
+              </p>
+
+              <p>
+                Na Parte 3, apresentamos o algoritmo em si,
+                incluindo busca recursiva, propagação de limiar
+                e pseudocódigo.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">
+                  Parte 3 — O Algoritmo IDA* →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
