@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → IDA* — Part 2</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 2 — Cost Threshold &amp; Iterative Deepening</h2>
+          <p>How IDA* controls exploration through cost bounds instead of a global frontier</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: IDA*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-3.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/ida/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 2.0 -->
+            <section class="card" id="ida-part2-overview">
+
+              <h3>2. Cost Threshold &amp; Iterative Deepening</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>What the cost threshold means</li>
+                  <li>How pruning is based on <span class="math">f(n)</span></li>
+                  <li>Why IDA* repeats depth-first search</li>
+                  <li>How the threshold is updated</li>
+                  <li>Why this saves memory</li>
+                </ol>
+              </div>
+
+              <p>
+                The central idea of IDA* is to replace A*’s global priority-based frontier
+                with repeated depth-first searches bounded by cost.
+              </p>
+
+              <p>
+                Instead of storing all frontier nodes, the algorithm explores only paths
+                whose estimated total cost remains within a current threshold.
+              </p>
+
+            </section>
+
+            <!-- 2.1 -->
+            <section class="card" id="ida-part2-threshold">
+
+              <h3>2.1 The Meaning of the Threshold</h3>
+
+              <p>
+                In IDA*, each iteration is controlled by a scalar bound called
+                the <strong>cost threshold</strong>.
+              </p>
+
+              <p class="math-note">
+                A node <span class="math">n</span> is expanded only if
+                <span class="math">f(n) = g(n) + h(n) ≤ T</span>,
+                where <span class="math">T</span> is the current threshold.
+              </p>
+
+              <p>
+                Thus, the threshold determines which part of the search space
+                is accessible in the current iteration.
+              </p>
+
+            </section>
+
+            <!-- 2.2 -->
+            <section class="card" id="ida-part2-pruning">
+
+              <h3>2.2 Cost-Based Pruning</h3>
+
+              <p>
+                Whenever the estimated total cost of a node exceeds the threshold,
+                the branch is cut immediately.
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) &gt; T \Rightarrow \text{prune}</span>
+              </div>
+
+              <p>
+                This pruning rule makes the search selective
+                without requiring a global ordering of all frontier nodes.
+              </p>
+
+              <p>
+                Nodes are not discarded forever; they may be reconsidered
+                in later iterations with larger thresholds.
+              </p>
+
+            </section>
+
+            <!-- 2.3 -->
+            <section class="card" id="ida-part2-initial-threshold">
+
+              <h3>2.3 Initial Threshold</h3>
+
+              <p>
+                The first threshold is usually chosen as the evaluation
+                of the start state.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T₀ = h(s₀)</span>
+              </div>
+
+              <p>
+                Since the initial accumulated cost is zero,
+                this is equivalent to:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(s₀) = g(s₀) + h(s₀) = 0 + h(s₀)</span>
+              </div>
+
+              <p>
+                The search then begins with the smallest meaningful cost bound.
+              </p>
+
+            </section>
+
+            <!-- 2.4 -->
+            <section class="card" id="ida-part2-iteration">
+
+              <h3>2.4 One Iteration of IDA*</h3>
+
+              <p>
+                For a fixed threshold, IDA* performs a depth-first traversal
+                of the search space.
+              </p>
+
+              <p>
+                During this traversal:
+              </p>
+
+              <ul>
+                <li>nodes within the threshold are explored recursively</li>
+                <li>nodes beyond the threshold are pruned</li>
+                <li>the smallest exceeded value is recorded</li>
+              </ul>
+
+              <p>
+                If the goal is not found, that smallest exceeded value
+                becomes the next threshold.
+              </p>
+
+            </section>
+
+            <!-- 2.5 -->
+            <section class="card" id="ida-part2-next-threshold">
+
+              <h3>2.5 Updating the Threshold</h3>
+
+              <p>
+                IDA* does not increase the threshold arbitrarily.
+              </p>
+
+              <p class="math-note">
+                The next threshold is chosen as the minimum value of
+                <span class="math">f(n)</span> among all pruned nodes
+                in the current iteration.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = \min \{ f(n) \mid f(n) &gt; T \}</span>
+              </div>
+
+              <p>
+                This makes the increase as small as possible while guaranteeing progress.
+              </p>
+
+            </section>
+
+            <!-- 2.6 -->
+            <section class="card" id="ida-part2-why-repeat">
+
+              <h3>2.6 Why Repeated Search Is Necessary</h3>
+
+              <p>
+                Because the threshold restricts exploration,
+                a single depth-first pass is not enough in general.
+              </p>
+
+              <p>
+                Some relevant nodes lie just beyond the current bound
+                and can only be explored after the threshold increases.
+              </p>
+
+              <p>
+                IDA* therefore revisits the search multiple times,
+                gradually expanding the region of admissible nodes.
+              </p>
+
+            </section>
+
+            <!-- 2.7 -->
+            <section class="card" id="ida-part2-memory">
+
+              <h3>2.7 Memory Advantage</h3>
+
+              <p>
+                The main advantage of this strategy is memory efficiency.
+              </p>
+
+              <p>
+                Since each iteration is depth-first,
+                the algorithm stores only the current recursive path
+                plus a small amount of auxiliary information.
+              </p>
+
+              <p class="math-note">
+                In contrast to A*, IDA* does not need to keep the full frontier
+                in memory.
+              </p>
+
+            </section>
+
+            <!-- 2.8 -->
+            <section class="card" id="ida-part2-tradeoff">
+
+              <h3>2.8 The Main Trade-off</h3>
+
+              <p>
+                The price of low memory consumption is repeated work.
+              </p>
+
+              <ul>
+                <li>memory usage decreases</li>
+                <li>state revisitation increases</li>
+              </ul>
+
+              <p>
+                IDA* may explore the same prefixes many times
+                across different threshold values.
+              </p>
+
+              <p>
+                This is the fundamental trade-off between A* and IDA*.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="ida-part2-transition">
+
+              <h4>Next: Part 3 — The IDA* Algorithm</h4>
+
+              <p>
+                Now that the threshold mechanism is clear,
+                the next step is to study the full control structure of IDA*.
+              </p>
+
+              <p>
+                In Part 3, we present the algorithm itself,
+                including recursive search, threshold propagation,
+                and the canonical pseudocode template.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/ida/part-3.html">
+                  Part 3 — The IDA* Algorithm →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
