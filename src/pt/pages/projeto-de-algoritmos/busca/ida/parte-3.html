@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Parte 3</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 3 — O Algoritmo IDA*</h2>
+          <p>Como o IDA* realiza busca recursiva limitada por custo com atualização de limiar</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="ida-parte3-overview">
+
+              <h3>3. O Algoritmo IDA*</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>A estrutura global do IDA*</li>
+                  <li>A sub-rotina recursiva de busca em profundidade</li>
+                  <li>Como violações de limiar são propagadas</li>
+                  <li>Como a detecção de objetivo funciona</li>
+                  <li>O template clássico em pseudocódigo</li>
+                </ol>
+              </div>
+
+              <p>
+                O IDA* combina duas ideias:
+                avaliação heurística por <span class="math">f(n) = g(n) + h(n)</span>
+                e exploração em profundidade sob um limite de custo.
+              </p>
+
+              <p>
+                O algoritmo invoca repetidamente uma busca recursiva limitada,
+                aumentando o limiar apenas quando necessário.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="ida-parte3-estrutura">
+
+              <h3>3.1 Estrutura de Controle Global</h3>
+
+              <p>
+                No nível superior, o IDA* mantém um limiar atual
+                e executa repetidamente uma busca em profundidade a partir do estado inicial.
+              </p>
+
+              <p>
+                Cada iteração tem três possíveis resultados:
+              </p>
+
+              <ul>
+                <li>o objetivo é encontrado</li>
+                <li>todos os nós dentro do limiar são explorados</li>
+                <li>um novo valor mínimo excedido é retornado</li>
+              </ul>
+
+              <p>
+                Se o objetivo não for encontrado, esse valor retornado
+                se torna o limiar da próxima iteração.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="ida-parte3-recursiva">
+
+              <h3>3.2 Procedimento Recursivo</h3>
+
+              <p>
+                O núcleo do IDA* é uma função recursiva de busca em profundidade
+                que explora os sucessores do nó atual.
+              </p>
+
+              <p>
+                Para cada nó visitado, o algoritmo calcula:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                Se esse valor exceder o limiar atual,
+                a recursão não continua abaixo desse nó.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="ida-parte3-corte">
+
+              <h3>3.3 Condição de Corte</h3>
+
+              <p class="math-note">
+                Um nó é podado sempre que
+                <span class="math">f(n) &gt; T</span>,
+                onde <span class="math">T</span> é o limiar atual.
+              </p>
+
+              <p>
+                Nesse caso, a função não retorna simplesmente falha.
+              </p>
+
+              <p>
+                Em vez disso, retorna o valor <span class="math">f(n)</span>,
+                pois ele pode se tornar o próximo limiar.
+              </p>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="ida-parte3-objetivo">
+
+              <h3>3.4 Detecção de Objetivo</h3>
+
+              <p>
+                Antes de expandir os sucessores, o algoritmo verifica
+                se o nó atual é um estado objetivo.
+              </p>
+
+              <p>
+                Se for, a busca termina com sucesso,
+                e o caminho solução pode ser reconstruído
+                a partir da pilha recursiva ou estrutura de predecessores.
+              </p>
+
+              <p class="math-note">
+                A detecção do objetivo ocorre dentro da DFS limitada,
+                não fora dela.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="ida-parte3-propagacao">
+
+              <h3>3.5 Propagação do Próximo Limiar</h3>
+
+              <p>
+                Durante uma busca limitada, vários nós podem exceder o limiar.
+              </p>
+
+              <p>
+                As chamadas recursivas propagam o menor valor excedido
+                de <span class="math">f</span>.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = min { f(n) | f(n) &gt; T }</span>
+              </div>
+
+              <p>
+                Esse valor define o menor limiar necessário
+                para avançar na próxima iteração.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="ida-parte3-ciclo">
+
+              <h3>3.6 Evitando Ciclos no Caminho</h3>
+
+              <p>
+                Como o IDA* utiliza busca em profundidade,
+                é necessário evitar ciclos triviais no caminho atual.
+              </p>
+
+              <p>
+                Uma estratégia comum é impedir recursão para estados
+                já presentes no caminho corrente.
+              </p>
+
+              <p>
+                Isso é mais leve do que manter um conjunto global de visitados,
+                preservando a eficiência de memória.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="ida-parte3-template">
+
+              <h3>3.7 Template Clássico do IDA*</h3>
+
+              <p>
+                A estrutura geral do IDA* pode ser expressa assim:
+              </p>
+
+<pre><code>IDA*(inicio):
+
+    limite = h(inicio)
+
+    while true:
+        resultado = BUSCA(inicio, g=0, limite)
+
+        if resultado é ENCONTRADO:
+            return solução
+
+        if resultado é ∞:
+            return falha
+
+        limite = resultado
+
+
+BUSCA(no, g, limite):
+
+    f = g + h(no)
+
+    if f &gt; limite:
+        return f
+
+    if no é objetivo:
+        return ENCONTRADO
+
+    minimo_excedido = ∞
+
+    para cada sucessor s de no:
+        temp = BUSCA(s, g + custo(no, s), limite)
+
+        if temp é ENCONTRADO:
+            return ENCONTRADO
+
+        if temp &lt; minimo_excedido:
+            minimo_excedido = temp
+
+    return minimo_excedido</code></pre>
+
+            </section>
+
+            <!-- 3.8 -->
+            <section class="card" id="ida-parte3-interpretacao">
+
+              <h3>3.8 Interpretação do Algoritmo</h3>
+
+              <p>
+                Cada iteração responde à pergunta:
+              </p>
+
+              <div class="note">
+                <strong>Pergunta:</strong>
+                é possível encontrar uma solução sem exceder o limiar atual?
+              </div>
+
+              <p>
+                Se não, o algoritmo calcula o menor limiar
+                que permitiria continuar a exploração.
+              </p>
+
+              <p>
+                Nesse sentido, o IDA* alterna entre
+                <strong>DFS limitada</strong> e
+                <strong>revisão de limiar</strong>.
+              </p>
+
+            </section>
+
+            <!-- 3.9 -->
+            <section class="card" id="ida-parte3-resumo">
+
+              <h3>3.9 Resumo Operacional</h3>
+
+              <ul>
+                <li>inicializar o limiar com a avaliação inicial</li>
+                <li>executar DFS limitada por esse limiar</li>
+                <li>podar nós com <span class="math">f</span> alto</li>
+                <li>registrar o menor valor excedido</li>
+                <li>repetir até encontrar solução ou falhar</li>
+              </ul>
+
+              <p>
+                Essa estrutura dá ao IDA* seu equilíbrio característico:
+                baixo uso de memória com custo de recomputação.
+              </p>
+
+            </section>
+
+            <!-- Next -->
+            <section class="card full" id="ida-parte3-next">
+
+              <h4>Próximo: Parte 4 — Otimalidade &amp; Complexidade</h4>
+
+              <p>
+                Agora que o funcionamento do IDA* está claro,
+                o próximo passo é analisar sua corretude e custo computacional.
+              </p>
+
+              <p>
+                Na Parte 4, estudamos quando o IDA* é ótimo,
+                o papel da heurística e os trade-offs de tempo e memória.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">
+                  Parte 4 — Otimalidade &amp; Complexidade →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

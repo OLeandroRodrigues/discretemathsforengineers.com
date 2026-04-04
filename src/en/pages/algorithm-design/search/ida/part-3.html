@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → IDA* — Part 3</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 3 — The IDA* Algorithm</h2>
+          <p>How IDA* performs recursive cost-bounded search with threshold updates</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: IDA*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/ida/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 3.0 -->
+            <section class="card" id="ida-part3-overview">
+
+              <h3>3. The IDA* Algorithm</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>The global structure of IDA*</li>
+                  <li>The recursive depth-first search subroutine</li>
+                  <li>How threshold violations are propagated</li>
+                  <li>How goal detection works</li>
+                  <li>The canonical pseudocode template</li>
+                </ol>
+              </div>
+
+              <p>
+                IDA* combines two ideas:
+                heuristic evaluation through <span class="math">f(n) = g(n) + h(n)</span>
+                and depth-first exploration under a cost bound.
+              </p>
+
+              <p>
+                The algorithm repeatedly invokes a bounded recursive search,
+                increasing the threshold only when necessary.
+              </p>
+
+            </section>
+
+            <!-- 3.1 -->
+            <section class="card" id="ida-part3-structure">
+
+              <h3>3.1 Global Control Structure</h3>
+
+              <p>
+                At the top level, IDA* maintains a current threshold
+                and repeatedly launches a depth-first search from the start state.
+              </p>
+
+              <p>
+                Each iteration has one of three outcomes:
+              </p>
+
+              <ul>
+                <li>the goal is found</li>
+                <li>all reachable nodes within the threshold are exhausted</li>
+                <li>a new minimum exceeded value is returned</li>
+              </ul>
+
+              <p>
+                If the goal is not found, that returned value becomes
+                the threshold for the next iteration.
+              </p>
+
+            </section>
+
+            <!-- 3.2 -->
+            <section class="card" id="ida-part3-recursive">
+
+              <h3>3.2 Recursive Search Procedure</h3>
+
+              <p>
+                The core of IDA* is a recursive depth-first function
+                that explores successors of the current node.
+              </p>
+
+              <p>
+                For each visited node, the algorithm computes:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                If this value exceeds the current threshold,
+                the recursion does not continue below that node.
+              </p>
+
+            </section>
+
+            <!-- 3.3 -->
+            <section class="card" id="ida-part3-cutoff">
+
+              <h3>3.3 Cutoff Condition</h3>
+
+              <p class="math-note">
+                A node is pruned whenever
+                <span class="math">f(n) &gt; T</span>,
+                where <span class="math">T</span> is the current threshold.
+              </p>
+
+              <p>
+                In that case, the function does not simply return failure.
+              </p>
+
+              <p>
+                Instead, it returns the value <span class="math">f(n)</span>,
+                because that value may become the next threshold.
+              </p>
+
+            </section>
+
+            <!-- 3.4 -->
+            <section class="card" id="ida-part3-goal">
+
+              <h3>3.4 Goal Detection</h3>
+
+              <p>
+                Before expanding successors, the algorithm checks
+                whether the current node is a goal state.
+              </p>
+
+              <p>
+                If so, the search terminates successfully,
+                and the solution path can be reconstructed
+                from the current recursive stack or predecessor structure.
+              </p>
+
+              <p class="math-note">
+                Goal detection happens inside the bounded DFS,
+                not outside it.
+              </p>
+
+            </section>
+
+            <!-- 3.5 -->
+            <section class="card" id="ida-part3-propagation">
+
+              <h3>3.5 Propagating the Next Threshold</h3>
+
+              <p>
+                During one bounded search, several nodes may exceed the threshold.
+              </p>
+
+              <p>
+                The recursive calls propagate upward the smallest exceeded
+                <span class="math">f</span>-value encountered.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = \min \{ f(n) \mid f(n) &gt; T \}</span>
+              </div>
+
+              <p>
+                This value is the minimum threshold that allows progress
+                beyond the current iteration.
+              </p>
+
+            </section>
+
+            <!-- 3.6 -->
+            <section class="card" id="ida-part3-cycle">
+
+              <h3>3.6 Path-Based Cycle Avoidance</h3>
+
+              <p>
+                Since IDA* relies on depth-first exploration,
+                it must avoid trivial cycles along the current path.
+              </p>
+
+              <p>
+                A common strategy is to forbid recursion into a state
+                already present in the current path.
+              </p>
+
+              <p>
+                This is weaker than maintaining a full global closed set,
+                but it preserves the memory-efficient character of the algorithm.
+              </p>
+
+            </section>
+
+            <!-- 3.7 -->
+            <section class="card" id="ida-part3-template">
+
+              <h3>3.7 Canonical IDA* Template</h3>
+
+              <p>
+                The general structure of IDA* can be expressed as follows:
+              </p>
+
+<pre><code>IDA*(start):
+
+    threshold = h(start)
+
+    while true:
+        result = SEARCH(start, g=0, threshold)
+
+        if result is FOUND:
+            return solution
+
+        if result is ∞:
+            return failure
+
+        threshold = result
+
+
+SEARCH(node, g, threshold):
+
+    f = g + h(node)
+
+    if f &gt; threshold:
+        return f
+
+    if node is goal:
+        return FOUND
+
+    min_exceeded = ∞
+
+    for each successor s of node:
+        temp = SEARCH(s, g + cost(node, s), threshold)
+
+        if temp is FOUND:
+            return FOUND
+
+        if temp &lt; min_exceeded:
+            min_exceeded = temp
+
+    return min_exceeded</code></pre>
+
+            </section>
+
+            <!-- 3.8 -->
+            <section class="card" id="ida-part3-interpretation">
+
+              <h3>3.8 How to Interpret the Algorithm</h3>
+
+              <p>
+                Each iteration answers the question:
+              </p>
+
+              <div class="note">
+                <strong>Question:</strong>
+                can a solution be found without exceeding the current cost threshold?
+              </div>
+
+              <p>
+                If the answer is no, the algorithm computes the smallest threshold
+                that would make further exploration possible.
+              </p>
+
+              <p>
+                In this sense, IDA* alternates between
+                <strong>bounded DFS</strong> and
+                <strong>threshold revision</strong>.
+              </p>
+
+            </section>
+
+            <!-- 3.9 -->
+            <section class="card" id="ida-part3-summary">
+
+              <h3>3.9 Operational Summary</h3>
+
+              <ul>
+                <li>initialize the threshold with the start evaluation</li>
+                <li>run a depth-first search bounded by that threshold</li>
+                <li>prune nodes whose <span class="math">f</span>-value is too large</li>
+                <li>record the minimum exceeded value</li>
+                <li>repeat until the goal is found or no solution exists</li>
+              </ul>
+
+              <p>
+                This structure gives IDA* its characteristic balance:
+                low memory consumption at the cost of repeated search effort.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="ida-part3-transition">
+
+              <h4>Next: Part 4 — Optimality &amp; Complexity</h4>
+
+              <p>
+                Now that the mechanics of IDA* are clear,
+                the next step is to analyze its correctness and computational cost.
+              </p>
+
+              <p>
+                In Part 4, we study when IDA* is optimal,
+                how admissibility affects correctness,
+                and what trade-offs arise in time and space complexity.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/ida/part-4.html">
+                  Part 4 — Optimality &amp; Complexity →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
