@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → IDA* — Part 4</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 4 — Optimality &amp; Complexity</h2>
+          <p>When IDA* is correct and what trade-offs arise in time and memory</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: IDA*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-3.html">← Previous</a>
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-5.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/ida/part-4.html">4</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="ida-part4-overview">
+
+              <h3>4. Optimality &amp; Complexity</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>When IDA* returns optimal solutions</li>
+                  <li>The role of admissible heuristics</li>
+                  <li>Why completeness matters</li>
+                  <li>How time complexity behaves</li>
+                  <li>Why memory usage is the main advantage of IDA*</li>
+                </ol>
+              </div>
+
+              <p>
+                IDA* is attractive because it combines heuristic guidance
+                with a memory-efficient depth-first strategy.
+              </p>
+
+              <p>
+                However, these benefits come with theoretical conditions
+                and computational trade-offs that must be understood clearly.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="ida-part4-optimality">
+
+              <h3>4.1 What Optimality Means</h3>
+
+              <p>
+                IDA* is <strong>optimal</strong> if it returns
+                a minimum-cost solution whenever one exists.
+              </p>
+
+              <p class="math-note">
+                If <span class="math">C*</span> denotes the optimal solution cost,
+                then the path returned by IDA* must also have cost
+                <span class="math">C*</span>.
+              </p>
+
+              <p>
+                The main question is under what conditions this guarantee holds.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="ida-part4-admissibility">
+
+              <h3>4.2 Admissible Heuristics</h3>
+
+              <p>
+                The correctness of IDA* depends fundamentally
+                on the heuristic not overestimating the remaining cost.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                This means the heuristic is <strong>admissible</strong>.
+              </p>
+
+              <p>
+                With an admissible heuristic, the threshold sequence
+                progresses in a way that does not skip the optimal solution cost.
+              </p>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="ida-part4-threshold-correctness">
+
+              <h3>4.3 Why Threshold Progression Works</h3>
+
+              <p>
+                In each iteration, IDA* explores all nodes whose
+                estimated total cost satisfies the current threshold.
+              </p>
+
+              <p>
+                If no solution is found, the next threshold becomes
+                the smallest exceeded <span class="math">f</span>-value.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = \min \{ f(n) \mid f(n) &gt; T \}</span>
+              </div>
+
+              <p>
+                Because thresholds increase in this disciplined way,
+                the optimal cost layer is eventually reached.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="ida-part4-completeness">
+
+              <h3>4.4 Completeness</h3>
+
+              <p>
+                IDA* is also <strong>complete</strong>
+                under the usual assumptions for state-space search.
+              </p>
+
+              <p>
+                If a solution exists, edge costs are positive,
+                and the branching process is well-behaved,
+                the algorithm will eventually find a solution.
+              </p>
+
+              <p>
+                This property is important because optimality is meaningful
+                only if the search is guaranteed to terminate successfully
+                whenever a solution exists.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="ida-part4-time">
+
+              <h3>4.5 Time Complexity</h3>
+
+              <p>
+                In the worst case, IDA* may still require
+                exponential time.
+              </p>
+
+              <p class="math-note">
+                Its worst-case time complexity is exponential
+                in the depth of the optimal solution.
+              </p>
+
+              <p>
+                This happens because the algorithm may revisit
+                the same states many times across successive thresholds.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="ida-part4-reexpansion">
+
+              <h3>4.6 Re-expansion Overhead</h3>
+
+              <p>
+                The main source of extra work in IDA*
+                is repeated re-expansion of prefixes.
+              </p>
+
+              <p>
+                Nodes that lie near the root of the search tree
+                may be generated again in many iterations.
+              </p>
+
+              <p>
+                This is the computational price paid
+                for avoiding a large stored frontier.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="ida-part4-space">
+
+              <h3>4.7 Space Complexity</h3>
+
+              <p>
+                The major strength of IDA* is its memory usage.
+              </p>
+
+              <p>
+                Because the search is depth-first,
+                the algorithm stores mainly the current path
+                and a small amount of additional information.
+              </p>
+
+              <p class="math-note">
+                Space complexity is therefore typically linear
+                in the search depth.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="ida-part4-heuristic-quality">
+
+              <h3>4.8 Influence of Heuristic Quality</h3>
+
+              <p>
+                Just as in A*, better heuristics improve performance.
+              </p>
+
+              <ul>
+                <li>weak heuristic → more iterations and more re-expansion</li>
+                <li>strong heuristic → fewer thresholds and less redundant work</li>
+              </ul>
+
+              <p>
+                A more informative admissible heuristic
+                can significantly reduce practical running time.
+              </p>
+
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card" id="ida-part4-comparison-insight">
+
+              <h3>4.9 IDA* vs A*: The Core Trade-off</h3>
+
+              <p>
+                A* reduces re-expansion by storing a large frontier in memory.
+              </p>
+
+              <p>
+                IDA* reduces memory consumption by accepting repeated search effort.
+              </p>
+
+              <p class="math-note">
+                In short:
+                A* saves time using memory,
+                while IDA* saves memory using time.
+              </p>
+
+            </section>
+
+            <!-- 4.10 -->
+            <section class="card" id="ida-part4-extreme-cases">
+
+              <h3>4.10 Extreme Cases</h3>
+
+              <ul>
+                <li><span class="math">h(n) = 0</span> → IDA* behaves like iterative deepening on path cost</li>
+                <li><span class="math">h(n) = h*(n)</span> → threshold progression becomes highly efficient</li>
+              </ul>
+
+              <p>
+                These cases illustrate how heuristic accuracy
+                directly affects the amount of repeated work.
+              </p>
+
+            </section>
+
+            <!-- Transition -->
+            <section class="card full" id="ida-part4-transition">
+
+              <h4>Next: Part 5 — Comparisons &amp; Applications</h4>
+
+              <p>
+                Now that we understand the guarantees and costs of IDA*,
+                the final step is to compare it with other search methods.
+              </p>
+
+              <p>
+                In Part 5, we position IDA* among A*, DFS, and related techniques,
+                and study the kinds of problems where it is especially useful.
+              </p>
+
+              <div class="note">
+                <strong>Continue:</strong>
+                <a class="next-link"
+                  href="/en/pages/algorithm-design/search/ida/part-5.html">
+                  Part 5 — Comparisons &amp; Applications →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

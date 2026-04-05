@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Parte 4</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 4 — Otimalidade &amp; Complexidade</h2>
+          <p>Quando o IDA* é correto e quais trade-offs surgem em tempo e memória</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 4.0 -->
+            <section class="card" id="ida-parte4-overview">
+
+              <h3>4. Otimalidade &amp; Complexidade</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Quando o IDA* retorna soluções ótimas</li>
+                  <li>O papel de heurísticas admissíveis</li>
+                  <li>Por que completude é importante</li>
+                  <li>Como a complexidade de tempo se comporta</li>
+                  <li>Por que o uso de memória é a principal vantagem do IDA*</li>
+                </ol>
+              </div>
+
+              <p>
+                O IDA* é atraente porque combina orientação heurística
+                com uma estratégia de busca em profundidade eficiente em memória.
+              </p>
+
+              <p>
+                No entanto, esses benefícios vêm com condições teóricas
+                e trade-offs computacionais que precisam ser bem compreendidos.
+              </p>
+
+            </section>
+
+            <!-- 4.1 -->
+            <section class="card" id="ida-parte4-otimalidade">
+
+              <h3>4.1 O que significa Otimalidade</h3>
+
+              <p>
+                O IDA* é <strong>ótimo</strong> se retorna
+                uma solução de custo mínimo sempre que ela existe.
+              </p>
+
+              <p class="math-note">
+                Se <span class="math">C*</span> denota o custo ótimo,
+                então o caminho retornado pelo IDA* também deve ter custo
+                <span class="math">C*</span>.
+              </p>
+
+              <p>
+                A principal questão é sob quais condições essa garantia vale.
+              </p>
+
+            </section>
+
+            <!-- 4.2 -->
+            <section class="card" id="ida-parte4-admissibilidade">
+
+              <h3>4.2 Heurísticas Admissíveis</h3>
+
+              <p>
+                A corretude do IDA* depende fundamentalmente
+                de a heurística não superestimar o custo restante.
+              </p>
+
+              <div class="math-block">
+                <span class="math">h(n) ≤ h*(n)</span>
+              </div>
+
+              <p>
+                Isso significa que a heurística é <strong>admissível</strong>.
+              </p>
+
+              <p>
+                Com uma heurística admissível, a sequência de limiares
+                evolui sem pular o custo da solução ótima.
+              </p>
+
+            </section>
+
+            <!-- 4.3 -->
+            <section class="card" id="ida-parte4-limite">
+
+              <h3>4.3 Por que o Limiar Funciona</h3>
+
+              <p>
+                Em cada iteração, o IDA* explora todos os nós cujo
+                custo estimado total respeita o limiar atual.
+              </p>
+
+              <p>
+                Se nenhuma solução é encontrada, o próximo limiar
+                passa a ser o menor valor excedido de <span class="math">f</span>.
+              </p>
+
+              <div class="math-block">
+                <span class="math">T_{next} = min { f(n) | f(n) &gt; T }</span>
+              </div>
+
+              <p>
+                Como os limiares aumentam de forma controlada,
+                o nível de custo ótimo eventualmente é atingido.
+              </p>
+
+            </section>
+
+            <!-- 4.4 -->
+            <section class="card" id="ida-parte4-completude">
+
+              <h3>4.4 Completude</h3>
+
+              <p>
+                O IDA* também é <strong>completo</strong>
+                sob hipóteses usuais de busca em espaço de estados.
+              </p>
+
+              <p>
+                Se uma solução existe, os custos são positivos,
+                e o espaço de busca é bem definido,
+                o algoritmo eventualmente encontrará uma solução.
+              </p>
+
+              <p>
+                Essa propriedade é essencial porque a otimalidade
+                só faz sentido se a busca sempre termina quando há solução.
+              </p>
+
+            </section>
+
+            <!-- 4.5 -->
+            <section class="card" id="ida-parte4-tempo">
+
+              <h3>4.5 Complexidade de Tempo</h3>
+
+              <p>
+                No pior caso, o IDA* ainda pode exigir
+                tempo exponencial.
+              </p>
+
+              <p class="math-note">
+                A complexidade de tempo no pior caso é exponencial
+                na profundidade da solução ótima.
+              </p>
+
+              <p>
+                Isso ocorre porque o algoritmo pode revisitar
+                os mesmos estados várias vezes em diferentes iterações.
+              </p>
+
+            </section>
+
+            <!-- 4.6 -->
+            <section class="card" id="ida-parte4-reexpansao">
+
+              <h3>4.6 Reexpansão de Nós</h3>
+
+              <p>
+                A principal fonte de custo extra no IDA*
+                é a reexpansão repetida de nós.
+              </p>
+
+              <p>
+                Nós próximos da raiz podem ser gerados
+                diversas vezes ao longo das iterações.
+              </p>
+
+              <p>
+                Esse é o preço computacional pago
+                pela economia de memória.
+              </p>
+
+            </section>
+
+            <!-- 4.7 -->
+            <section class="card" id="ida-parte4-espaco">
+
+              <h3>4.7 Complexidade de Espaço</h3>
+
+              <p>
+                A principal vantagem do IDA* está no uso de memória.
+              </p>
+
+              <p>
+                Como a busca é em profundidade,
+                o algoritmo armazena basicamente o caminho atual.
+              </p>
+
+              <p class="math-note">
+                A complexidade de espaço é linear
+                na profundidade da busca.
+              </p>
+
+            </section>
+
+            <!-- 4.8 -->
+            <section class="card" id="ida-parte4-heuristica">
+
+              <h3>4.8 Influência da Heurística</h3>
+
+              <p>
+                Assim como no A*, heurísticas melhores melhoram o desempenho.
+              </p>
+
+              <ul>
+                <li>heurística fraca → mais iterações e reexpansões</li>
+                <li>heurística forte → menos trabalho redundante</li>
+              </ul>
+
+              <p>
+                Uma heurística admissível mais informativa
+                reduz significativamente o tempo na prática.
+              </p>
+
+            </section>
+
+            <!-- 4.9 -->
+            <section class="card" id="ida-parte4-comparacao">
+
+              <h3>4.9 IDA* vs A*: Trade-off Central</h3>
+
+              <p>
+                O A* reduz reexpansões armazenando muitos nós em memória.
+              </p>
+
+              <p>
+                O IDA* reduz memória aceitando recomputação.
+              </p>
+
+              <p class="math-note">
+                Em resumo:
+                A* troca memória por tempo,
+                enquanto IDA* troca tempo por memória.
+              </p>
+
+            </section>
+
+            <!-- 4.10 -->
+            <section class="card" id="ida-parte4-extremos">
+
+              <h3>4.10 Casos Extremos</h3>
+
+              <ul>
+                <li><span class="math">h(n) = 0</span> → comportamento similar a aprofundamento iterativo por custo</li>
+                <li><span class="math">h(n) = h*(n)</span> → progressão de limiar extremamente eficiente</li>
+              </ul>
+
+              <p>
+                Esses casos mostram como a qualidade da heurística
+                impacta diretamente o desempenho.
+              </p>
+
+            </section>
+
+            <!-- Next -->
+            <section class="card full" id="ida-parte4-next">
+
+              <h4>Próximo: Parte 5 — Comparações &amp; Aplicações</h4>
+
+              <p>
+                Agora que entendemos garantias e custos do IDA*,
+                o próximo passo é compará-lo com outros algoritmos.
+              </p>
+
+              <p>
+                Na Parte 5, posicionamos o IDA* entre A*, DFS e outras técnicas,
+                além de estudar aplicações práticas.
+              </p>
+
+              <div class="note">
+                <strong>Continuar:</strong>
+                <a class="next-link"
+                  href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">
+                  Parte 5 — Comparações &amp; Aplicações →
+                </a>
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
