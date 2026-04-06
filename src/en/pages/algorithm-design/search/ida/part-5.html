@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Algorithm Design → Heuristic Search → IDA* — Part 5</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/index.html">Algorithm Design</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/index.html">Graph Search</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/algorithm-design/search/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Part 5</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Part 5 — Comparisons &amp; Applications</h2>
+          <p>Positioning IDA* among classical search methods and understanding where it is most useful</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: IDA*</strong>
+            <span>5 parts</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/algorithm-design/search/ida/part-4.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">End →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/index.html">Overview</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-1.html">1</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-2.html">2</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-3.html">3</a>
+          <a class="pill" href="/en/pages/algorithm-design/search/ida/part-4.html">4</a>
+          <a class="pill active" href="/en/pages/algorithm-design/search/ida/part-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="ida-part5-overview">
+
+              <h3>5. Comparisons &amp; Applications</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roadmap (what you will learn in this part):</strong>
+                <ol>
+                  <li>How IDA* compares with A*</li>
+                  <li>How it differs from plain DFS and iterative deepening</li>
+                  <li>What trade-offs define its use</li>
+                  <li>Where IDA* is especially effective</li>
+                  <li>How it fits into the broader search landscape</li>
+                </ol>
+              </div>
+
+              <p>
+                IDA* is best understood not in isolation,
+                but as a point in the design space of search algorithms.
+              </p>
+
+              <p>
+                It combines heuristic guidance, depth-first traversal,
+                and iterative threshold control into a distinctive compromise
+                between memory usage and repeated work.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="ida-part5-vs-astar">
+
+              <h3>5.1 IDA* vs A*</h3>
+
+              <p>
+                A* and IDA* use the same evaluation function:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                The difference lies in how the frontier is managed.
+              </p>
+
+              <ul>
+                <li>A* keeps a global priority queue of frontier nodes</li>
+                <li>IDA* uses repeated depth-first search with thresholds</li>
+              </ul>
+
+              <p class="math-note">
+                A* usually saves time by storing more information,
+                while IDA* saves memory by recomputing more states.
+              </p>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="ida-part5-vs-dfs">
+
+              <h3>5.2 IDA* vs Depth-First Search</h3>
+
+              <p>
+                Standard depth-first search explores deeply
+                without using cost estimates.
+              </p>
+
+              <p>
+                IDA* preserves the recursive depth-first structure,
+                but restricts exploration through
+                heuristic cost bounds.
+              </p>
+
+              <ul>
+                <li>DFS → memory-efficient, uninformed</li>
+                <li>IDA* → memory-efficient, informed</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="ida-part5-vs-iddfs">
+
+              <h3>5.3 IDA* vs Iterative Deepening DFS</h3>
+
+              <p>
+                Iterative Deepening DFS increases a depth limit.
+              </p>
+
+              <p>
+                IDA* instead increases a <strong>cost threshold</strong>
+                based on <span class="math">f(n)</span>.
+              </p>
+
+              <p>
+                This makes IDA* more suitable for weighted problems,
+                where depth alone does not reflect path quality.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="ida-part5-vs-dijkstra">
+
+              <h3>5.4 IDA* vs Dijkstra</h3>
+
+              <p>
+                Dijkstra’s algorithm solves shortest-path problems
+                without heuristic guidance.
+              </p>
+
+              <p>
+                IDA* introduces a heuristic estimate
+                and changes the search order completely.
+              </p>
+
+              <p>
+                In exchange for lower memory,
+                IDA* may revisit states far more often
+                than Dijkstra or A*.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="ida-part5-when-to-use">
+
+              <h3>5.5 When IDA* Is a Good Choice</h3>
+
+              <p>
+                IDA* is particularly attractive when:
+              </p>
+
+              <ul>
+                <li>the search space is very large</li>
+                <li>memory is the primary bottleneck</li>
+                <li>a useful admissible heuristic is available</li>
+                <li>solution optimality is still required</li>
+              </ul>
+
+              <p>
+                In such cases, IDA* can succeed where A*
+                becomes impractical due to memory consumption.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="ida-part5-limitations">
+
+              <h3>5.6 Limitations</h3>
+
+              <p>
+                IDA* is not universally superior.
+              </p>
+
+              <ul>
+                <li>it may repeat work many times</li>
+                <li>it can be slow with weak heuristics</li>
+                <li>it is less convenient when repeated-state handling is central</li>
+              </ul>
+
+              <p>
+                Thus, its value depends strongly on the balance
+                between memory pressure and recomputation cost.
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="ida-part5-applications">
+
+              <h3>5.7 Typical Applications</h3>
+
+              <p>
+                IDA* has been especially important in domains
+                where search depth is large and memory is scarce.
+              </p>
+
+              <ul>
+                <li>combinatorial puzzles</li>
+                <li>sliding-tile problems</li>
+                <li>Rubik’s Cube search</li>
+                <li>large state-space planning</li>
+              </ul>
+
+              <p>
+                In these problems, the reduced memory profile
+                of IDA* is often decisive.
+              </p>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card" id="ida-part5-bigger-picture">
+
+              <h3>5.8 Broader Perspective</h3>
+
+              <p>
+                IDA* shows that algorithm design often requires
+                explicit trade-offs rather than universally optimal choices.
+              </p>
+
+              <p>
+                It is not simply “better than A*” or “better than DFS.”
+              </p>
+
+              <p class="math-note">
+                Instead, it occupies a specific niche:
+                informed search under strict memory constraints.
+              </p>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="ida-part5-conclusion">
+
+              <h4>Series Conclusion</h4>
+
+              <p>
+                IDA* is best understood not just as “A* with less memory,”
+                but as a principled search method that combines
+                heuristic evaluation, depth-first recursion,
+                and threshold-based iteration.
+              </p>
+
+              <p>
+                Across this series, we studied its problem model,
+                cost-threshold mechanism, recursive algorithm,
+                optimality conditions, complexity trade-offs,
+                and relationship to other classical techniques.
+              </p>
+
+              <div class="note">
+                <strong>Next step:</strong>
+                return to the
+                <a class="next-link"
+                   href="/en/pages/algorithm-design/search/ida/index.html">
+                  IDA* index
+                </a>
+                or continue to related topics in Search.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

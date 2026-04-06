@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Projeto de Algoritmos → Busca Heurística → IDA* — Parte 5</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+    <main>
+
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/index.html">Projeto de Algoritmos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/index.html">Busca em Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">IDA*</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 5</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Parte 5 — Comparações &amp; Aplicações</h2>
+          <p>Posicionando o IDA* entre métodos clássicos de busca e entendendo onde ele é mais útil</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: IDA*</strong>
+            <span>5 partes</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Fim →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">Visão geral</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-4.html">4</a>
+          <a class="pill active" href="/pt/pages/projeto-de-algoritmos/busca/ida/parte-5.html">5</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+
+            <!-- 5.0 -->
+            <section class="card" id="ida-parte5-overview">
+
+              <h3>5. Comparações &amp; Aplicações</h3>
+              <hr class="soft" />
+
+              <div class="note">
+                <strong>Roteiro (o que você aprenderá nesta parte):</strong>
+                <ol>
+                  <li>Como o IDA* se compara ao A*</li>
+                  <li>Como difere de DFS e aprofundamento iterativo</li>
+                  <li>Quais trade-offs definem seu uso</li>
+                  <li>Onde o IDA* é mais eficaz</li>
+                  <li>Como ele se encaixa no panorama geral de busca</li>
+                </ol>
+              </div>
+
+              <p>
+                O IDA* é melhor compreendido não isoladamente,
+                mas como um ponto no espaço de design dos algoritmos de busca.
+              </p>
+
+              <p>
+                Ele combina orientação heurística, exploração em profundidade
+                e controle iterativo de limiar em um compromisso característico
+                entre uso de memória e trabalho repetido.
+              </p>
+
+            </section>
+
+            <!-- 5.1 -->
+            <section class="card" id="ida-parte5-vs-astar">
+
+              <h3>5.1 IDA* vs A*</h3>
+
+              <p>
+                A* e IDA* utilizam a mesma função de avaliação:
+              </p>
+
+              <div class="math-block">
+                <span class="math">f(n) = g(n) + h(n)</span>
+              </div>
+
+              <p>
+                A diferença está em como a fronteira é gerenciada.
+              </p>
+
+              <ul>
+                <li>A* mantém uma fila de prioridade global</li>
+                <li>IDA* utiliza buscas em profundidade com limiares</li>
+              </ul>
+
+              <p class="math-note">
+                A* geralmente economiza tempo usando mais memória,
+                enquanto IDA* economiza memória recomputando estados.
+              </p>
+
+            </section>
+
+            <!-- 5.2 -->
+            <section class="card" id="ida-parte5-vs-dfs">
+
+              <h3>5.2 IDA* vs Busca em Profundidade (DFS)</h3>
+
+              <p>
+                A DFS padrão explora profundamente
+                sem utilizar estimativas de custo.
+              </p>
+
+              <p>
+                O IDA* mantém a estrutura recursiva da DFS,
+                mas restringe a exploração com base em limites heurísticos.
+              </p>
+
+              <ul>
+                <li>DFS → eficiente em memória, não informada</li>
+                <li>IDA* → eficiente em memória, informada</li>
+              </ul>
+
+            </section>
+
+            <!-- 5.3 -->
+            <section class="card" id="ida-parte5-vs-iddfs">
+
+              <h3>5.3 IDA* vs Aprofundamento Iterativo</h3>
+
+              <p>
+                O aprofundamento iterativo clássico aumenta um limite de profundidade.
+              </p>
+
+              <p>
+                O IDA* aumenta um <strong>limiar de custo</strong>
+                baseado em <span class="math">f(n)</span>.
+              </p>
+
+              <p>
+                Isso torna o IDA* mais adequado para problemas com pesos,
+                onde a profundidade não reflete a qualidade do caminho.
+              </p>
+
+            </section>
+
+            <!-- 5.4 -->
+            <section class="card" id="ida-parte5-vs-dijkstra">
+
+              <h3>5.4 IDA* vs Dijkstra</h3>
+
+              <p>
+                O algoritmo de Dijkstra resolve caminhos mínimos
+                sem utilizar heurística.
+              </p>
+
+              <p>
+                O IDA* introduz estimativa heurística
+                e altera completamente a ordem da busca.
+              </p>
+
+              <p>
+                Em troca de menor uso de memória,
+                o IDA* pode revisitar estados muito mais vezes.
+              </p>
+
+            </section>
+
+            <!-- 5.5 -->
+            <section class="card" id="ida-parte5-quando-usar">
+
+              <h3>5.5 Quando usar IDA*</h3>
+
+              <p>
+                O IDA* é especialmente indicado quando:
+              </p>
+
+              <ul>
+                <li>o espaço de busca é muito grande</li>
+                <li>a memória é o principal limitante</li>
+                <li>existe uma heurística admissível útil</li>
+                <li>é necessário manter otimalidade</li>
+              </ul>
+
+              <p>
+                Nessas situações, o IDA* pode funcionar
+                onde o A* se torna inviável.
+              </p>
+
+            </section>
+
+            <!-- 5.6 -->
+            <section class="card" id="ida-parte5-limitacoes">
+
+              <h3>5.6 Limitações</h3>
+
+              <p>
+                O IDA* não é universalmente superior.
+              </p>
+
+              <ul>
+                <li>pode repetir muito trabalho</li>
+                <li>pode ser lento com heurísticas fracas</li>
+                <li>não lida bem com muitos estados repetidos globais</li>
+              </ul>
+
+              <p>
+                Seu valor depende do equilíbrio entre
+                memória disponível e custo de recomputação.
+              </p>
+
+            </section>
+
+            <!-- 5.7 -->
+            <section class="card" id="ida-parte5-aplicacoes">
+
+              <h3>5.7 Aplicações Típicas</h3>
+
+              <p>
+                O IDA* é muito utilizado em domínios com
+                espaço de estados grande e memória limitada.
+              </p>
+
+              <ul>
+                <li>quebra-cabeças combinatórios</li>
+                <li>problemas de peças deslizantes</li>
+                <li>Cubo de Rubik</li>
+                <li>planejamento em grandes espaços de estados</li>
+              </ul>
+
+              <p>
+                Nesses casos, sua eficiência em memória
+                é decisiva.
+              </p>
+
+            </section>
+
+            <!-- 5.8 -->
+            <section class="card" id="ida-parte5-visao-geral">
+
+              <h3>5.8 Visão Geral</h3>
+
+              <p>
+                O IDA* mostra que o design de algoritmos envolve
+                trade-offs explícitos.
+              </p>
+
+              <p>
+                Ele não é simplesmente melhor que A* ou DFS.
+              </p>
+
+              <p class="math-note">
+                Ele ocupa um nicho específico:
+                busca informada sob restrições severas de memória.
+              </p>
+
+            </section>
+
+            <!-- Final -->
+            <section class="card full" id="ida-parte5-conclusao">
+
+              <h4>Conclusão da Série</h4>
+
+              <p>
+                O IDA* deve ser entendido não apenas como “A* com menos memória”,
+                mas como um método de busca fundamentado que combina
+                heurística, recursão e iteração por limiar.
+              </p>
+
+              <p>
+                Ao longo desta série, estudamos seu modelo,
+                funcionamento, propriedades teóricas e aplicações.
+              </p>
+
+              <div class="note">
+                <strong>Próximo passo:</strong>
+                voltar ao
+                <a class="next-link"
+                   href="/pt/pages/projeto-de-algoritmos/busca/ida/index.html">
+                  índice do IDA*
+                </a>
+                ou explorar outros algoritmos de busca.
+              </div>
+
+            </section>
+
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
