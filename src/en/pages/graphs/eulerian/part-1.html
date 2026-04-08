@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Eulerian · Part 1 — Introduction</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <span class="current">Eulerian · Part 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Eulerian</h2>
+          <p>Part 1 of 4 — Introduction</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Eulerian</strong>
+            <span>Part 1 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/eulerian/part-2.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/en/pages/graphs/eulerian/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--eulerian">
+              <h3>Problem — The Bridges of Königsberg</h3>
+
+              <p class="math-note">
+                In 1736, Leonhard Euler studied a famous puzzle from the city of Königsberg:
+                could someone take a walk that crossed each bridge exactly once?
+                The challenge was not about distance, speed, or geometry, but about structure.
+              </p>
+
+              <p class="math-note">
+                Euler realized that the essential information was simply which land regions were
+                connected by which bridges. By abstracting the map into vertices and edges,
+                he transformed a real-world puzzle into one of the first problems in graph theory.
+              </p>
+
+              <figure class="graph-figure graph-figure--eulerian">
+                <svg class="graph--eulerian"
+                    viewBox="120 70 520 360"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Simplified graph of the Bridges of Königsberg with four land regions and seven bridges"
+                    preserveAspectRatio="xMidYMid meet"
+                    style="width:100%; height:auto; display:block;">
+
+                  <!-- EDGES -->
+                  <g fill="none"
+                    stroke="rgba(234,234,234,0.62)"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <!-- A-B -->
+                    <line x1="210" y1="140" x2="340" y2="190"/>
+                    <line x1="210" y1="170" x2="340" y2="215"/>
+
+                    <!-- A-C -->
+                    <line x1="220" y1="255" x2="340" y2="225"/>
+
+                    <!-- B-D -->
+                    <line x1="390" y1="190" x2="520" y2="150"/>
+                    <line x1="390" y1="220" x2="520" y2="180"/>
+
+                    <!-- C-D -->
+                    <line x1="390" y1="235" x2="520" y2="295"/>
+
+                    <!-- C-A lower -->
+                    <line x1="340" y1="255" x2="225" y2="285"/>
+                  </g>
+
+                  <!-- LABELS -->
+                  <g font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.97)"
+                    stroke="rgba(0,0,0,0.55)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none">
+
+                    <text x="185" y="125" text-anchor="middle">North Bank</text>
+                    <text x="205" y="315" text-anchor="middle">South Bank</text>
+                    <text x="365" y="285" text-anchor="middle">Central Island</text>
+                    <text x="545" y="140" text-anchor="middle">East Bank</text>
+                  </g>
+
+                  <!-- NODES -->
+                  <g fill="rgba(231,76,60,0.95)"
+                    stroke="rgba(234,234,234,0.90)"
+                    stroke-width="1.8">
+                    <circle cx="210" cy="155" r="14"><title>North Bank</title></circle>
+                    <circle cx="220" cy="285" r="14"><title>South Bank</title></circle>
+                    <circle cx="365" cy="222" r="16"><title>Central Island</title></circle>
+                    <circle cx="520" cy="165" r="14"><title>East Bank</title></circle>
+                    <circle cx="520" cy="300" r="0.1"><title>Hidden helper point</title></circle>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  Each vertex represents a land region; each edge represents a bridge.
+                  The question is whether there exists a walk that uses every edge exactly once.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>What is an Eulerian path?</h3>
+
+              <p class="math-note">
+                An <strong>Eulerian path</strong> is a path that traverses every edge of a graph
+                exactly once. If such a path starts and ends at the same vertex, it is called an
+                <strong>Eulerian cycle</strong>.
+              </p>
+
+              <p class="math-note">
+                This is the key difference from Hamiltonian problems. In Hamiltonian questions,
+                the focus is on visiting each <em>vertex</em> exactly once. In Eulerian questions,
+                the focus is on traversing each <em>edge</em> exactly once.
+              </p>
+
+              <p class="math-note">
+                Euler’s insight was that the Königsberg puzzle could be answered without testing
+                every possible route. Instead, the answer depends on the degrees of the vertices:
+                how many edges touch each one.
+              </p>
+
+              <p class="math-note">
+                Intuitively, every time you enter a vertex along one edge, you usually need another
+                edge to leave it. That is why vertices of odd degree create difficulties: they break
+                the natural “enter–leave” pairing.
+              </p>
+
+              <p class="math-note">
+                This observation leads to one of the most elegant criteria in graph theory:
+                Eulerian paths and cycles can often be recognized just by inspecting vertex degrees.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Summary:</strong>
+                Eulerian = use every edge once.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Why is this idea important?</h3>
+
+              <p class="math-note">
+                Euler’s solution is historically important because it marked a shift away from
+                traditional geometry. The exact shape of the land and bridges did not matter;
+                only the connectivity mattered.
+              </p>
+
+              <p class="math-note">
+                That abstraction became the foundation of graph theory and influenced many later
+                areas of mathematics, computer science, and network analysis.
+              </p>
+
+              <p class="math-note">
+                Today, Eulerian ideas appear in route inspection, street sweeping, circuit tracing,
+                genome assembly, logistics, and communication networks — anywhere the goal is to
+                cover connections efficiently.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Key intuition for Part 1</h3>
+
+              <p class="math-note">
+                The core question is not “which route looks good?” but rather:
+                <strong>does the structure of the graph allow such a route at all?</strong>
+              </p>
+
+              <p class="math-note">
+                In the next part, we will formalize the degree conditions for Eulerian paths and
+                cycles, and see exactly why the Königsberg graph does not admit one.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                degree conditions and characterization.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Teoria dos Grafos → Euleriano · Parte 1 — Introdução</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Euleriano · Parte 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Euleriano</h2>
+          <p>Parte 1 de 4 — Introdução</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Euleriano</strong>
+            <span>Parte 1 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/euleriano/part-2.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/pt/pages/grafos/euleriano/part-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/part-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/part-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--eulerian">
+              <h3>Problema — As Pontes de Königsberg</h3>
+
+              <p class="math-note">
+                Em 1736, Leonhard Euler estudou um famoso problema da cidade de Königsberg:
+                seria possível fazer um passeio cruzando cada ponte exatamente uma vez?
+                O desafio não era sobre distância, velocidade ou geometria, mas sobre estrutura.
+              </p>
+
+              <p class="math-note">
+                Euler percebeu que a informação essencial era apenas quais regiões de terra
+                estavam conectadas por quais pontes. Ao abstrair o mapa em vértices e arestas,
+                ele transformou um problema do mundo real em um dos primeiros problemas da teoria dos grafos.
+              </p>
+
+              <figure class="graph-figure graph-figure--eulerian">
+                <svg class="graph--eulerian"
+                    viewBox="120 70 520 360"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Grafo simplificado das pontes de Königsberg com quatro regiões e sete pontes"
+                    preserveAspectRatio="xMidYMid meet"
+                    style="width:100%; height:auto; display:block;">
+
+                  <!-- EDGES -->
+                  <g fill="none"
+                    stroke="rgba(234,234,234,0.62)"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <line x1="210" y1="140" x2="340" y2="190"/>
+                    <line x1="210" y1="170" x2="340" y2="215"/>
+                    <line x1="220" y1="255" x2="340" y2="225"/>
+                    <line x1="390" y1="190" x2="520" y2="150"/>
+                    <line x1="390" y1="220" x2="520" y2="180"/>
+                    <line x1="390" y1="235" x2="520" y2="295"/>
+                    <line x1="340" y1="255" x2="225" y2="285"/>
+                  </g>
+
+                  <!-- LABELS -->
+                  <g font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.97)"
+                    stroke="rgba(0,0,0,0.55)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none">
+
+                    <text x="185" y="125" text-anchor="middle">Margem Norte</text>
+                    <text x="205" y="315" text-anchor="middle">Margem Sul</text>
+                    <text x="365" y="285" text-anchor="middle">Ilha Central</text>
+                    <text x="545" y="140" text-anchor="middle">Margem Leste</text>
+                  </g>
+
+                  <!-- NODES -->
+                  <g fill="rgba(231,76,60,0.95)"
+                    stroke="rgba(234,234,234,0.90)"
+                    stroke-width="1.8">
+                    <circle cx="210" cy="155" r="14"><title>Margem Norte</title></circle>
+                    <circle cx="220" cy="285" r="14"><title>Margem Sul</title></circle>
+                    <circle cx="365" cy="222" r="16"><title>Ilha Central</title></circle>
+                    <circle cx="520" cy="165" r="14"><title>Margem Leste</title></circle>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  Cada vértice representa uma região de terra; cada aresta representa uma ponte.
+                  A questão é se existe um percurso que utiliza cada aresta exatamente uma vez.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>O que é um caminho Euleriano?</h3>
+
+              <p class="math-note">
+                Um <strong>caminho Euleriano</strong> é um caminho que percorre todas as arestas de um grafo
+                exatamente uma vez. Se esse caminho começa e termina no mesmo vértice,
+                chamamos de <strong>ciclo Euleriano</strong>.
+              </p>
+
+              <p class="math-note">
+                Essa é a principal diferença em relação aos problemas Hamiltonianos.
+                Em problemas Hamiltonianos, o foco é visitar cada <em>vértice</em> exatamente uma vez.
+                Em problemas Eulerianos, o foco é percorrer cada <em>aresta</em> exatamente uma vez.
+              </p>
+
+              <p class="math-note">
+                O insight de Euler foi perceber que o problema de Königsberg poderia ser resolvido
+                sem testar todos os caminhos possíveis. Em vez disso, a resposta depende dos graus
+                dos vértices: quantas arestas incidem em cada um.
+              </p>
+
+              <p class="math-note">
+                Intuitivamente, toda vez que você entra em um vértice por uma aresta, precisa de outra
+                aresta para sair. Por isso, vértices de grau ímpar criam dificuldades: eles quebram
+                esse equilíbrio natural de “entrar–sair”.
+              </p>
+
+              <p class="math-note">
+                Essa observação leva a um dos critérios mais elegantes da teoria dos grafos:
+                caminhos e ciclos Eulerianos podem ser identificados apenas analisando os graus dos vértices.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong>
+                Euleriano = usar cada aresta uma vez.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Por que essa ideia é importante?</h3>
+
+              <p class="math-note">
+                A solução de Euler é historicamente importante porque marca uma mudança em relação
+                à geometria tradicional. A forma exata das regiões não importava; apenas a conexão entre elas.
+              </p>
+
+              <p class="math-note">
+                Essa abstração deu origem à teoria dos grafos e influenciou diversas áreas da matemática,
+                ciência da computação e análise de redes.
+              </p>
+
+              <p class="math-note">
+                Hoje, ideias Eulerianas aparecem em problemas de roteamento, coleta de lixo,
+                circuitos eletrônicos, montagem de genomas, logística e redes de comunicação.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Intuição principal desta parte</h3>
+
+              <p class="math-note">
+                A pergunta central não é “qual caminho parece bom?”, mas sim:
+                <strong>a estrutura do grafo permite esse caminho?</strong>
+              </p>
+
+              <p class="math-note">
+                Na próxima parte, vamos formalizar as condições de grau para caminhos e ciclos Eulerianos,
+                e entender exatamente por que o grafo de Königsberg não admite um.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                condições de grau e caracterização.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
