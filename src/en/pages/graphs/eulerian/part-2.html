@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Eulerian · Part 2 — Degree Conditions</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <span class="current">Eulerian · Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Eulerian</h2>
+          <p>Part 2 of 2 — Degree Conditions</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Eulerian</strong>
+            <span>Part 2 of 2</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/eulerian/part-1.html">← Previous</a>
+            <a class="btn" class="btn disabled" href="/en/pages/graphs/eulerian/part-3.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/eulerian/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/graphs/eulerian/part-2.html">2</a>
+          <!--a class="pill" href="/en/pages/graphs/eulerian/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-4.html">4</a-->
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Why do degrees matter?</h3>
+
+              <p class="math-note">
+                The key to Eulerian graphs is the degree of each vertex.
+                Recall that the <strong>degree</strong> of a vertex is the number of edges incident to it.
+              </p>
+
+              <p class="math-note">
+                In an Eulerian traversal, every time we arrive at a vertex through one edge,
+                we usually need another edge to leave it. This naturally creates pairs of used edges:
+                one for entering, one for leaving.
+              </p>
+
+              <p class="math-note">
+                Because of this pairing, most vertices in an Eulerian traversal must have
+                an <strong>even degree</strong>. If a vertex has odd degree, one edge is left unpaired,
+                which means that vertex can serve only as a special endpoint of the traversal.
+              </p>
+
+              <p class="math-note">
+                This simple observation is enough to characterize when Eulerian paths and cycles exist.
+                Instead of searching blindly through all routes, we can inspect the degrees first.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Main idea:</strong>
+                edges are used in enter–leave pairs.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Eulerian cycle vs. Eulerian path</h3>
+
+              <p class="math-note">
+                There are two closely related notions:
+              </p>
+
+              <p class="math-note">
+                A graph has an <strong>Eulerian cycle</strong> if there exists a closed walk
+                that uses every edge exactly once and returns to the starting vertex.
+              </p>
+
+              <p class="math-note">
+                A graph has an <strong>Eulerian path</strong> if there exists a walk
+                that uses every edge exactly once, but it may start and end at different vertices.
+              </p>
+
+              <p class="math-note">
+                The structural difference is reflected directly in the parity of the degrees:
+                a cycle has no special endpoints, while a path has exactly two endpoints.
+              </p>
+
+              <p class="math-note">
+                Therefore, an Eulerian cycle requires all relevant vertices to have even degree,
+                while an Eulerian path allows exactly two odd-degree vertices.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Summary:</strong>
+                cycle = 0 odd vertices; path = 2 odd vertices.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>The characterization theorem</h3>
+
+              <p class="math-note">
+                Let <span class="math">G</span> be a connected graph, ignoring isolated vertices.
+                Then:
+              </p>
+
+              <p class="math-note">
+                <strong>Eulerian cycle:</strong>
+                <span class="math">G</span> has an Eulerian cycle
+                if and only if every vertex has even degree.
+              </p>
+
+              <p class="math-note">
+                <strong>Eulerian path:</strong>
+                <span class="math">G</span> has an Eulerian path
+                if and only if exactly zero or two vertices have odd degree.
+              </p>
+
+              <p class="math-note">
+                The case of zero odd vertices corresponds to an Eulerian cycle,
+                because the walk can start and finish at the same vertex.
+                The case of two odd vertices corresponds to an open Eulerian path,
+                starting at one odd vertex and ending at the other.
+              </p>
+
+              <p class="math-note">
+                If a graph has more than two odd-degree vertices,
+                then no Eulerian traversal exists.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Why connectivity is required</h3>
+
+              <p class="math-note">
+                Degree conditions alone are not enough. The graph must also be connected
+                once isolated vertices are ignored.
+              </p>
+
+              <p class="math-note">
+                The reason is simple: an Eulerian traversal must cover every edge in a single walk.
+                If the graph has edges split across disconnected components,
+                no single walk can reach them all.
+              </p>
+
+              <p class="math-note">
+                Isolated vertices do not matter, because they contribute no edges to be traversed.
+                Eulerian questions are about covering edges, not merely visiting vertices.
+              </p>
+
+              <p class="math-note">
+                So the full condition is:
+                <strong>correct degree parity + connectivity of the non-isolated part</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Checklist:</strong>
+                parity first, connectivity second.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Examples</h3>
+
+              <p class="math-note">
+                Consider three typical cases:
+              </p>
+
+              <p class="math-note">
+                <strong>Case 1:</strong> every vertex has even degree.
+                Then the graph admits an Eulerian cycle.
+              </p>
+
+              <p class="math-note">
+                <strong>Case 2:</strong> exactly two vertices have odd degree.
+                Then the graph admits an Eulerian path, but not an Eulerian cycle.
+              </p>
+
+              <p class="math-note">
+                <strong>Case 3:</strong> four or more vertices have odd degree.
+                Then no Eulerian path exists.
+              </p>
+
+              <p class="math-note">
+                These cases can often be determined immediately by inspection,
+                which makes Eulerian problems much more tractable than Hamiltonian ones.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Connection to Königsberg</h3>
+
+              <p class="math-note">
+                In the Königsberg graph, more than two vertices have odd degree.
+                Therefore, the graph cannot have an Eulerian path.
+              </p>
+
+              <p class="math-note">
+                Euler did not need to test all possible walks. Once the degree pattern was known,
+                the answer followed directly from the structure.
+              </p>
+
+              <p class="math-note">
+                This was one of the first great examples in mathematics of replacing geometric intuition
+                with structural reasoning.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                how to construct an Eulerian traversal when it exists.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

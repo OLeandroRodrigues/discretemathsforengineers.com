@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Teoria dos Grafos → Euleriano · Parte 2 — Condições de Grau</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Euleriano · Parte 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Euleriano</h2>
+          <p>Parte 2 de 2 — Condições de Grau</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Euleriano</strong>
+            <span>Parte 2 de 2</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/euleriano/parte-1.html">← Anterior</a>
+            <a class="btn" class="btn disabled" href="/pt/pages/grafos/euleriano/parte-3.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-1.html">1</a>
+          <a class="pill active" href="/pt/pages/grafos/euleriano/parte-2.html">2</a>
+          <!--a class="pill" href="/pt/pages/grafos/euleriano/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-4.html">4</a-->
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Por que os graus importam?</h3>
+
+              <p class="math-note">
+                A chave dos grafos Eulerianos está no grau de cada vértice.
+                Lembre-se que o <strong>grau</strong> de um vértice é o número de arestas incidentes a ele.
+              </p>
+
+              <p class="math-note">
+                Em um percurso Euleriano, toda vez que chegamos a um vértice por uma aresta,
+                normalmente precisamos de outra aresta para sair dele. Isso cria naturalmente pares de arestas:
+                uma para entrar, outra para sair.
+              </p>
+
+              <p class="math-note">
+                Por causa desse pareamento, a maioria dos vértices em um percurso Euleriano deve ter
+                <strong>grau par</strong>. Se um vértice tem grau ímpar, sobra uma aresta sem par,
+                o que significa que esse vértice só pode servir como uma extremidade especial do percurso.
+              </p>
+
+              <p class="math-note">
+                Essa observação simples já é suficiente para caracterizar quando caminhos e ciclos Eulerianos existem.
+                Em vez de procurar cegamente por todos os caminhos possíveis, podemos inspecionar os graus primeiro.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia principal:</strong>
+                arestas são usadas em pares de entrada–saída.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Ciclo Euleriano vs. Caminho Euleriano</h3>
+
+              <p class="math-note">
+                Existem duas noções muito próximas:
+              </p>
+
+              <p class="math-note">
+                Um <strong>ciclo Euleriano</strong> é um percurso fechado
+                que utiliza todas as arestas exatamente uma vez e retorna ao vértice inicial.
+              </p>
+
+              <p class="math-note">
+                Um <strong>caminho Euleriano</strong> é um percurso
+                que utiliza todas as arestas exatamente uma vez, mas pode começar e terminar em vértices diferentes.
+              </p>
+
+              <p class="math-note">
+                A diferença estrutural aparece diretamente na paridade dos graus:
+                um ciclo não possui extremidades especiais, enquanto um caminho possui exatamente duas.
+              </p>
+
+              <p class="math-note">
+                Portanto, um ciclo Euleriano exige que todos os vértices relevantes tenham grau par,
+                enquanto um caminho Euleriano permite exatamente dois vértices de grau ímpar.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong>
+                ciclo = 0 vértices ímpares; caminho = 2 vértices ímpares.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Teorema de caracterização</h3>
+
+              <p class="math-note">
+                Seja <span class="math">G</span> um grafo conexo, desconsiderando vértices isolados.
+                Então:
+              </p>
+
+              <p class="math-note">
+                <strong>Ciclo Euleriano:</strong>
+                <span class="math">G</span> possui um ciclo Euleriano
+                se, e somente se, todo vértice tem grau par.
+              </p>
+
+              <p class="math-note">
+                <strong>Caminho Euleriano:</strong>
+                <span class="math">G</span> possui um caminho Euleriano
+                se, e somente se, exatamente zero ou dois vértices têm grau ímpar.
+              </p>
+
+              <p class="math-note">
+                O caso de zero vértices ímpares corresponde a um ciclo Euleriano,
+                pois o percurso começa e termina no mesmo vértice.
+                O caso de dois vértices ímpares corresponde a um caminho Euleriano aberto,
+                que começa em um vértice ímpar e termina no outro.
+              </p>
+
+              <p class="math-note">
+                Se um grafo possui mais de dois vértices de grau ímpar,
+                então não existe percurso Euleriano.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Por que a conectividade é necessária?</h3>
+
+              <p class="math-note">
+                As condições de grau não são suficientes sozinhas. O grafo também deve ser conexo,
+                ignorando vértices isolados.
+              </p>
+
+              <p class="math-note">
+                O motivo é simples: um percurso Euleriano deve cobrir todas as arestas em um único trajeto.
+                Se o grafo tiver arestas em componentes desconectados,
+                nenhum percurso único consegue alcançar todas elas.
+              </p>
+
+              <p class="math-note">
+                Vértices isolados não importam, pois não possuem arestas a serem percorridas.
+                Problemas Eulerianos dizem respeito a cobrir arestas, não apenas visitar vértices.
+              </p>
+
+              <p class="math-note">
+                Portanto, a condição completa é:
+                <strong>paridade correta dos graus + conectividade da parte não isolada</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Checklist:</strong>
+                primeiro a paridade, depois a conectividade.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Exemplos</h3>
+
+              <p class="math-note">
+                Considere três casos típicos:
+              </p>
+
+              <p class="math-note">
+                <strong>Caso 1:</strong> todos os vértices têm grau par.
+                Então o grafo admite um ciclo Euleriano.
+              </p>
+
+              <p class="math-note">
+                <strong>Caso 2:</strong> exatamente dois vértices têm grau ímpar.
+                Então o grafo admite um caminho Euleriano, mas não um ciclo.
+              </p>
+
+              <p class="math-note">
+                <strong>Caso 3:</strong> quatro ou mais vértices têm grau ímpar.
+                Então não existe caminho Euleriano.
+              </p>
+
+              <p class="math-note">
+                Esses casos geralmente podem ser identificados apenas por inspeção,
+                o que torna problemas Eulerianos muito mais tratáveis do que problemas Hamiltonianos.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Conexão com Königsberg</h3>
+
+              <p class="math-note">
+                No grafo de Königsberg, mais de dois vértices possuem grau ímpar.
+                Portanto, o grafo não pode ter um caminho Euleriano.
+              </p>
+
+              <p class="math-note">
+                Euler não precisou testar todos os caminhos possíveis. Assim que o padrão de graus foi identificado,
+                a resposta seguiu diretamente da estrutura.
+              </p>
+
+              <p class="math-note">
+                Este foi um dos primeiros grandes exemplos na matemática de substituir intuição geométrica
+                por raciocínio estrutural.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                como construir um percurso Euleriano quando ele existe.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
