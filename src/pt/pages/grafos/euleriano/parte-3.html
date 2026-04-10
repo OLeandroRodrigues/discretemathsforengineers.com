@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Teoria dos Grafos → Euleriano · Parte 3 — Construção</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Euleriano · Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Euleriano</h2>
+          <p>Parte 3 de 3 — Construção</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Euleriano</strong>
+            <span>Parte 3 de 3</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/euleriano/parte-2.html">← Anterior</a>
+            <a class="btn" class="btn disabled" href="/pt/pages/grafos/euleriano/parte-4.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/grafos/euleriano/parte-3.html">3</a>
+          <!--a class="pill" href="/pt/pages/grafos/euleriano/part-4.html">4</a-->
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <!-- FIRST ROW -->
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Da existência para a construção</h3>
+
+              <p class="math-note">
+                Na Parte 2, aprendemos como determinar se um caminho ou ciclo Euleriano existe.
+                A próxima pergunta é prática:
+                <strong>como construímos de fato esse percurso?</strong>
+              </p>
+
+              <p class="math-note">
+                Uma ideia ingênua seria testar todos os caminhos possíveis, mas isso rapidamente se torna ineficiente.
+                Felizmente, existe um método simples e elegante conhecido como
+                <strong>algoritmo de Hierholzer</strong>.
+              </p>
+
+              <p class="math-note">
+                A ideia central é construir o percurso incrementalmente,
+                sempre seguindo arestas não utilizadas até ficar “preso”,
+                e depois integrar ciclos menores dentro de um maior.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia principal:</strong>
+                caminhar, travar, e unir ciclos.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Intuição de alto nível</h3>
+
+              <p class="math-note">
+                Imagine começar em qualquer vértice (ou em um vértice de grau ímpar, se for um caminho Euleriano).
+                A partir daí, siga arestas uma a uma, sem nunca reutilizar uma aresta.
+              </p>
+
+              <p class="math-note">
+                Por causa das condições de grau, você não ficará preso prematuramente.
+                Eventualmente, você retornará ao ponto inicial (caso de ciclo),
+                ou terminará no segundo vértice ímpar (caso de caminho).
+              </p>
+
+              <p class="math-note">
+                Se ainda houver arestas não utilizadas, isso significa que existe algum vértice
+                no seu percurso com arestas restantes. A partir dele,
+                você pode iniciar um novo percurso e depois incorporá-lo ao caminho principal.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Insight:</strong>
+                arestas não usadas sempre formam novos ciclos.
+              </div>
+            </section>
+          </div>
+
+          <!-- SECOND ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Algoritmo de Hierholzer</h3>
+
+              <p class="math-note">
+                O algoritmo funciona da seguinte forma:
+              </p>
+
+              <ol class="clean-list">
+                <li>Comece em qualquer vértice (ou em um vértice de grau ímpar, se necessário).</li>
+                <li>Siga arestas não utilizadas até não conseguir continuar.</li>
+                <li>Isso produz um ciclo (ou um segmento de caminho).</li>
+                <li>Se ainda existirem arestas não utilizadas, encontre um vértice no caminho atual que tenha arestas restantes.</li>
+                <li>Inicie um novo percurso a partir desse vértice e incorpore-o ao caminho principal.</li>
+                <li>Repita até que todas as arestas sejam utilizadas.</li>
+              </ol>
+
+              <p class="math-note">
+                O resultado é um percurso Euleriano que cobre todas as arestas exatamente uma vez.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Por que funciona?</h3>
+
+              <p class="math-note">
+                A correção do algoritmo vem diretamente das condições de grau.
+                Toda vez que entramos em um vértice, existe outra aresta disponível para sair
+                (exceto possivelmente nas extremidades, no caso de caminho).
+              </p>
+
+              <p class="math-note">
+                Isso garante que percursos parciais sempre podem ser estendidos em ciclos,
+                e esses ciclos podem ser combinados sem quebrar a estrutura.
+              </p>
+
+              <p class="math-note">
+                O grafo é gradualmente decomposto em ciclos, que são então costurados
+                em um único percurso.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia-chave:</strong>
+                grafos Eulerianos são compostos por ciclos.
+              </div>
+            </section>
+          </div>
+
+          <!-- THIRD ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Complexidade</h3>
+
+              <p class="math-note">
+                O algoritmo de Hierholzer é muito eficiente.
+                Cada aresta é visitada exatamente uma vez, e cada operação é de tempo constante.
+              </p>
+
+              <p class="math-note">
+                Portanto, a complexidade total é:
+                <span class="math">\(O(E)\)</span>,
+                onde <span class="math">E</span> é o número de arestas.
+              </p>
+
+              <p class="math-note">
+                Isso é ótimo, pois qualquer algoritmo precisa ao menos inspecionar todas as arestas.
+              </p>
+
+              <p class="math-note">
+                Comparado com problemas Hamiltonianos (que muitas vezes são exponenciais),
+                a construção Euleriana é computacionalmente simples.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Aplicações práticas</h3>
+
+              <p class="math-note">
+                Algoritmos de percurso Euleriano são amplamente utilizados em sistemas reais:
+              </p>
+
+              <ul class="clean-list">
+                <li>Roteirização (varrição de ruas, coleta de lixo)</li>
+                <li>Exploração e manutenção de redes</li>
+                <li>Sequenciamento de DNA e montagem de genomas</li>
+                <li>Projeto de circuitos e roteamento de PCBs</li>
+              </ul>
+
+              <p class="math-note">
+                Em todos esses casos, o objetivo é o mesmo:
+                percorrer todas as conexões exatamente uma vez, com o mínimo de redundância.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                comparação entre problemas Eulerianos e Hamiltonianos.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
