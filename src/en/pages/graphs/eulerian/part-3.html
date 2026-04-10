@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Eulerian · Part 3 — Construction</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <span class="current">Eulerian · Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Eulerian</h2>
+          <p>Part 3 of 3 — Construction</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Eulerian</strong>
+            <span>Part 3 of 3</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/eulerian/part-2.html">← Previous</a>
+            <a class="btn" class="btn disabled" href="/en/pages/graphs/eulerian/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/eulerian/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/graphs/eulerian/part-3.html">3</a>
+          <!--a class="pill" href="/en/pages/graphs/eulerian/part-4.html">4</a-->
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <!-- FIRST ROW -->
+          <div class="cards-grid">
+            <section class="card">
+              <h3>From existence to construction</h3>
+
+              <p class="math-note">
+                In Part 2, we learned how to determine whether an Eulerian path or cycle exists.
+                The next question is practical:
+                <strong>how do we actually construct such a traversal?</strong>
+              </p>
+
+              <p class="math-note">
+                A naive idea would be to try all possible paths, but this quickly becomes inefficient.
+                Fortunately, there is a simple and elegant method known as
+                <strong>Hierholzer’s algorithm</strong>.
+              </p>
+
+              <p class="math-note">
+                The key idea is to build the traversal incrementally,
+                always following unused edges until we get stuck,
+                and then integrating smaller cycles into a larger one.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Main idea:</strong>
+                walk, get stuck, merge cycles.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>High-level intuition</h3>
+
+              <p class="math-note">
+                Imagine starting at any vertex (or at an odd-degree vertex if an Eulerian path is required).
+                From there, follow edges one by one, never reusing an edge.
+              </p>
+
+              <p class="math-note">
+                Because of the degree conditions, you will not get stuck prematurely.
+                You will eventually return to the starting point (cycle case),
+                or end at the second odd vertex (path case).
+              </p>
+
+              <p class="math-note">
+                If there are still unused edges, it means that somewhere along your path,
+                there exists a vertex with remaining edges. From that vertex,
+                you can start a new traversal and later merge it into the main path.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Insight:</strong>
+                unused edges always form new cycles.
+              </div>
+            </section>
+          </div>
+
+          <!-- SECOND ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Hierholzer’s Algorithm</h3>
+
+              <p class="math-note">
+                The algorithm works as follows:
+              </p>
+
+              <ol class="clean-list">
+                <li>Start at any vertex (or an odd-degree vertex if needed).</li>
+                <li>Follow unused edges until you cannot continue.</li>
+                <li>This produces a cycle (or a path segment).</li>
+                <li>If unused edges remain, find a vertex in the current path with unused edges.</li>
+                <li>Start a new walk from that vertex and merge it into the main path.</li>
+                <li>Repeat until all edges are used.</li>
+              </ol>
+
+              <p class="math-note">
+                The result is an Eulerian traversal that covers every edge exactly once.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Why does it work?</h3>
+
+              <p class="math-note">
+                The correctness of the algorithm comes directly from the degree conditions.
+                Every time we enter a vertex, there is another edge available to leave it
+                (except possibly at the endpoints in the path case).
+              </p>
+
+              <p class="math-note">
+                This ensures that partial walks can always be extended into cycles,
+                and these cycles can be combined without breaking the structure.
+              </p>
+
+              <p class="math-note">
+                The graph is gradually decomposed into cycles, which are then stitched together
+                into a single traversal.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Key idea:</strong>
+                Eulerian graphs are cycle-composable.
+              </div>
+            </section>
+          </div>
+
+          <!-- THIRD ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Complexity</h3>
+
+              <p class="math-note">
+                Hierholzer’s algorithm is very efficient.
+                Each edge is visited exactly once, and each operation is constant time.
+              </p>
+
+              <p class="math-note">
+                Therefore, the total complexity is:
+                <span class="math">\(O(E)\)</span>,
+                where <span class="math">E</span> is the number of edges.
+              </p>
+
+              <p class="math-note">
+                This is optimal, since any algorithm must inspect every edge at least once.
+              </p>
+
+              <p class="math-note">
+                Compared to Hamiltonian problems (which are often exponential),
+                Eulerian construction is computationally simple.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Practical applications</h3>
+
+              <p class="math-note">
+                Eulerian traversal algorithms are widely used in real systems:
+              </p>
+
+              <ul class="clean-list">
+                <li>Route inspection (street sweeping, garbage collection)</li>
+                <li>Network traversal and maintenance</li>
+                <li>DNA sequencing and genome assembly</li>
+                <li>Circuit design and PCB routing</li>
+              </ul>
+
+              <p class="math-note">
+                In all these cases, the goal is the same:
+                cover every connection exactly once with minimal redundancy.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                compare Eulerian vs Hamiltonian problems.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
