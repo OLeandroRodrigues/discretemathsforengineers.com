@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Teoria dos Grafos → Euleriano · Parte 4 — Comparação e Aplicações</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Euleriano · Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Euleriano</h2>
+          <p>Parte 4 de 4 — Comparação e Aplicações</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Euleriano</strong>
+            <span>Parte 4 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/euleriano/parte-3.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/euleriano/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/grafos/euleriano/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <!-- FIRST ROW -->
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Euleriano vs. Hamiltoniano</h3>
+
+              <p class="math-note">
+                Problemas Eulerianos e Hamiltonianos podem parecer semelhantes à primeira vista,
+                mas fazem perguntas fundamentalmente diferentes.
+              </p>
+
+              <p class="math-note">
+                Em um problema <strong>Euleriano</strong>, o objetivo é percorrer
+                cada <strong>aresta</strong> exatamente uma vez.
+                Em um problema <strong>Hamiltoniano</strong>, o objetivo é visitar
+                cada <strong>vértice</strong> exatamente uma vez.
+              </p>
+
+              <p class="math-note">
+                Essa diferença é pequena na formulação, mas enorme nas consequências.
+                Problemas Eulerianos são governados por propriedades estruturais locais, como a paridade dos graus.
+                Problemas Hamiltonianos, por outro lado, dependem de arranjos globais de vértices e caminhos.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Distinção central:</strong>
+                Euleriano = arestas; Hamiltoniano = vértices.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Por que problemas Eulerianos são mais fáceis</h3>
+
+              <p class="math-note">
+                Grafos Eulerianos admitem uma caracterização limpa:
+                a existência de um percurso pode ser determinada verificando
+                os graus dos vértices e a conectividade.
+              </p>
+
+              <p class="math-note">
+                Isso torna o problema estruturalmente transparente.
+                Na maioria dos casos, não precisamos explorar muitas possibilidades.
+                Uma inspeção simples já nos diz se existe solução.
+              </p>
+
+              <p class="math-note">
+                Além disso, quando uma solução existe, o algoritmo de Hierholzer a constrói em
+                <span class="math">\(O(E)\)</span>.
+              </p>
+
+              <p class="math-note">
+                Problemas Hamiltonianos são muito diferentes:
+                em geral, não se conhece um critério simples comparável.
+              </p>
+            </section>
+          </div>
+
+          <!-- SECOND ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Por que problemas Hamiltonianos são mais difíceis</h3>
+
+              <p class="math-note">
+                Em problemas Hamiltonianos, informação local não é suficiente.
+                Saber o grau de cada vértice não determina se existe um ciclo Hamiltoniano.
+              </p>
+
+              <p class="math-note">
+                Um grafo pode ter todos os vértices com grau alto e ainda assim não conter
+                um ciclo Hamiltoniano. O obstáculo é global: o arranjo das conexões
+                em todo o grafo é que importa.
+              </p>
+
+              <p class="math-note">
+                Como resultado, problemas Hamiltonianos são exemplos centrais em complexidade computacional,
+                e o problema do ciclo Hamiltoniano é um clássico problema <span class="math">NP</span>-completo.
+              </p>
+
+              <p class="math-note">
+                Isso significa que, ao contrário do percurso Euleriano, não se conhece
+                um algoritmo geral eficiente.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Resumo da comparação</h3>
+
+              <ul class="clean-list">
+                <li><strong>Euleriano:</strong> usar cada aresta uma vez.</li>
+                <li><strong>Hamiltoniano:</strong> visitar cada vértice uma vez.</li>
+                <li><strong>Euleriano:</strong> a paridade dos graus é decisiva.</li>
+                <li><strong>Hamiltoniano:</strong> a estrutura global é decisiva.</li>
+                <li><strong>Euleriano:</strong> solucionável em tempo linear.</li>
+                <li><strong>Hamiltoniano:</strong> geralmente difícil do ponto de vista computacional.</li>
+              </ul>
+
+              <p class="math-note">
+                Esse contraste faz dos problemas Eulerianos um belo exemplo de como
+                a abstração correta pode transformar um problema aparentemente difícil
+                em uma teoria simples e elegante.
+              </p>
+            </section>
+          </div>
+
+          <!-- THIRD ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Aplicações reais do pensamento Euleriano</h3>
+
+              <p class="math-note">
+                Ideias Eulerianas aparecem sempre que o objetivo é cobrir conexões de forma eficiente:
+              </p>
+
+              <ul class="clean-list">
+                <li>Varrição de ruas e remoção de neve</li>
+                <li>Rotas de coleta de lixo</li>
+                <li>Inspeção de redes de utilidade pública</li>
+                <li>Montagem de fragmentos de DNA</li>
+                <li>Rastreamento de fios e circuitos impressos</li>
+              </ul>
+
+              <p class="math-note">
+                Em cada caso, o objeto importante não é apenas o conjunto de locais,
+                mas a rede de ligações que precisa ser percorrida.
+              </p>
+
+              <p class="math-note">
+                O raciocínio Euleriano ajuda a minimizar repetição e melhorar eficiência.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Conclusão final</h3>
+
+              <p class="math-note">
+                O problema original das pontes de Euler foi historicamente importante porque mostrou que
+                algumas questões são melhor respondidas não pela geometria, mas pela estrutura.
+              </p>
+
+              <p class="math-note">
+                Esse insight se tornou um dos fundamentos da teoria dos grafos:
+                abstrair os detalhes irrelevantes, manter apenas a conectividade,
+                e estudar o que a estrutura permite.
+              </p>
+
+              <p class="math-note">
+                Grafos Eulerianos são um exemplo perfeito dessa mentalidade.
+                Uma propriedade local simples — a paridade dos graus — determina uma poderosa conclusão global.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Conclusão da série:</strong>
+                problemas Eulerianos mostram como o pensamento estrutural pode transformar um quebra-cabeça prático
+                em uma teoria matemática precisa.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
