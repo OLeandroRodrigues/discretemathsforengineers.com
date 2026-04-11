@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Eulerian · Part 4 — Comparison & Applications</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <span class="current">Eulerian · Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Eulerian</h2>
+          <p>Part 4 of 4 — Comparison & Applications</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Eulerian</strong>
+            <span>Part 4 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/eulerian/part-3.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/eulerian/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/eulerian/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/graphs/eulerian/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <!-- FIRST ROW -->
+          <div class="cards-grid">
+            <section class="card">
+              <h3>Eulerian vs. Hamiltonian</h3>
+
+              <p class="math-note">
+                Eulerian and Hamiltonian problems may look similar at first,
+                but they ask fundamentally different questions.
+              </p>
+
+              <p class="math-note">
+                In an <strong>Eulerian</strong> problem, the objective is to traverse
+                every <strong>edge</strong> exactly once.
+                In a <strong>Hamiltonian</strong> problem, the objective is to visit
+                every <strong>vertex</strong> exactly once.
+              </p>
+
+              <p class="math-note">
+                This difference is small in wording, but huge in consequences.
+                Eulerian problems are governed by local structural properties such as degree parity.
+                Hamiltonian problems, by contrast, depend on global arrangements of vertices and paths.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Core distinction:</strong>
+                Eulerian = edges; Hamiltonian = vertices.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Why Eulerian problems are easier</h3>
+
+              <p class="math-note">
+                Eulerian graphs admit a clean characterization:
+                the existence of a traversal can be determined by checking
+                vertex degrees and connectivity.
+              </p>
+
+              <p class="math-note">
+                This makes the problem structurally transparent.
+                In most cases, we do not need to search through many possibilities.
+                A simple inspection already tells us whether a solution exists.
+              </p>
+
+              <p class="math-note">
+                Moreover, when a solution exists, Hierholzer’s algorithm constructs it in
+                <span class="math">\(O(E)\)</span> time.
+              </p>
+
+              <p class="math-note">
+                Hamiltonian problems are very different:
+                no comparable simple criterion is known in general.
+              </p>
+            </section>
+          </div>
+
+          <!-- SECOND ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Why Hamiltonian problems are harder</h3>
+
+              <p class="math-note">
+                In Hamiltonian problems, local information is not enough.
+                Knowing the degree of each vertex does not determine whether a Hamiltonian cycle exists.
+              </p>
+
+              <p class="math-note">
+                A graph may have all vertices of high degree and still fail to contain
+                a Hamiltonian cycle. The obstacle is global: the arrangement of connections
+                across the whole graph matters.
+              </p>
+
+              <p class="math-note">
+                As a result, Hamiltonian problems are central examples in computational complexity,
+                and the Hamiltonian cycle problem is a classical <span class="math">NP</span>-complete problem.
+              </p>
+
+              <p class="math-note">
+                This means that, unlike Eulerian traversal, no efficient general algorithm is known.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Comparison summary</h3>
+
+              <ul class="clean-list">
+                <li><strong>Eulerian:</strong> use each edge once.</li>
+                <li><strong>Hamiltonian:</strong> visit each vertex once.</li>
+                <li><strong>Eulerian:</strong> degree parity is decisive.</li>
+                <li><strong>Hamiltonian:</strong> global structure is decisive.</li>
+                <li><strong>Eulerian:</strong> solvable in linear time.</li>
+                <li><strong>Hamiltonian:</strong> generally computationally hard.</li>
+              </ul>
+
+              <p class="math-note">
+                This contrast makes Eulerian problems a beautiful example of how
+                the right abstraction can turn an apparently difficult problem
+                into a simple and elegant theory.
+              </p>
+            </section>
+          </div>
+
+          <!-- THIRD ROW -->
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Real-world applications of Eulerian thinking</h3>
+
+              <p class="math-note">
+                Eulerian ideas appear whenever the goal is to cover connections efficiently:
+              </p>
+
+              <ul class="clean-list">
+                <li>Street sweeping and snow plowing</li>
+                <li>Garbage collection routes</li>
+                <li>Inspection of utility networks</li>
+                <li>DNA fragment assembly</li>
+                <li>Tracing wires and printed circuits</li>
+              </ul>
+
+              <p class="math-note">
+                In each case, the important object is not merely the set of locations,
+                but the network of links that must be traversed.
+              </p>
+
+              <p class="math-note">
+                Eulerian reasoning helps minimize repetition and improve efficiency.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Final takeaway</h3>
+
+              <p class="math-note">
+                Euler’s original bridge problem was historically important because it showed that
+                some questions are best answered not by geometry, but by structure.
+              </p>
+
+              <p class="math-note">
+                That insight became one of the foundations of graph theory:
+                abstract away the irrelevant details, keep only the connectivity,
+                and study what the structure allows.
+              </p>
+
+              <p class="math-note">
+                Eulerian graphs are a perfect example of this mindset.
+                A simple local property — parity of degrees — determines a powerful global conclusion.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Series conclusion:</strong>
+                Eulerian problems show how structural thinking can turn a practical puzzle
+                into a precise mathematical theory.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
