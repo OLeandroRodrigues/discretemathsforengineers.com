@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Kruskal · Part 2 — Step by Step</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/kruskal/part-1.html">Kruskal</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Kruskal</h2>
+          <p>Part 2 of 4 — Step-by-Step Execution</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Kruskal</strong>
+            <span>Part 2 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/kruskal/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/kruskal/part-3.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/kruskal/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/graphs/kruskal/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--kruskal">
+              <h3>Example — Building the Minimum Spanning Tree</h3>
+
+              <p class="math-note">
+                Let us apply Kruskal’s algorithm to the weighted graph below.
+                Each edge has a weight, and the goal is to select the lightest
+                possible edges without creating cycles.
+              </p>
+
+              <p class="math-note">
+                The rule is always the same:
+                <strong>sort the edges by weight and add only the safe ones</strong>.
+              </p>
+
+              <figure class="graph-figure graph-figure--kruskal">
+                <svg
+                  class="graph--kruskal"
+                  viewBox="70 50 620 400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Weighted graph for the step-by-step execution of Kruskal's algorithm"
+                  preserveAspectRatio="xMidYMid meet"
+                  style="width:100%; height:auto; display:block;"
+                >
+                  <!-- glow -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255,255,255,0.07)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- all edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(234,234,234,0.55)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- accepted MST edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(46, 204, 113, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                  </g>
+
+                  <!-- rejected edge -->
+                  <g
+                    fill="none"
+                    stroke="rgba(231, 76, 60, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-dasharray="10 8"
+                  >
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                  </g>
+
+                  <!-- edge weights -->
+                  <g
+                    font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(255,214,102,0.98)"
+                    stroke="rgba(0,0,0,0.60)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="235" y="92" text-anchor="middle">1</text>
+                    <text x="145" y="195" text-anchor="middle">2</text>
+                    <text x="255" y="295" text-anchor="middle">3</text>
+                    <text x="420" y="102" text-anchor="middle">4</text>
+                    <text x="440" y="292" text-anchor="middle">5</text>
+                    <text x="345" y="195" text-anchor="middle">6</text>
+                    <text x="238" y="175" text-anchor="middle">7</text>
+                    <text x="440" y="185" text-anchor="middle">8</text>
+                    <text x="435" y="210" text-anchor="middle">9</text>
+                  </g>
+
+                  <!-- node labels -->
+                  <g
+                    font-family="inherit"
+                    font-size="15"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.98)"
+                    stroke="rgba(0,0,0,0.62)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="150" y="82" text-anchor="middle">A</text>
+                    <text x="170" y="305" text-anchor="middle">B</text>
+                    <text x="320" y="72" text-anchor="middle">C</text>
+                    <text x="340" y="326" text-anchor="middle">D</text>
+                    <text x="520" y="92" text-anchor="middle">E</text>
+                    <text x="540" y="304" text-anchor="middle">F</text>
+                  </g>
+
+                  <!-- nodes -->
+                  <g>
+                    <g fill="rgba(52,152,219,0.18)">
+                      <circle cx="150" cy="110" r="20" />
+                      <circle cx="170" cy="270" r="20" />
+                      <circle cx="320" cy="100" r="20" />
+                      <circle cx="340" cy="290" r="20" />
+                      <circle cx="520" cy="120" r="20" />
+                      <circle cx="540" cy="270" r="20" />
+                    </g>
+
+                    <g
+                      fill="rgba(52,152,219,0.96)"
+                      stroke="rgba(234,234,234,0.95)"
+                      stroke-width="2.2"
+                    >
+                      <circle cx="150" cy="110" r="14" />
+                      <circle cx="170" cy="270" r="14" />
+                      <circle cx="320" cy="100" r="14" />
+                      <circle cx="340" cy="290" r="14" />
+                      <circle cx="520" cy="120" r="14" />
+                      <circle cx="540" cy="270" r="14" />
+                    </g>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  Green edges are accepted into the minimum spanning tree.
+                  The dashed red edge is an example of an edge rejected because it would create a cycle.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>Step 1 — Sort the edges</h3>
+
+              <p class="math-note">
+                The algorithm begins by listing all edges in increasing order of weight:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Order:</strong>
+                AC (1), AB (2), BD (3), CE (4), DF (5), CD (6), BC (7), CF (8), DE (9)
+              </div>
+
+              <p class="math-note">
+                This step is essential because Kruskal always tries the cheapest available edge first.
+              </p>
+
+              <p class="math-note">
+                But “cheapest” is not enough:
+                the edge must also be <strong>safe</strong>,
+                meaning that it must not close a cycle.
+              </p>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Step 2 — Accept the lightest safe edges</h3>
+
+              <p class="math-note">
+                Following the sorted order:
+              </p>
+
+              <p class="math-note">
+                <strong>AC (1)</strong> is accepted.<br />
+                <strong>AB (2)</strong> is accepted.<br />
+                <strong>BD (3)</strong> is accepted.<br />
+                <strong>CE (4)</strong> is accepted.<br />
+                <strong>DF (5)</strong> is accepted.
+              </p>
+
+              <p class="math-note">
+                At this point, all 6 vertices are already connected.
+                Since a tree with 6 vertices must have exactly
+                <strong>5 edges</strong>, the algorithm can stop.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Chosen edges:</strong>
+                AC, AB, BD, CE, DF
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Step 3 — Reject edges that create a cycle</h3>
+
+              <p class="math-note">
+                Suppose we now try to add the edge
+                <strong>CD (6)</strong>.
+              </p>
+
+              <p class="math-note">
+                It would connect two vertices that are already linked by a path:
+                C → A → B → D.
+                Therefore, adding CD would create a cycle.
+              </p>
+
+              <p class="math-note">
+                This is exactly the kind of edge that Kruskal rejects.
+                The tree must remain connected, but without any closed loop.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Core idea:</strong>
+                if a new edge connects two vertices that are already connected indirectly,
+                then it creates a cycle and must be rejected.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Final result</h3>
+
+              <p class="math-note">
+                The minimum spanning tree found by the algorithm is:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>MST:</strong>
+                AC (1), AB (2), BD (3), CE (4), DF (5)
+              </div>
+
+              <p class="math-note">
+                Its total weight is:
+                <strong>1 + 2 + 3 + 4 + 5 = 15</strong>.
+              </p>
+
+              <p class="math-note">
+                The algorithm has connected all vertices
+                without forming cycles and with minimum total cost.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Key intuition for Part 2</h3>
+
+              <p class="math-note">
+                Kruskal does not try to guess the entire best tree at once.
+                It builds the solution gradually.
+              </p>
+
+              <p class="math-note">
+                At each step, it asks a very simple question:
+                <strong>is this the lightest available edge that I can still add safely?</strong>
+              </p>
+
+              <p class="math-note">
+                In the next part, we will study
+                <strong>how to detect cycles efficiently</strong>
+                using the Union-Find data structure.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                efficient cycle detection with Union-Find.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
