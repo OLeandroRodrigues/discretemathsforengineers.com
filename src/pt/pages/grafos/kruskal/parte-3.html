@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Teoria dos Grafos → Kruskal · Parte 3 — Union-Find e detecção de ciclos</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/grafos/kruskal/parte-1.html">Kruskal</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Kruskal</h2>
+          <p>Parte 3 de 4 — Union-Find e detecção eficiente de ciclos</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Kruskal</strong>
+            <span>Parte 3 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/kruskal/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/kruskal/parte-4.html">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/grafos/kruskal/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--kruskal">
+              <h3>Problema — Como detectar ciclos de forma eficiente?</h3>
+
+              <p class="math-note">
+                Na Parte 2, vimos que o algoritmo de Kruskal adiciona a aresta mais leve
+                que não forma ciclo. Porém, em grafos grandes, verificar ciclos manualmente
+                não é viável.
+              </p>
+
+              <p class="math-note">
+                Para resolver isso de forma eficiente, utilizamos uma estrutura de dados chamada
+                <strong>Union-Find</strong>, também conhecida como
+                <strong>Disjoint Set Union (DSU)</strong>.
+              </p>
+
+              <p class="math-note">
+                Em vez de procurar caminhos no grafo, o Union-Find acompanha quais vértices
+                já estão conectados.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia chave:</strong>
+                acompanhar conectividade, não caminhos.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>O que o Union-Find faz?</h3>
+
+              <p class="math-note">
+                A estrutura mantém os vértices organizados em
+                <strong>conjuntos disjuntos</strong>, que representam componentes conectados.
+              </p>
+
+              <p class="math-note">
+                Inicialmente, cada vértice está em seu próprio conjunto.
+                À medida que o Kruskal aceita arestas, esses conjuntos são unidos.
+              </p>
+
+              <p class="math-note">
+                Para verificar se uma aresta é segura, basta perguntar:
+                <strong>os dois extremos pertencem ao mesmo conjunto?</strong>
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong>
+                Union-Find acompanha quais vértices já estão conectados.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>As duas operações principais</h3>
+
+              <p class="math-note">
+                O Union-Find possui duas operações fundamentais:
+              </p>
+
+              <p class="math-note">
+                <strong>Find(x)</strong>:
+                retorna o representante do conjunto que contém <em>x</em>.
+              </p>
+
+              <p class="math-note">
+                <strong>Union(x, y)</strong>:
+                une os conjuntos que contêm <em>x</em> e <em>y</em>.
+              </p>
+
+              <p class="math-note">
+                No Kruskal, a regra fica:
+              </p>
+
+              <p class="math-note">
+                se <strong>Find(u) ≠ Find(v)</strong>, aceitamos a aresta e fazemos
+                <strong>Union(u, v)</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Regra do Kruskal:</strong>
+                aceitar arestas apenas quando os representantes forem diferentes.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Por que isso evita ciclos?</h3>
+
+              <p class="math-note">
+                Se dois vértices já estão no mesmo conjunto,
+                então já existe um caminho conectando-os.
+              </p>
+
+              <p class="math-note">
+                Adicionar uma nova aresta entre eles criaria um laço,
+                ou seja, um <strong>ciclo</strong>.
+              </p>
+
+              <p class="math-note">
+                Se estiverem em conjuntos diferentes,
+                a aresta apenas conecta dois componentes distintos.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia central:</strong>
+                mesmo conjunto → ciclo, conjuntos diferentes → aresta segura.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Exemplo com conjuntos</h3>
+
+              <p class="math-note">
+                Suponha que temos:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Conjuntos atuais:</strong>
+                {A, B, C} e {D, E, F}
+              </div>
+
+              <p class="math-note">
+                Se analisarmos a aresta <strong>C–D</strong>,
+                os vértices pertencem a conjuntos diferentes,
+                então a aresta é aceita.
+              </p>
+
+              <p class="math-note">
+                Após isso:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Após Union(C, D):</strong>
+                {A, B, C, D, E, F}
+              </div>
+
+              <p class="math-note">
+                Agora, adicionar uma aresta entre <strong>B</strong> e <strong>C</strong>
+                seria rejeitado, pois já estão conectados.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Por que isso é importante?</h3>
+
+              <p class="math-note">
+                O Kruskal processa muitas arestas.
+                Sem uma estrutura eficiente, a verificação de ciclos seria lenta.
+              </p>
+
+              <p class="math-note">
+                O Union-Find torna essa verificação muito rápida,
+                especialmente com otimizações como
+                <strong>compressão de caminho (path compression)</strong>
+                e <strong>união por rank (union by rank)</strong>.
+              </p>
+
+              <p class="math-note">
+                Por isso, a combinação
+                <strong>ordenação + Union-Find</strong>
+                é a forma clássica de implementar o Kruskal.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Na prática:</strong>
+                ordenação + Union-Find = Kruskal eficiente.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Pseudocódigo conceitual</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong><br />
+                1. Ordenar arestas por peso<br />
+                2. Inicializar cada vértice em seu próprio conjunto<br />
+                3. Para cada aresta (u, v):<br />
+                &nbsp;&nbsp;• se Find(u) ≠ Find(v), aceitar aresta<br />
+                &nbsp;&nbsp;• Union(u, v)<br />
+                4. Parar após n − 1 arestas
+              </div>
+
+              <p class="math-note">
+                A detecção de ciclos é reduzida a uma simples comparação
+                entre representantes.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Intuição chave da Parte 3</h3>
+
+              <p class="math-note">
+                O Union-Find não precisa conhecer toda a estrutura do grafo.
+                Ele guarda apenas o essencial:
+                <strong>quais vértices já estão conectados</strong>.
+              </p>
+
+              <p class="math-note">
+                Isso é suficiente para o Kruskal tomar decisões corretas
+                de forma rápida e eficiente.
+              </p>
+
+              <p class="math-note">
+                Na próxima parte, vamos comparar o Kruskal com
+                o algoritmo de <strong>Prim</strong>,
+                e entender quando cada um é mais adequado.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                comparação entre Kruskal e Prim.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
