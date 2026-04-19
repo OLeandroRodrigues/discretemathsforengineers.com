@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Kruskal · Part 3 — Union-Find and Cycle Detection</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/kruskal/part-1.html">Kruskal</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Kruskal</h2>
+          <p>Part 3 of 4 — Union-Find and Efficient Cycle Detection</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Kruskal</strong>
+            <span>Part 3 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/kruskal/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/kruskal/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/kruskal/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/graphs/kruskal/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--kruskal">
+              <h3>Problem — How do we detect cycles efficiently?</h3>
+
+              <p class="math-note">
+                In Part 2, we saw that Kruskal’s algorithm adds the lightest edge
+                that does not create a cycle. But in large graphs, checking cycles
+                manually is not practical.
+              </p>
+
+              <p class="math-note">
+                To solve this efficiently, we use a data structure called
+                <strong>Union-Find</strong>, also known as
+                <strong>Disjoint Set Union (DSU)</strong>.
+              </p>
+
+              <p class="math-note">
+                Instead of searching for paths in the graph,
+                Union-Find keeps track of which vertices are already connected.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Key idea:</strong>
+                track connectivity, not paths.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>What does Union-Find do?</h3>
+
+              <p class="math-note">
+                The structure maintains vertices grouped into
+                <strong>disjoint sets</strong>, representing connected components.
+              </p>
+
+              <p class="math-note">
+                Initially, each vertex is in its own set.
+                As Kruskal accepts edges, these sets are merged.
+              </p>
+
+              <p class="math-note">
+                To check if an edge is safe, we simply ask:
+                <strong>are both endpoints in the same set?</strong>
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Summary:</strong>
+                Union-Find tracks which vertices are already connected.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>The two core operations</h3>
+
+              <p class="math-note">
+                Union-Find relies on two fundamental operations:
+              </p>
+
+              <p class="math-note">
+                <strong>Find(x)</strong>:
+                returns the representative of the set containing <em>x</em>.
+              </p>
+
+              <p class="math-note">
+                <strong>Union(x, y)</strong>:
+                merges the sets containing <em>x</em> and <em>y</em>.
+              </p>
+
+              <p class="math-note">
+                In Kruskal, the rule becomes:
+              </p>
+
+              <p class="math-note">
+                if <strong>Find(u) ≠ Find(v)</strong>, accept the edge and apply
+                <strong>Union(u, v)</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal rule:</strong>
+                accept edges only when representatives are different.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Why does this prevent cycles?</h3>
+
+              <p class="math-note">
+                If two vertices are already in the same set,
+                there is already a path connecting them.
+              </p>
+
+              <p class="math-note">
+                Adding another edge between them would create a loop,
+                which is exactly a <strong>cycle</strong>.
+              </p>
+
+              <p class="math-note">
+                If they are in different sets,
+                the edge simply connects two separate components.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Core idea:</strong>
+                same set → cycle, different sets → safe edge.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Example with sets</h3>
+
+              <p class="math-note">
+                Suppose at some point we have:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Current sets:</strong>
+                {A, B, C} and {D, E, F}
+              </div>
+
+              <p class="math-note">
+                If we consider edge <strong>C–D</strong>,
+                the vertices belong to different sets,
+                so we accept the edge.
+              </p>
+
+              <p class="math-note">
+                After that:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>After Union(C, D):</strong>
+                {A, B, C, D, E, F}
+              </div>
+
+              <p class="math-note">
+                Now, adding an edge between <strong>B</strong> and <strong>C</strong>
+                would be rejected, since they are already connected.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Why is this important?</h3>
+
+              <p class="math-note">
+                Kruskal processes many edges.
+                Without an efficient structure, cycle detection would be slow.
+              </p>
+
+              <p class="math-note">
+                Union-Find makes these checks extremely fast,
+                especially with optimizations like
+                <strong>path compression</strong> and
+                <strong>union by rank</strong>.
+              </p>
+
+              <p class="math-note">
+                This is why Kruskal is both elegant and efficient in practice.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>In practice:</strong>
+                sorting + Union-Find = efficient Kruskal.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Conceptual pseudocode</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong><br />
+                1. Sort edges by weight<br />
+                2. Initialize each vertex as its own set<br />
+                3. For each edge (u, v):<br />
+                &nbsp;&nbsp;• if Find(u) ≠ Find(v), accept edge<br />
+                &nbsp;&nbsp;• Union(u, v)<br />
+                4. Stop after n − 1 edges
+              </div>
+
+              <p class="math-note">
+                Cycle detection is reduced to a simple comparison
+                between representatives.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Key intuition for Part 3</h3>
+
+              <p class="math-note">
+                Union-Find does not track the full structure of the graph.
+                It only tracks what matters:
+                <strong>which vertices are already connected</strong>.
+              </p>
+
+              <p class="math-note">
+                This is enough for Kruskal to make correct and efficient decisions.
+              </p>
+
+              <p class="math-note">
+                In the next part, we will compare Kruskal with
+                <strong>Prim’s algorithm</strong>
+                and discuss when each approach is preferable.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                Kruskal vs Prim comparison.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
