@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Teoria dos Grafos → Kruskal · Parte 4 — Kruskal vs Prim</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/graphs/kruskal/part-1.html">Kruskal</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Kruskal</h2>
+          <p>Parte 4 de 4 — Kruskal vs Prim e intuição final</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Kruskal</strong>
+            <span>Parte 4 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/kruskal/parte-3.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próximo →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/kruskal/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/grafos/kruskal/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--kruskal">
+              <h3>Pergunta final — Por que aprender Kruskal se o Prim também encontra MST?</h3>
+
+              <p class="math-note">
+                O Kruskal não é o único algoritmo que encontra uma
+                <strong>árvore geradora mínima</strong>.
+                Outro algoritmo clássico para o mesmo problema é o
+                <strong>algoritmo de Prim</strong>.
+              </p>
+
+              <p class="math-note">
+                Ambos produzem uma MST, mas constroem a solução de maneiras diferentes.
+                Entender essa diferença é uma das ideias mais importantes
+                em algoritmos gulosos em grafos.
+              </p>
+
+              <p class="math-note">
+                O Kruskal pensa globalmente:
+                ele olha para todas as arestas e escolhe repetidamente a mais barata que seja segura.
+              </p>
+
+              <p class="math-note">
+                O Prim pensa localmente:
+                ele começa em um vértice e expande a árvore usando sempre
+                a aresta mais barata que sai dela.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Principal diferença:</strong>
+                Kruskal cresce por arestas; Prim cresce pela fronteira.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Kruskal em uma frase</h3>
+
+              <p class="math-note">
+                Kruskal ordena todas as arestas por peso e as adiciona uma a uma,
+                desde que não formem ciclos.
+              </p>
+
+              <p class="math-note">
+                Ele é especialmente natural quando o grafo é visto como
+                uma lista de arestas ponderadas.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong>
+                ordenação + Union-Find + evitar ciclos
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Prim em uma frase</h3>
+
+              <p class="math-note">
+                O Prim começa em um vértice e expande a árvore
+                escolhendo sempre a aresta mais barata que conecta
+                a árvore a um novo vértice.
+              </p>
+
+              <p class="math-note">
+                Em vez de ordenar todas as arestas, o Prim normalmente usa
+                uma fila de prioridade para escolher a melhor aresta disponível.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong>
+                expansão da árvore + fila de prioridade + fronteira
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Diferença conceitual chave</h3>
+
+              <p class="math-note">
+                A diferença mais importante não é a estrutura de dados,
+                mas o ponto de vista.
+              </p>
+
+              <p class="math-note">
+                <strong>Kruskal</strong> vê o grafo como um conjunto de arestas
+                e tenta montar uma árvore a partir das mais baratas.
+              </p>
+
+              <p class="math-note">
+                <strong>Prim</strong> vê a MST como uma árvore que cresce
+                a partir de um vértice inicial.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Intuição:</strong>
+                Kruskal conecta componentes; Prim expande uma árvore.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Comparação lado a lado</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong><br />
+                • Ordena todas as arestas<br />
+                • Adiciona a aresta segura mais barata<br />
+                • Usa Union-Find para evitar ciclos<br />
+                • Natural para listas de arestas
+              </div>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong><br />
+                • Começa em um vértice<br />
+                • Adiciona a aresta mais barata da fronteira<br />
+                • Usa fila de prioridade<br />
+                • Natural para listas de adjacência
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Quando cada um é mais natural?</h3>
+
+              <p class="math-note">
+                Kruskal costuma ser mais simples quando o grafo já está
+                representado como uma lista de arestas.
+              </p>
+
+              <p class="math-note">
+                Prim é mais natural quando usamos listas de adjacência
+                e queremos crescer a solução a partir de um ponto inicial.
+              </p>
+
+              <p class="math-note">
+                Na prática, a escolha depende bastante da forma
+                como o grafo está representado.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Visão prática:</strong>
+                a representação do grafo influencia a escolha do algoritmo.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>O que lembrar para provas ou entrevistas?</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Lembre-se:</strong><br />
+                • Encontra uma árvore geradora mínima<br />
+                • É um algoritmo guloso<br />
+                • Ordena arestas por peso<br />
+                • Rejeita arestas que formam ciclo<br />
+                • Usa Union-Find para detectar ciclos
+              </div>
+
+              <p class="math-note">
+                Se pedirem comparação com Prim, explique:
+                ambos resolvem MST, mas um conecta componentes
+                e o outro expande uma árvore.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Complexidade</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong>
+                O(E log E)
+              </div>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong>
+                O(E log V)
+              </div>
+
+              <p class="math-note">
+                Ambos são eficientes e dependem da implementação.
+              </p>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Intuição final da série</h3>
+
+              <p class="math-note">
+                O Kruskal funciona porque uma MST não precisa de escolhas “inteligentes” complexas —
+                precisa de <strong>arestas baratas que mantenham a estrutura válida</strong>.
+              </p>
+
+              <p class="math-note">
+                Ele aplica uma regra simples repetidamente:
+                escolher a aresta mais barata que não quebra a estrutura.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Mensagem final:</strong>
+                Kruskal é um exemplo clássico de algoritmo guloso bem aplicado.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Conclusão da série</h3>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong><br />
+                1. O que é MST<br />
+                2. Como Kruskal funciona<br />
+                3. Como Union-Find detecta ciclos<br />
+                4. Comparação com Prim
+              </div>
+
+              <p class="math-note">
+                Agora você tem tanto a intuição quanto a lógica
+                por trás de um dos algoritmos mais importantes da teoria dos grafos.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Fim da série:</strong>
+                Kruskal completo.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

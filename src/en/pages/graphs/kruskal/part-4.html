@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Kruskal · Part 4 — Kruskal vs Prim</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/kruskal/part-1.html">Kruskal</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Kruskal</h2>
+          <p>Part 4 of 4 — Kruskal vs Prim and Final Intuition</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Kruskal</strong>
+            <span>Part 4 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/kruskal/part-3.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/kruskal/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/kruskal/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/graphs/kruskal/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--kruskal">
+              <h3>Final question — Why learn Kruskal if Prim also finds an MST?</h3>
+
+              <p class="math-note">
+                Kruskal is not the only algorithm that finds a
+                <strong>minimum spanning tree</strong>.
+                Another classic algorithm for the same problem is
+                <strong>Prim’s algorithm</strong>.
+              </p>
+
+              <p class="math-note">
+                Both algorithms produce an MST, but they build it in different ways.
+                Understanding that difference is one of the most important ideas
+                in greedy graph algorithms.
+              </p>
+
+              <p class="math-note">
+                Kruskal thinks globally:
+                it looks at all edges and repeatedly picks the cheapest safe one.
+              </p>
+
+              <p class="math-note">
+                Prim thinks locally:
+                it starts from one vertex and repeatedly expands the current tree
+                using the cheapest edge leaving it.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Main contrast:</strong>
+                Kruskal grows by edges; Prim grows by frontier.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Kruskal in one sentence</h3>
+
+              <p class="math-note">
+                Kruskal sorts all edges by weight and adds them one by one,
+                as long as they do not create a cycle.
+              </p>
+
+              <p class="math-note">
+                It is especially natural when the graph is viewed as
+                a list of weighted edges.
+              </p>
+
+              <p class="math-note">
+                Because of this, Kruskal is often associated with:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong>
+                sorting + Union-Find + cycle avoidance
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Prim in one sentence</h3>
+
+              <p class="math-note">
+                Prim starts from a vertex and keeps expanding the current tree
+                by choosing the cheapest edge that connects the tree
+                to a new vertex.
+              </p>
+
+              <p class="math-note">
+                Instead of sorting all edges first,
+                Prim usually relies on a priority queue
+                to track the best edge on the boundary of the tree.
+              </p>
+
+              <p class="math-note">
+                Because of this, Prim is often associated with:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong>
+                tree expansion + priority queue + frontier choice
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Key conceptual difference</h3>
+
+              <p class="math-note">
+                The most important difference is not the data structure,
+                but the point of view.
+              </p>
+
+              <p class="math-note">
+                <strong>Kruskal</strong> sees the graph as a collection of edges
+                and tries to assemble a valid tree from the cheapest ones.
+              </p>
+
+              <p class="math-note">
+                <strong>Prim</strong> sees the MST as a tree that grows outward
+                from an initial vertex.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Intuition:</strong>
+                Kruskal connects components; Prim expands a tree.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Side-by-side comparison</h3>
+
+              <p class="math-note">
+                Both are greedy. Both are correct. But they organize the search differently:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong><br />
+                • Sort all edges first<br />
+                • Add the cheapest safe edge<br />
+                • Use Union-Find to avoid cycles<br />
+                • Naturally works with edge lists
+              </div>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong><br />
+                • Start from one vertex<br />
+                • Repeatedly add the cheapest edge leaving the tree<br />
+                • Use a priority queue efficiently<br />
+                • Naturally works with adjacency structures
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>When does each one feel natural?</h3>
+
+              <p class="math-note">
+                Kruskal often feels simpler when the graph is already given
+                as a list of weighted edges.
+              </p>
+
+              <p class="math-note">
+                Prim often feels more natural when the graph is stored
+                with adjacency lists and we want to grow the solution
+                from a starting point.
+              </p>
+
+              <p class="math-note">
+                In sparse graphs, both can perform very well.
+                In practice, the chosen representation often influences
+                which algorithm feels cleaner to implement.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Practical view:</strong>
+                representation matters as much as theory.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>What should you remember for interviews or exams?</h3>
+
+              <p class="math-note">
+                If you are asked about Kruskal, the essential points are:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Remember:</strong><br />
+                • It finds a minimum spanning tree<br />
+                • It is a greedy algorithm<br />
+                • It sorts edges by weight<br />
+                • It rejects edges that create cycles<br />
+                • Union-Find is the standard tool for cycle detection
+              </div>
+
+              <p class="math-note">
+                If you are asked to compare Kruskal and Prim,
+                explain that both solve the same MST problem,
+                but one connects components and the other expands a tree.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Complexity overview</h3>
+
+              <p class="math-note">
+                In Kruskal, the dominant cost is usually sorting the edges.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Kruskal:</strong>
+                O(E log E)
+              </div>
+
+              <p class="math-note">
+                Prim’s complexity depends on the data structure used,
+                but with a priority queue and adjacency list,
+                it is commonly written as:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim:</strong>
+                O(E log V)
+              </div>
+
+              <p class="math-note">
+                The exact comparison depends on implementation details,
+                but conceptually both are efficient greedy MST algorithms.
+              </p>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Final intuition of the series</h3>
+
+              <p class="math-note">
+                Kruskal works because a minimum spanning tree does not need
+                “clever looking” edges — it needs
+                <strong>cheap edges that keep the structure valid</strong>.
+              </p>
+
+              <p class="math-note">
+                The algorithm never tries to build the whole answer at once.
+                It simply repeats a disciplined rule:
+                choose the cheapest safe edge.
+              </p>
+
+              <p class="math-note">
+                That is the essence of greedy reasoning:
+                a local choice, when carefully justified,
+                can lead to a globally optimal structure.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Final message:</strong>
+                Kruskal is a model example of greedy design done right.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Series conclusion</h3>
+
+              <p class="math-note">
+                Across these four parts, we studied:
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Series recap:</strong><br />
+                1. What an MST is and why Kruskal matters<br />
+                2. How Kruskal works step by step<br />
+                3. Why Union-Find detects cycles efficiently<br />
+                4. How Kruskal compares with Prim
+              </div>
+
+              <p class="math-note">
+                With these ideas, you now have both the intuition
+                and the structural logic behind one of the most important
+                graph algorithms in discrete mathematics.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>End of series:</strong>
+                Kruskal complete.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
