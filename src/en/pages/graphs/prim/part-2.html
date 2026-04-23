@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Prim · Part 2 — Step-by-Step Execution</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/prim/part-1.html">Prim</a>
+        <span class="sep">›</span>
+        <span class="current">Part 2</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Prim</h2>
+          <p>Part 2 of 4 — Step-by-Step Execution</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Prim</strong>
+            <span>Part 2 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/prim/part-1.html">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/prim/part-3.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/prim/part-1.html">1</a>
+          <a class="pill active" href="/en/pages/graphs/prim/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>Example — Running Prim’s Algorithm from Vertex A</h3>
+
+              <p class="math-note">
+                We now execute Prim’s algorithm on a weighted graph.
+                The rule is always the same:
+                <strong>look at the edges leaving the current tree and choose the lightest valid one</strong>.
+              </p>
+
+              <p class="math-note">
+                We will start at vertex <strong>A</strong>.
+                At the beginning, the tree contains only that vertex.
+              </p>
+
+              <figure class="graph-figure graph-figure--prim">
+                <svg
+                  class="graph--prim"
+                  viewBox="70 50 620 400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Weighted graph used to illustrate Prim's algorithm step by step"
+                  preserveAspectRatio="xMidYMid meet"
+                  style="width:100%; height:auto; display:block;"
+                >
+                  <!-- soft glow -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255,255,255,0.07)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- all edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(234,234,234,0.52)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- mst edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(46, 204, 113, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                  </g>
+
+                  <!-- edge weights -->
+                  <g
+                    font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(255,214,102,0.98)"
+                    stroke="rgba(0,0,0,0.60)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="235" y="92" text-anchor="middle">1</text>
+                    <text x="145" y="195" text-anchor="middle">2</text>
+                    <text x="255" y="295" text-anchor="middle">3</text>
+                    <text x="420" y="102" text-anchor="middle">4</text>
+                    <text x="440" y="292" text-anchor="middle">5</text>
+                    <text x="345" y="195" text-anchor="middle">6</text>
+                    <text x="238" y="175" text-anchor="middle">7</text>
+                    <text x="440" y="185" text-anchor="middle">8</text>
+                    <text x="435" y="210" text-anchor="middle">9</text>
+                  </g>
+
+                  <!-- node labels -->
+                  <g
+                    font-family="inherit"
+                    font-size="15"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.98)"
+                    stroke="rgba(0,0,0,0.62)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="150" y="82" text-anchor="middle">A</text>
+                    <text x="170" y="305" text-anchor="middle">B</text>
+                    <text x="320" y="72" text-anchor="middle">C</text>
+                    <text x="340" y="326" text-anchor="middle">D</text>
+                    <text x="520" y="92" text-anchor="middle">E</text>
+                    <text x="540" y="304" text-anchor="middle">F</text>
+                  </g>
+
+                  <!-- nodes -->
+                  <g>
+                    <g fill="rgba(52,152,219,0.18)">
+                      <circle cx="150" cy="110" r="20" />
+                      <circle cx="170" cy="270" r="20" />
+                      <circle cx="320" cy="100" r="20" />
+                      <circle cx="340" cy="290" r="20" />
+                      <circle cx="520" cy="120" r="20" />
+                      <circle cx="540" cy="270" r="20" />
+                    </g>
+
+                    <g
+                      fill="rgba(52,152,219,0.96)"
+                      stroke="rgba(234,234,234,0.95)"
+                      stroke-width="2.2"
+                    >
+                      <circle cx="170" cy="270" r="14"><title>Vertex B</title></circle>
+                      <circle cx="320" cy="100" r="14"><title>Vertex C</title></circle>
+                      <circle cx="340" cy="290" r="14"><title>Vertex D</title></circle>
+                      <circle cx="520" cy="120" r="14"><title>Vertex E</title></circle>
+                      <circle cx="540" cy="270" r="14"><title>Vertex F</title></circle>
+                    </g>
+
+                    <g
+                      fill="rgba(46, 204, 113, 0.98)"
+                      stroke="rgba(234,234,234,0.98)"
+                      stroke-width="2.6"
+                    >
+                      <circle cx="150" cy="110" r="16"><title>Starting vertex A</title></circle>
+                    </g>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  We start at A and repeatedly add the lightest edge that connects the current tree to a new vertex.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>Step 1 — Start at A</h3>
+
+              <p class="math-note">
+                The tree begins with vertex <strong>A</strong> only.
+              </p>
+
+              <p class="math-note">
+                The edges leaving A are:
+                <strong>A–C = 1</strong> and <strong>A–B = 2</strong>.
+              </p>
+
+              <p class="math-note">
+                The smallest one is <strong>A–C = 1</strong>,
+                so we add edge <strong>A–C</strong> and vertex <strong>C</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Tree after Step 1:</strong>
+                vertices {A, C}, edges {A–C}
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Step 2 — Expand from {A, C}</h3>
+
+              <p class="math-note">
+                Now the current tree contains <strong>A</strong> and <strong>C</strong>.
+              </p>
+
+              <p class="math-note">
+                We examine all edges leaving this tree:
+                <strong>A–B = 2</strong>, <strong>C–E = 4</strong>,
+                <strong>C–D = 6</strong>, and <strong>C–F = 8</strong>.
+              </p>
+
+              <p class="math-note">
+                The lightest available edge is <strong>A–B = 2</strong>,
+                so we add <strong>B</strong> to the tree.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Tree after Step 2:</strong>
+                vertices {A, B, C}, edges {A–C, A–B}
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Step 3 — Expand from {A, B, C}</h3>
+
+              <p class="math-note">
+                The candidate edges are now:
+                <strong>B–D = 3</strong>, <strong>C–E = 4</strong>,
+                <strong>C–D = 6</strong>, and <strong>C–F = 8</strong>.
+              </p>
+
+              <p class="math-note">
+                The smallest one is <strong>B–D = 3</strong>.
+                So we add edge <strong>B–D</strong> and include vertex <strong>D</strong>.
+              </p>
+
+              <p class="math-note">
+                Notice how Prim does not sort every edge globally.
+                It only cares about the boundary of the current tree.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Tree after Step 3:</strong>
+                vertices {A, B, C, D}, edges {A–C, A–B, B–D}
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Step 4 — Add E</h3>
+
+              <p class="math-note">
+                The tree currently contains <strong>A, B, C, D</strong>.
+                The edges leaving it include
+                <strong>C–E = 4</strong>, <strong>D–F = 5</strong>,
+                <strong>D–E = 9</strong>, and <strong>C–F = 8</strong>.
+              </p>
+
+              <p class="math-note">
+                The smallest edge is <strong>C–E = 4</strong>,
+                so we add vertex <strong>E</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Tree after Step 4:</strong>
+                vertices {A, B, C, D, E}, edges {A–C, A–B, B–D, C–E}
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Step 5 — Add F</h3>
+
+              <p class="math-note">
+                Only vertex <strong>F</strong> remains outside the tree.
+              </p>
+
+              <p class="math-note">
+                The edges connecting the current tree to F are
+                <strong>D–F = 5</strong> and <strong>C–F = 8</strong>.
+              </p>
+
+              <p class="math-note">
+                The lightest one is <strong>D–F = 5</strong>,
+                so we add that edge and complete the spanning tree.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Final tree:</strong>
+                {A–C, A–B, B–D, C–E, D–F}
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Final Result</h3>
+
+              <p class="math-note">
+                The minimum spanning tree found by Prim’s algorithm is:
+              </p>
+
+              <p class="math-note">
+                <strong>A–C = 1</strong>,
+                <strong>A–B = 2</strong>,
+                <strong>B–D = 3</strong>,
+                <strong>C–E = 4</strong>,
+                <strong>D–F = 5</strong>.
+              </p>
+
+              <p class="math-note">
+                The total weight is:
+                <strong>1 + 2 + 3 + 4 + 5 = 15</strong>.
+              </p>
+
+              <p class="math-note">
+                The result is a tree because it connects all vertices
+                and uses exactly <em>n − 1</em> edges with no cycles.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Key Insight from Part 2</h3>
+
+              <p class="math-note">
+                Prim’s algorithm always builds
+                <strong>one connected structure</strong>.
+              </p>
+
+              <p class="math-note">
+                At each step, it looks only at the frontier of the current tree
+                and picks the cheapest edge that expands it.
+              </p>
+
+              <p class="math-note">
+                This is why Prim feels different from Kruskal:
+                <strong>Prim grows one tree, while Kruskal merges components</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                why Prim’s greedy choice is safe.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
