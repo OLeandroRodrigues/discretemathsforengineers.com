@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <title>Teoria dos Grafos → Prim · Parte 1 — Introdução</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <span class="current">Prim · Parte 1</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Prim</h2>
+          <p>Parte 1 de 4 — Introdução</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Prim</strong>
+            <span>Parte 1 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn disabled" aria-disabled="true">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/prim/parte-2.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill active" href="/pt/pages/grafos/prim/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>Problema — Expandindo uma Rede com Custo Mínimo</h3>
+
+              <p class="math-note">
+                Suponha que queremos conectar várias cidades usando cabos, estradas ou tubulações.
+                Cada conexão possível tem um custo, e o objetivo é conectar todas as cidades
+                gastando o mínimo possível.
+              </p>
+
+              <p class="math-note">
+                Em teoria dos grafos, isso se torna um problema de encontrar uma
+                <strong>árvore geradora mínima</strong>: um conjunto de arestas que conecta todos os vértices,
+                não possui ciclos e tem o menor peso total possível.
+              </p>
+
+              <figure class="graph-figure graph-figure--prim">
+                <svg
+                  class="graph--prim"
+                  viewBox="70 50 620 400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Grafo ponderado ilustrando o algoritmo de Prim expandindo uma árvore geradora mínima a partir de um vértice inicial"
+                  preserveAspectRatio="xMidYMid meet"
+                  style="width:100%; height:auto; display:block;"
+                >
+                  <!-- soft glow for all edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255,255,255,0.07)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- regular edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(234,234,234,0.55)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- highlighted growing tree edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(46, 204, 113, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                  </g>
+
+                  <!-- edge weights -->
+                  <g
+                    font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(255,214,102,0.98)"
+                    stroke="rgba(0,0,0,0.60)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="235" y="92" text-anchor="middle">1</text>
+                    <text x="145" y="195" text-anchor="middle">2</text>
+                    <text x="255" y="295" text-anchor="middle">3</text>
+                    <text x="420" y="102" text-anchor="middle">4</text>
+                    <text x="440" y="292" text-anchor="middle">5</text>
+                    <text x="345" y="195" text-anchor="middle">6</text>
+                    <text x="238" y="175" text-anchor="middle">7</text>
+                    <text x="440" y="185" text-anchor="middle">8</text>
+                    <text x="435" y="210" text-anchor="middle">9</text>
+                  </g>
+
+                  <!-- node labels -->
+                  <g
+                    font-family="inherit"
+                    font-size="15"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.98)"
+                    stroke="rgba(0,0,0,0.62)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="150" y="82" text-anchor="middle">A</text>
+                    <text x="170" y="305" text-anchor="middle">B</text>
+                    <text x="320" y="72" text-anchor="middle">C</text>
+                    <text x="340" y="326" text-anchor="middle">D</text>
+                    <text x="520" y="92" text-anchor="middle">E</text>
+                    <text x="540" y="304" text-anchor="middle">F</text>
+                  </g>
+
+                  <!-- nodes -->
+                  <g>
+                    <!-- glow -->
+                    <g fill="rgba(52,152,219,0.18)">
+                      <circle cx="150" cy="110" r="20" />
+                      <circle cx="170" cy="270" r="20" />
+                      <circle cx="320" cy="100" r="20" />
+                      <circle cx="340" cy="290" r="20" />
+                      <circle cx="520" cy="120" r="20" />
+                      <circle cx="540" cy="270" r="20" />
+                    </g>
+
+                    <!-- regular nodes -->
+                    <g
+                      fill="rgba(52,152,219,0.96)"
+                      stroke="rgba(234,234,234,0.95)"
+                      stroke-width="2.2"
+                    >
+                      <circle cx="170" cy="270" r="14"><title>Vértice B</title></circle>
+                      <circle cx="320" cy="100" r="14"><title>Vértice C</title></circle>
+                      <circle cx="340" cy="290" r="14"><title>Vértice D</title></circle>
+                      <circle cx="520" cy="120" r="14"><title>Vértice E</title></circle>
+                      <circle cx="540" cy="270" r="14"><title>Vértice F</title></circle>
+                    </g>
+
+                    <!-- starting node highlighted -->
+                    <g
+                      fill="rgba(46, 204, 113, 0.98)"
+                      stroke="rgba(234,234,234,0.98)"
+                      stroke-width="2.6"
+                    >
+                      <circle cx="150" cy="110" r="16"><title>Vértice inicial A</title></circle>
+                    </g>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  O algoritmo de Prim começa em um vértice e expande a árvore passo a passo,
+                  sempre escolhendo a aresta de menor peso que conecta a árvore atual a um novo vértice.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>O que é o algoritmo de Prim?</h3>
+
+              <p class="math-note">
+                <strong>O algoritmo de Prim</strong> é um método guloso para encontrar uma
+                árvore geradora mínima em um grafo ponderado.
+                Em vez de ordenar todas as arestas globalmente, ele começa em um vértice
+                e expande uma única árvore.
+              </p>
+
+              <p class="math-note">
+                Em cada passo, o algoritmo observa todas as arestas que saem da árvore atual
+                e seleciona aquela com o menor peso.
+                A aresta escolhida deve conectar a árvore a um
+                <strong>novo vértice fora da árvore</strong>.
+              </p>
+
+              <p class="math-note">
+                Esse processo continua até que todos os vértices estejam conectados.
+                Se o grafo tem <em>n</em> vértices, a árvore geradora final terá
+                exatamente <em>n − 1</em> arestas.
+              </p>
+
+              <p class="math-note">
+                A intuição central é simples:
+                <strong>sempre expandir a árvore atual usando a aresta mais barata possível</strong>.
+              </p>
+
+              <p class="math-note">
+                Como ele mantém uma única estrutura conectada crescendo desde o início,
+                Prim costuma ser um dos algoritmos mais intuitivos para árvores geradoras mínimas.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Resumo:</strong>
+                Prim = expandir uma única árvore adicionando repetidamente a aresta mais leve para um novo vértice.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Por que essa ideia é importante?</h3>
+
+              <p class="math-note">
+                Árvores geradoras mínimas são úteis sempre que queremos construir uma estrutura conectada
+                com custo mínimo: redes de comunicação, sistemas viários, redes elétricas,
+                planejamento de transporte e projetos de infraestrutura.
+              </p>
+
+              <p class="math-note">
+                O algoritmo de Prim também é importante do ponto de vista pedagógico porque mostra como
+                uma escolha local baseada na fronteira atual pode produzir uma árvore globalmente ótima.
+              </p>
+
+              <p class="math-note">
+                Na prática, Prim é especialmente natural quando pensamos em uma rede
+                como algo que cresce para fora a partir de um ponto inicial escolhido.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Intuição principal da Parte 1</h3>
+
+              <p class="math-note">
+                O objetivo não é apenas conectar o grafo —
+                é conectá-lo <strong>com o menor custo possível</strong>.
+              </p>
+
+              <p class="math-note">
+                Prim faz isso perguntando repetidamente:
+                <strong>qual é a menor aresta que pode expandir minha árvore atual agora?</strong>
+              </p>
+
+              <p class="math-note">
+                Diferente de Kruskal, que examina as arestas em ordem global,
+                Prim sempre trabalha a partir da fronteira da árvore já construída.
+              </p>
+
+              <p class="math-note">
+                Na próxima parte, estudaremos o algoritmo passo a passo,
+                começando de um vértice inicial e acompanhando cada aresta aceita.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                execução passo a passo do algoritmo de Prim.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
