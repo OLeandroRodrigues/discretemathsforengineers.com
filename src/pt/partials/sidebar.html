@@ -3,7 +3,7 @@
     <div class="nav-section">
       <div class="nav-label" data-i18n="core">Fundamentos</div>
 
-      <details class="menu"  data-menu="graphs">
+      <details class="menu" data-menu="graphs">
         <summary class="menu-title">
           <div class="menu-left">
             <div class="icon" aria-hidden="true">
@@ -32,29 +32,47 @@
             <span class="submenu-title">01 — Fundamentos</span>
             <span class="submenu-meta">11 partes</span>
           </a>
-          <a class="series-item" href="/pt/pages/grafos/hamiltoniano/parte-1.html">
-            <span class="submenu-title">02 — Hamiltoniano</span>
-            <span class="submenu-meta">4 partes</span>
-          </a>
-          <a class="series-item" href="/pt/pages/grafos/euleriano/parte-1.html">
-            <span class="submenu-title">03 — Euleriano</span>
-            <span class="submenu-meta">4 partes</span>
-          </a>
-          <a class="series-item" href="/pt/pages/grafos/kruskal/parte-1.html">                                              
-            <span class="submenu-title">04 — Kruskal</span>
-            <span class="submenu-meta">4 partes</span>
-          </a>
-          <a class="series-item" href="/pt/pages/grafos/prim/parte-1.html">                                              
-            <span class="submenu-title">05 — Prim</span>
-            <span class="submenu-meta">1 parte</span>
-          </a>
-          <a class="series-item" href="/pt/pages/grafos/representacao-computacional/parte-1.html">
-            <span class="submenu-title">06 — Representação Computacional</span>
-            <span class="submenu-meta">3 partes</span>
-          </a>
+
+          <div class="submenu-group" aria-label="Propriedades">
+            <div class="submenu-group-label">Propriedades</div>
+
+            <a class="series-item" href="/pt/pages/grafos/hamiltoniano/parte-1.html">
+              <span class="submenu-title">02 — Hamiltoniano</span>
+              <span class="submenu-meta">4 partes</span>
+            </a>
+
+            <a class="series-item" href="/pt/pages/grafos/euleriano/parte-1.html">
+              <span class="submenu-title">03 — Euleriano</span>
+              <span class="submenu-meta">4 partes</span>
+            </a>
+          </div>
+
+          <div class="submenu-group" aria-label="Árvores Geradoras Mínimas">
+            <div class="submenu-group-label">Árvores Geradoras Mínimas</div>
+
+            <a class="series-item" href="/pt/pages/grafos/kruskal/parte-1.html">
+              <span class="submenu-title">04 — Kruskal</span>
+              <span class="submenu-meta">4 partes</span>
+            </a>
+
+            <a class="series-item" href="/pt/pages/grafos/prim/parte-1.html">
+              <span class="submenu-title">05 — Prim</span>
+              <span class="submenu-meta">1 parte</span>
+            </a>
+          </div>
+
+          <div class="submenu-group" aria-label="Representação">
+            <div class="submenu-group-label">Representação</div>
+
+            <a class="series-item" href="/pt/pages/grafos/representacao-computacional/parte-1.html">
+              <span class="submenu-title">06 — Grafos na Computação</span>
+              <span class="submenu-meta">3 partes</span>
+            </a>
+          </div>
         </div>
       </details>
-      <details class="menu"  data-menu="algorithm-design">
+
+      <details class="menu" data-menu="algorithm-design">
         <summary class="menu-title">
           <div class="menu-left">
             <div class="icon" aria-hidden="true">
@@ -68,7 +86,7 @@
               </svg>
             </div>
             <div class="menu-text">
-              <strong data-i18n="graphs">Projeto de Algoritmos</strong>
+              <strong>Projeto de Algoritmos</strong>
             </div>
           </div>
           <div class="chev" aria-hidden="true">
@@ -85,8 +103,10 @@
         </div>
       </details>
     </div>
+
     <div class="nav-section">
       <div class="nav-label">Mais</div>
+
       <details class="menu" data-menu="about">
         <summary class="menu-title">
           <div class="menu-left">
@@ -108,6 +128,7 @@
             </svg>
           </div>
         </summary>
+
         <div class="submenu">
           <a class="series-item" href="/pt/pages/sobre/visao.html">
             <span class="submenu-title">Visão</span>
@@ -124,43 +145,59 @@
 </aside>
 <script>
   (function () {
-    const KEY = "nav.activeMenu";
+  const KEY = "nav.activeMenu";
 
-    function norm(p){ return (p || "").replace(/\/$/, ""); }
+  function norm(p) {
+    return (p || "").replace(/\/$/, "");
+  }
 
-    const menus = Array.from(document.querySelectorAll('details.menu[data-menu]'));
-    if (!menus.length) {
-      document.documentElement.classList.remove("nav-preload");
-      return;
-    }
-
-    function closeOthers(openMenu){
-      menus.forEach(m => { if (m !== openMenu) m.open = false; });
-    }
-
-    const currentPath = norm(location.pathname);
-    let matched = null;
-
-    for (const menu of menus) {
-      const links = menu.querySelectorAll(".submenu a[href]");
-      for (const a of links) {
-        const url = new URL(a.getAttribute("href"), location.origin);
-        if (norm(url.pathname) === currentPath) { matched = menu; break; }
-      }
-      if (matched) break;
-    }
-
-    const saved = localStorage.getItem(KEY);
-    const fallback = saved
-      ? document.querySelector(`details.menu[data-menu="${CSS.escape(saved)}"]`)
-      : null;
-
-    const toOpen = matched || fallback;
-    if (toOpen) {
-      toOpen.open = true;
-      closeOthers(toOpen);
-    }
-
+  const menus = Array.from(document.querySelectorAll('details.menu[data-menu]'));
+  if (!menus.length) {
     document.documentElement.classList.remove("nav-preload");
-  })();
+    return;
+  }
+
+  function closeOthers(openMenu) {
+    menus.forEach(menu => {
+      if (menu !== openMenu) menu.open = false;
+    });
+  }
+
+  const currentPath = norm(location.pathname);
+  let matched = null;
+
+  for (const menu of menus) {
+    const links = menu.querySelectorAll(".submenu a[href]");
+    for (const a of links) {
+      const url = new URL(a.getAttribute("href"), location.origin);
+      if (norm(url.pathname) === currentPath) {
+        matched = menu;
+        break;
+      }
+    }
+    if (matched) break;
+  }
+
+  const saved = localStorage.getItem(KEY);
+  const fallback = saved
+    ? document.querySelector(`details.menu[data-menu="${CSS.escape(saved)}"]`)
+    : null;
+
+  const toOpen = matched || fallback;
+  if (toOpen) {
+    toOpen.open = true;
+    closeOthers(toOpen);
+  }
+
+  menus.forEach(menu => {
+    menu.addEventListener("toggle", () => {
+      if (menu.open) {
+        closeOthers(menu);
+        localStorage.setItem(KEY, menu.dataset.menu);
+      }
+    });
+  });
+
+  document.documentElement.classList.remove("nav-preload");
+})();
 </script>
