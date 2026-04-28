@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Teoria dos Grafos → Prim · Parte 3 — Por que a escolha gulosa funciona</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/grafos/prim/parte-1.html">Prim</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Prim</h2>
+          <p>Parte 3 de 4 — Por que a escolha gulosa funciona</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Prim</strong>
+            <span>Parte 3 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/prim/parte-2.html">← Anterior</a>
+            <a class="btn" href="/pt/pages/grafos/prim/parte-4.html">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/prim/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-2.html">2</a>
+          <a class="pill active" href="/pt/pages/grafos/prim/parte-3.html">3</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>A pergunta principal</h3>
+
+              <p class="math-note">
+                O algoritmo de Prim toma uma decisão local a cada passo:
+                ele escolhe a aresta de menor peso que conecta a árvore atual
+                a um vértice fora dela.
+              </p>
+
+              <p class="math-note">
+                Mas por que isso é seguro?
+                Por que escolher a aresta mais barata agora ainda leva a uma
+                árvore geradora mínima no final?
+              </p>
+
+              <p class="math-note">
+                A resposta vem de uma das ideias mais importantes
+                por trás dos algoritmos de árvore geradora mínima:
+                <strong>a propriedade do corte</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia principal:</strong>
+                a aresta mais leve que cruza um corte é sempre segura para uma árvore geradora mínima.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>O que é um corte?</h3>
+
+              <p class="math-note">
+                Um <strong>corte</strong> divide os vértices do grafo em dois grupos.
+              </p>
+
+              <p class="math-note">
+                No algoritmo de Prim, um lado do corte é o conjunto de vértices
+                já dentro da árvore.
+                O outro lado contém os vértices que ainda estão fora.
+              </p>
+
+              <p class="math-note">
+                Qualquer aresta que conecta esses dois grupos é chamada de
+                <strong>aresta de corte</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>No Prim:</strong>
+                árvore de um lado, vértices externos do outro.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card card--prim">
+              <h3>Intuição visual — a fronteira</h3>
+
+              <p class="math-note">
+                Pense na árvore atual de Prim como uma ilha.
+                As arestas de corte são pontes que ligam essa ilha ao resto do grafo.
+              </p>
+
+              <p class="math-note">
+                Prim sempre escolhe a ponte mais barata para expandir a ilha.
+              </p>
+
+              <figure class="graph-figure graph-figure--prim">
+                <svg
+                  class="graph--prim"
+                  viewBox="70 50 620 400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Weighted graph showing the cut used by Prim's algorithm"
+                  preserveAspectRatio="xMidYMid meet"
+                  style="width:100%; height:auto; display:block;"
+                >
+                  <!-- cut area: current tree -->
+                  <ellipse
+                    cx="220"
+                    cy="190"
+                    rx="150"
+                    ry="150"
+                    fill="rgba(46, 204, 113, 0.08)"
+                    stroke="rgba(46, 204, 113, 0.42)"
+                    stroke-width="3"
+                    stroke-dasharray="10 8"
+                  />
+
+                  <!-- soft glow for all edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255,255,255,0.07)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- regular edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(234,234,234,0.45)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- current tree edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(46, 204, 113, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                  </g>
+
+                  <!-- candidate crossing edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255, 214, 102, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                  </g>
+
+                  <!-- chosen safe edge -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255, 120, 120, 0.98)"
+                    stroke-width="8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                  </g>
+
+                  <!-- edge weights -->
+                  <g
+                    font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(255,214,102,0.98)"
+                    stroke="rgba(0,0,0,0.60)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="235" y="92" text-anchor="middle">1</text>
+                    <text x="145" y="195" text-anchor="middle">2</text>
+                    <text x="255" y="295" text-anchor="middle">3</text>
+                    <text x="420" y="102" text-anchor="middle">4</text>
+                    <text x="440" y="292" text-anchor="middle">5</text>
+                    <text x="345" y="195" text-anchor="middle">6</text>
+                    <text x="238" y="175" text-anchor="middle">7</text>
+                    <text x="440" y="185" text-anchor="middle">8</text>
+                    <text x="435" y="210" text-anchor="middle">9</text>
+                  </g>
+
+                  <!-- labels -->
+                  <g
+                    font-family="inherit"
+                    font-size="15"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.98)"
+                    stroke="rgba(0,0,0,0.62)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="150" y="82" text-anchor="middle">A</text>
+                    <text x="170" y="305" text-anchor="middle">B</text>
+                    <text x="320" y="72" text-anchor="middle">C</text>
+                    <text x="340" y="326" text-anchor="middle">D</text>
+                    <text x="520" y="92" text-anchor="middle">E</text>
+                    <text x="540" y="304" text-anchor="middle">F</text>
+                  </g>
+
+                  <!-- nodes -->
+                  <g>
+                    <g fill="rgba(52,152,219,0.18)">
+                      <circle cx="150" cy="110" r="20" />
+                      <circle cx="170" cy="270" r="20" />
+                      <circle cx="320" cy="100" r="20" />
+                      <circle cx="340" cy="290" r="20" />
+                      <circle cx="520" cy="120" r="20" />
+                      <circle cx="540" cy="270" r="20" />
+                    </g>
+
+                    <g
+                      fill="rgba(52,152,219,0.96)"
+                      stroke="rgba(234,234,234,0.95)"
+                      stroke-width="2.2"
+                    >
+                      <circle cx="150" cy="110" r="14"><title>Vertex A</title></circle>
+                      <circle cx="170" cy="270" r="14"><title>Vertex B</title></circle>
+                      <circle cx="320" cy="100" r="14"><title>Vertex C</title></circle>
+                      <circle cx="340" cy="290" r="14"><title>Vertex D</title></circle>
+                      <circle cx="520" cy="120" r="14"><title>Vertex E</title></circle>
+                      <circle cx="540" cy="270" r="14"><title>Vertex F</title></circle>
+                    </g>
+                  </g>
+
+                  <!-- legend -->
+                  <g font-family="inherit" font-size="13" font-weight="700">
+                    <rect x="430" y="335" width="170" height="50" rx="12" fill="rgba(0,0,0,0.24)" />
+                    <line x1="448" y1="353" x2="485" y2="353" stroke="rgba(46, 204, 113, 0.95)" stroke-width="5" stroke-linecap="round" />
+                    <text x="495" y="358" fill="rgba(234,234,234,0.9)">current tree</text>
+                    <line x1="448" y1="372" x2="485" y2="372" stroke="rgba(255, 214, 102, 0.95)" stroke-width="5" stroke-linecap="round" />
+                    <text x="495" y="377" fill="rgba(234,234,234,0.9)">crossing edges</text>
+                  </g>
+                </svg>
+
+              <figcaption class="math-note" style="margin-top:10px;">
+                A região tracejada representa a árvore atual. As arestas de corte conectam
+                essa região aos vértices externos. A menor delas é segura para adicionar.
+              </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>A propriedade do corte</h3>
+
+              <p class="math-note">
+                A <strong>propriedade do corte</strong> afirma que,
+                ao dividir o grafo em dois grupos,
+                a aresta de menor peso que cruza esse corte é segura
+                para fazer parte de uma árvore geradora mínima.
+              </p>
+
+              <p class="math-note">
+                O algoritmo de Prim utiliza essa propriedade em cada passo.
+                A árvore atual define um lado do corte,
+                e os vértices restantes definem o outro lado.
+              </p>
+
+              <p class="math-note">
+                Portanto, ao escolher a menor aresta que cruza esse corte,
+                Prim faz sempre uma escolha gulosa segura.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Escolha segura:</strong>
+                adicionar essa aresta não impede a construção de uma árvore mínima.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Por que não forma ciclo?</h3>
+
+              <p class="math-note">
+                O algoritmo de Prim só adiciona arestas que conectam a árvore atual
+                a um vértice que ainda não está nela.
+              </p>
+
+              <p class="math-note">
+                Como esse vértice ainda não fazia parte da árvore,
+                não existe caminho anterior ligando ele à árvore.
+              </p>
+
+              <p class="math-note">
+                Portanto, adicionar essa aresta não pode formar ciclo.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Evita ciclos:</strong>
+                sempre conecta um vértice novo.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Por que conecta todos os vértices?</h3>
+
+              <p class="math-note">
+                A cada passo, o algoritmo adiciona exatamente um novo vértice à árvore.
+              </p>
+
+              <p class="math-note">
+                Começando de um único vértice, Prim continua expandindo
+                até não restar nenhum vértice fora.
+              </p>
+
+              <p class="math-note">
+                Em um grafo conexo, sempre existirá uma aresta ligando
+                a árvore ao restante do grafo até que todos sejam incluídos.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Conectividade:</strong>
+                o algoritmo termina quando todos os vértices estão na árvore.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Por que o resultado é mínimo?</h3>
+
+              <p class="math-note">
+                Em cada passo, Prim adiciona uma aresta segura,
+                de acordo com a propriedade do corte.
+              </p>
+
+              <p class="math-note">
+                Isso significa que cada aresta escolhida pode fazer parte
+                de alguma árvore geradora mínima.
+              </p>
+
+              <p class="math-note">
+                Repetindo essas escolhas seguras, o algoritmo constrói
+                uma árvore final que é mínima.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Conclusão:</strong>
+                escolhas locais levam a um resultado global ótimo.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Intuição principal da Parte 3</h3>
+
+              <p class="math-note">
+                O algoritmo de Prim funciona porque cada escolha gulosa
+                é garantida pela propriedade do corte.
+              </p>
+
+              <p class="math-note">
+                Ele não escolhe qualquer aresta barata —
+                escolhe a mais barata que cruza a fronteira da árvore.
+              </p>
+
+              <p class="math-note">
+                Por isso, ele consegue crescer localmente
+                e ainda garantir um resultado global ótimo.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Próximo passo:</strong>
+                implementação e análise de complexidade do algoritmo de Prim.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
