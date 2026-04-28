@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Prim · Part 3 — Why the Greedy Choice Works</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/prim/part-1.html">Prim</a>
+        <span class="sep">›</span>
+        <span class="current">Part 3</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Prim</h2>
+          <p>Part 3 of 4 — Why the Greedy Choice Works</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Prim</strong>
+            <span>Part 3 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/prim/part-2.html">← Previous</a>
+            <a class="btn" href="/en/pages/graphs/prim/part-4.html">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/prim/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-2.html">2</a>
+          <a class="pill active" href="/en/pages/graphs/prim/part-3.html">3</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>The Key Question</h3>
+
+              <p class="math-note">
+                Prim’s algorithm makes a local decision at every step:
+                it chooses the lightest edge that connects the current tree
+                to a vertex outside the tree.
+              </p>
+
+              <p class="math-note">
+                But why is this safe?
+                Why does choosing the cheapest available edge now still lead to
+                a globally minimum spanning tree later?
+              </p>
+
+              <p class="math-note">
+                The answer comes from one of the most important ideas behind
+                minimum spanning tree algorithms:
+                <strong>the cut property</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Main idea:</strong>
+                the lightest edge crossing a cut is always safe to add to a minimum spanning tree.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>What is a cut?</h3>
+
+              <p class="math-note">
+                A <strong>cut</strong> separates the vertices of a graph into two groups.
+              </p>
+
+              <p class="math-note">
+                In Prim’s algorithm, one side of the cut is the set of vertices
+                already inside the growing tree.
+                The other side contains the vertices still outside the tree.
+              </p>
+
+              <p class="math-note">
+                Any edge that connects these two groups is called a
+                <strong>crossing edge</strong>.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>In Prim:</strong>
+                tree vertices on one side, outside vertices on the other side.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card card--prim">
+              <h3>Visual Intuition — The Frontier</h3>
+
+              <p class="math-note">
+                Think of Prim’s current tree as an island.
+                The crossing edges are bridges from that island to the rest of the graph.
+              </p>
+
+              <p class="math-note">
+                Prim always chooses the cheapest bridge that expands the island.
+              </p>
+
+              <figure class="graph-figure graph-figure--prim">
+                <svg
+                  class="graph--prim"
+                  viewBox="70 50 620 400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Weighted graph showing the cut used by Prim's algorithm"
+                  preserveAspectRatio="xMidYMid meet"
+                  style="width:100%; height:auto; display:block;"
+                >
+                  <!-- cut area: current tree -->
+                  <ellipse
+                    cx="220"
+                    cy="190"
+                    rx="150"
+                    ry="150"
+                    fill="rgba(46, 204, 113, 0.08)"
+                    stroke="rgba(46, 204, 113, 0.42)"
+                    stroke-width="3"
+                    stroke-dasharray="10 8"
+                  />
+
+                  <!-- soft glow for all edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255,255,255,0.07)"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- regular edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(234,234,234,0.45)"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="340" y1="290" x2="540" y2="270" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="170" y1="270" x2="320" y2="100" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                    <line x1="340" y1="290" x2="520" y2="120" />
+                  </g>
+
+                  <!-- current tree edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(46, 204, 113, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="150" y1="110" x2="320" y2="100" />
+                    <line x1="150" y1="110" x2="170" y2="270" />
+                  </g>
+
+                  <!-- candidate crossing edges -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255, 214, 102, 0.95)"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="520" y2="120" />
+                    <line x1="320" y1="100" x2="340" y2="290" />
+                    <line x1="320" y1="100" x2="540" y2="270" />
+                  </g>
+
+                  <!-- chosen safe edge -->
+                  <g
+                    fill="none"
+                    stroke="rgba(255, 120, 120, 0.98)"
+                    stroke-width="8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="170" y1="270" x2="340" y2="290" />
+                  </g>
+
+                  <!-- edge weights -->
+                  <g
+                    font-family="inherit"
+                    font-size="14"
+                    font-weight="800"
+                    fill="rgba(255,214,102,0.98)"
+                    stroke="rgba(0,0,0,0.60)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="235" y="92" text-anchor="middle">1</text>
+                    <text x="145" y="195" text-anchor="middle">2</text>
+                    <text x="255" y="295" text-anchor="middle">3</text>
+                    <text x="420" y="102" text-anchor="middle">4</text>
+                    <text x="440" y="292" text-anchor="middle">5</text>
+                    <text x="345" y="195" text-anchor="middle">6</text>
+                    <text x="238" y="175" text-anchor="middle">7</text>
+                    <text x="440" y="185" text-anchor="middle">8</text>
+                    <text x="435" y="210" text-anchor="middle">9</text>
+                  </g>
+
+                  <!-- labels -->
+                  <g
+                    font-family="inherit"
+                    font-size="15"
+                    font-weight="800"
+                    fill="rgba(234,234,234,0.98)"
+                    stroke="rgba(0,0,0,0.62)"
+                    stroke-width="4"
+                    paint-order="stroke fill"
+                    pointer-events="none"
+                  >
+                    <text x="150" y="82" text-anchor="middle">A</text>
+                    <text x="170" y="305" text-anchor="middle">B</text>
+                    <text x="320" y="72" text-anchor="middle">C</text>
+                    <text x="340" y="326" text-anchor="middle">D</text>
+                    <text x="520" y="92" text-anchor="middle">E</text>
+                    <text x="540" y="304" text-anchor="middle">F</text>
+                  </g>
+
+                  <!-- nodes -->
+                  <g>
+                    <g fill="rgba(52,152,219,0.18)">
+                      <circle cx="150" cy="110" r="20" />
+                      <circle cx="170" cy="270" r="20" />
+                      <circle cx="320" cy="100" r="20" />
+                      <circle cx="340" cy="290" r="20" />
+                      <circle cx="520" cy="120" r="20" />
+                      <circle cx="540" cy="270" r="20" />
+                    </g>
+
+                    <g
+                      fill="rgba(52,152,219,0.96)"
+                      stroke="rgba(234,234,234,0.95)"
+                      stroke-width="2.2"
+                    >
+                      <circle cx="150" cy="110" r="14"><title>Vertex A</title></circle>
+                      <circle cx="170" cy="270" r="14"><title>Vertex B</title></circle>
+                      <circle cx="320" cy="100" r="14"><title>Vertex C</title></circle>
+                      <circle cx="340" cy="290" r="14"><title>Vertex D</title></circle>
+                      <circle cx="520" cy="120" r="14"><title>Vertex E</title></circle>
+                      <circle cx="540" cy="270" r="14"><title>Vertex F</title></circle>
+                    </g>
+                  </g>
+
+                  <!-- legend -->
+                  <g font-family="inherit" font-size="13" font-weight="700">
+                    <rect x="430" y="335" width="170" height="50" rx="12" fill="rgba(0,0,0,0.24)" />
+                    <line x1="448" y1="353" x2="485" y2="353" stroke="rgba(46, 204, 113, 0.95)" stroke-width="5" stroke-linecap="round" />
+                    <text x="495" y="358" fill="rgba(234,234,234,0.9)">current tree</text>
+                    <line x1="448" y1="372" x2="485" y2="372" stroke="rgba(255, 214, 102, 0.95)" stroke-width="5" stroke-linecap="round" />
+                    <text x="495" y="377" fill="rgba(234,234,234,0.9)">crossing edges</text>
+                  </g>
+                </svg>
+
+                <figcaption class="math-note" style="margin-top:10px;">
+                  The dashed region represents the current tree. The crossing edges connect it to outside vertices.
+                  The lightest crossing edge is safe to add.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section class="card">
+              <h3>The Cut Property</h3>
+
+              <p class="math-note">
+                The <strong>cut property</strong> says that if we split the graph into two groups,
+                then the lightest edge crossing that split is safe to include in some minimum spanning tree.
+              </p>
+
+              <p class="math-note">
+                Prim uses this property at every step.
+                The current tree defines one side of the cut,
+                and all remaining vertices define the other side.
+              </p>
+
+              <p class="math-note">
+                So when Prim chooses the lightest edge crossing that cut,
+                it is making a safe greedy choice.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Safe choice:</strong>
+                adding this edge does not prevent us from completing a minimum spanning tree.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Why no cycle is created?</h3>
+
+              <p class="math-note">
+                Prim only adds edges that connect the current tree to a vertex outside it.
+              </p>
+
+              <p class="math-note">
+                Since the new vertex was not already in the tree,
+                there was no previous path from the tree to that vertex inside the tree.
+              </p>
+
+              <p class="math-note">
+                Therefore, adding this edge cannot create a cycle.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Cycle prevention:</strong>
+                always connect to a new vertex, never to a vertex already inside the tree.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Why the result spans all vertices?</h3>
+
+              <p class="math-note">
+                Each step adds exactly one new vertex to the tree.
+              </p>
+
+              <p class="math-note">
+                Starting from one vertex, Prim keeps expanding until there are no vertices left outside.
+              </p>
+
+              <p class="math-note">
+                In a connected graph, there is always at least one edge from the current tree
+                to the outside until every vertex has been included.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Spanning:</strong>
+                the algorithm stops only when all vertices are part of the tree.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Why the result is minimum?</h3>
+
+              <p class="math-note">
+                At every step, Prim adds an edge that is safe according to the cut property.
+              </p>
+
+              <p class="math-note">
+                This means each chosen edge can belong to some minimum spanning tree.
+                Repeating this safe choice step by step preserves the possibility of reaching
+                an optimal final tree.
+              </p>
+
+              <p class="math-note">
+                When all vertices have been included, the algorithm has built a spanning tree
+                made only of safe choices.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Conclusion:</strong>
+                Prim’s local choices produce a globally minimum spanning tree.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Key Insight from Part 3</h3>
+
+              <p class="math-note">
+                Prim works because each greedy choice is protected by the cut property.
+              </p>
+
+              <p class="math-note">
+                The algorithm does not choose a cheap edge randomly.
+                It chooses the cheapest edge that crosses from the current tree
+                to the outside.
+              </p>
+
+              <p class="math-note">
+                That is why Prim can grow a tree locally while still guaranteeing
+                a globally optimal result.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next step:</strong>
+                implementation idea and complexity of Prim’s algorithm.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
