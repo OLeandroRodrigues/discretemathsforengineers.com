@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <title>Teoria dos Grafos → Prim · Parte 4 — Implementação e Complexidade</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/pt/index.html">Início</a>
+        <span class="sep">›</span>
+        <a href="#">Teoria dos Grafos</a>
+        <span class="sep">›</span>
+        <a href="/pt/pages/grafos/prim/parte-1.html">Prim</a>
+        <span class="sep">›</span>
+        <span class="current">Parte 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Teoria dos Grafos → Prim</h2>
+          <p>Parte 4 de 4 — Implementação e Complexidade</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Navegação da série">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Série: Prim</strong>
+            <span>Parte 4 de 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/pt/pages/grafos/prim/parte-3.html">← Anterior</a>
+            <a class="btn disabled" aria-disabled="true">Próxima →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/pt/pages/grafos/prim/parte-1.html">1</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-2.html">2</a>
+          <a class="pill" href="/pt/pages/grafos/prim/parte-3.html">3</a>
+          <a class="pill active" href="/pt/pages/grafos/prim/parte-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>Ideia de implementação</h3>
+
+              <p class="math-note">
+                O algoritmo de Prim pode ser implementado de diferentes formas,
+                mas a ideia central é sempre a mesma:
+                manter o controle da aresta mais barata que conecta cada vértice externo
+                à árvore atual.
+              </p>
+
+              <p class="math-note">
+                Em vez de inspecionar todo o grafo manualmente a cada passo,
+                normalmente utilizamos uma fila de prioridade ordenada pelo custo
+                mínimo de conexão.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Ideia principal:</strong>
+                sempre escolher o vértice com menor custo de conexão.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Estruturas de dados</h3>
+
+              <p class="math-note">
+                Uma implementação comum utiliza:
+              </p>
+
+              <ul>
+                <li><strong>key[v]</strong>: menor custo conhecido para conectar o vértice <em>v</em> à árvore;</li>
+                <li><strong>parent[v]</strong>: vértice que conecta <em>v</em> à árvore geradora mínima;</li>
+                <li><strong>visited[v]</strong>: indica se <em>v</em> já está na árvore;</li>
+                <li><strong>fila de prioridade</strong>: armazena os vértices ordenados pelo valor de <em>key</em>.</li>
+              </ul>
+
+              <p class="math-note">
+                Ao final, o vetor <strong>parent</strong> descreve a árvore geradora mínima.
+              </p>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Pseudocódigo</h3>
+
+              <pre><code>Prim(G, inicio):
+    para cada vértice v em G:
+        key[v] = infinito
+        parent[v] = nulo
+        visited[v] = falso
+
+    key[inicio] = 0
+    filaPrioridade.insert(inicio, 0)
+
+    enquanto filaPrioridade não está vazia:
+        u = filaPrioridade.extractMin()
+
+        se visited[u]:
+            continue
+
+        visited[u] = verdadeiro
+
+        para cada aresta (u, v) com peso w:
+            se not visited[v] e w &lt; key[v]:
+                key[v] = w
+                parent[v] = u
+                filaPrioridade.insert(v, key[v])
+
+    retornar parent</code></pre>
+
+              <p class="math-note">
+                O algoritmo escolhe repetidamente o próximo vértice com menor custo
+                e atualiza as melhores conexões para seus vizinhos.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>Como interpretar o pseudocódigo</h3>
+
+              <p class="math-note">
+                O valor <strong>key[v]</strong> representa a melhor aresta encontrada até o momento
+                para conectar o vértice <strong>v</strong> à árvore.
+              </p>
+
+              <p class="math-note">
+                Quando encontramos uma aresta melhor,
+                atualizamos <strong>key[v]</strong> e <strong>parent[v]</strong>.
+              </p>
+
+              <p class="math-note">
+                A fila de prioridade garante que o próximo vértice escolhido
+                seja sempre o de menor custo.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Importante:</strong>
+                <code>parent[v]</code> indica qual aresta conecta <code>v</code>.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card card--prim">
+              <h3>Complexidade</h3>
+
+              <p class="math-note">
+                A complexidade do algoritmo de Prim depende da representação do grafo
+                e da estrutura usada para escolher a próxima aresta mínima.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Implementação</th>
+                    <th>Uso típico</th>
+                    <th>Complexidade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Matriz de adjacência</td>
+                    <td>Grafos densos</td>
+                    <td><strong>O(V²)</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Lista de adjacência + heap binário</td>
+                    <td>Grafos esparsos</td>
+                    <td><strong>O((V + E) log V)</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Lista de adjacência + heap de Fibonacci</td>
+                    <td>Otimização teórica</td>
+                    <td><strong>O(E + V log V)</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p class="math-note">
+                Na prática, lista de adjacência com heap binário é a escolha mais comum.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>O que são V e E?</h3>
+
+              <p class="math-note">
+                Em algoritmos de grafos:
+              </p>
+
+              <ul>
+                <li><strong>V</strong>: número de vértices;</li>
+                <li><strong>E</strong>: número de arestas.</li>
+              </ul>
+
+              <p class="math-note">
+                Grafos densos possuem muitas arestas.
+                Grafos esparsos possuem relativamente poucas.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Dica:</strong>
+                listas de adjacência são mais eficientes para grafos grandes e esparsos.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Prim vs Kruskal na prática</h3>
+
+              <p class="math-note">
+                Ambos encontram árvores geradoras mínimas, mas com estratégias diferentes.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Prim</th>
+                    <th>Kruskal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Constrói uma única árvore</td>
+                    <td>Une componentes</td>
+                  </tr>
+                  <tr>
+                    <td>Usa fila de prioridade</td>
+                    <td>Usa Union-Find</td>
+                  </tr>
+                  <tr>
+                    <td>Foca na fronteira da árvore</td>
+                    <td>Foca nas arestas ordenadas</td>
+                  </tr>
+                  <tr>
+                    <td>Bom para grafos densos</td>
+                    <td>Bom para grafos esparsos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="card">
+              <h3>Erros comuns</h3>
+
+              <ul>
+                <li>Escolher a menor aresta global em vez da menor que sai da árvore.</li>
+                <li>Conectar vértices já presentes na árvore.</li>
+                <li>Esquecer que o grafo precisa ser conexo.</li>
+                <li>Confundir arestas analisadas com as da solução final.</li>
+              </ul>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Lembrete:</strong>
+                Prim sempre expande a árvore para fora.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Resumo final</h3>
+
+              <p class="math-note">
+                O algoritmo de Prim é um algoritmo guloso para encontrar
+                uma árvore geradora mínima em grafos ponderados e conexos.
+              </p>
+
+              <p class="math-note">
+                Ele começa de um vértice e cresce uma única árvore,
+                sempre adicionando a menor aresta que conecta a um novo vértice.
+              </p>
+
+              <p class="math-note">
+                Sua correção vem da propriedade do corte,
+                e sua eficiência depende das estruturas utilizadas.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim em uma frase:</strong>
+                construa uma árvore mínima escolhendo sempre a aresta mais barata da fronteira.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Próximo passo</h3>
+
+              <p class="math-note">
+                Depois de Prim e Kruskal, o próximo passo natural é estudar
+                caminhos mínimos.
+              </p>
+
+              <p class="math-note">
+                Enquanto árvores geradoras mínimas minimizam o custo total,
+                algoritmos como Dijkstra minimizam caminhos individuais.
+              </p>
+
+              <p class="math-note">
+                Apesar de parecidos, são problemas diferentes.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Sugestão:</strong>
+                estudar o algoritmo de Dijkstra.
+              </div>
+            </section>
+          </div>
+
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>

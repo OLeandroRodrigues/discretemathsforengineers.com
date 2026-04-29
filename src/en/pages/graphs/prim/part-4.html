@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Graph Theory → Prim · Part 4 — Implementation and Complexity</title>
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+
+  <div class="app">
+    {{> sidebar}}
+
+    <main>
+      <!-- Breadcrumb -->
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/en/index.html">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Graph Theory</a>
+        <span class="sep">›</span>
+        <a href="/en/pages/graphs/prim/part-1.html">Prim</a>
+        <span class="sep">›</span>
+        <span class="current">Part 4</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="main-header">
+        <div>
+          <h2>Graph Theory → Prim</h2>
+          <p>Part 4 of 4 — Implementation and Complexity</p>
+        </div>
+      </div>
+
+      <!-- Series navigation -->
+      <div class="seriesbar" aria-label="Series navigation">
+        <div class="series-meta">
+          <div class="series-title">
+            <strong>Series: Prim</strong>
+            <span>Part 4 of 4</span>
+          </div>
+
+          <div class="series-actions">
+            <a class="btn" href="/en/pages/graphs/prim/part-3.html">← Previous</a>
+            <a class="btn disabled" aria-disabled="true">Next →</a>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <a class="pill" href="/en/pages/graphs/prim/part-1.html">1</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-2.html">2</a>
+          <a class="pill" href="/en/pages/graphs/prim/part-3.html">3</a>
+          <a class="pill active" href="/en/pages/graphs/prim/part-4.html">4</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <article class="prose">
+          <div class="cards-grid">
+            <section class="card card--prim">
+              <h3>Implementation Idea</h3>
+
+              <p class="math-note">
+                Prim’s algorithm can be implemented in different ways, but the core idea
+                is always the same: keep track of the cheapest edge that can connect each
+                outside vertex to the current tree.
+              </p>
+
+              <p class="math-note">
+                Instead of repeatedly inspecting the whole graph manually, we usually store
+                candidate vertices in a priority queue ordered by their current cheapest
+                connection cost.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Main implementation idea:</strong>
+                always extract the vertex with the smallest known connection cost.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Data Structures</h3>
+
+              <p class="math-note">
+                A common implementation uses:
+              </p>
+
+              <ul>
+                <li><strong>key[v]</strong>: cheapest known cost to connect vertex <em>v</em> to the tree;</li>
+                <li><strong>parent[v]</strong>: the vertex that connects <em>v</em> to the MST;</li>
+                <li><strong>visited[v]</strong>: whether <em>v</em> is already inside the tree;</li>
+                <li><strong>priority queue</strong>: stores vertices ordered by their current key value.</li>
+              </ul>
+
+              <p class="math-note">
+                At the end, the <strong>parent</strong> array describes the minimum spanning tree.
+              </p>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Pseudocode</h3>
+
+              <pre><code>Prim(G, start):
+    for each vertex v in G:
+        key[v] = infinity
+        parent[v] = null
+        visited[v] = false
+
+    key[start] = 0
+    priorityQueue.insert(start, 0)
+
+    while priorityQueue is not empty:
+        u = priorityQueue.extractMin()
+
+        if visited[u]:
+            continue
+
+        visited[u] = true
+
+        for each edge (u, v) with weight w:
+            if not visited[v] and w &lt; key[v]:
+                key[v] = w
+                parent[v] = u
+                priorityQueue.insert(v, key[v])
+
+    return parent</code></pre>
+
+              <p class="math-note">
+                The algorithm repeatedly chooses the next cheapest vertex to add
+                and updates the best known connection cost for its neighbors.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>How to Read the Pseudocode</h3>
+
+              <p class="math-note">
+                The value <strong>key[v]</strong> represents the best edge found so far
+                to connect vertex <strong>v</strong> to the growing tree.
+              </p>
+
+              <p class="math-note">
+                When a better edge is found, we update both:
+                <strong>key[v]</strong> and <strong>parent[v]</strong>.
+              </p>
+
+              <p class="math-note">
+                The priority queue makes sure that the next selected vertex is always
+                the one with the smallest connection cost.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Important:</strong>
+                <code>parent[v]</code> tells which edge was chosen to connect <code>v</code>.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card card--prim">
+              <h3>Complexity</h3>
+
+              <p class="math-note">
+                The time complexity of Prim’s algorithm depends on the graph representation
+                and on the data structure used to choose the next minimum edge.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Implementation</th>
+                    <th>Typical use case</th>
+                    <th>Time complexity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Adjacency matrix</td>
+                    <td>Dense graphs</td>
+                    <td><strong>O(V²)</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Adjacency list + binary heap</td>
+                    <td>Sparse graphs</td>
+                    <td><strong>O((V + E) log V)</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Adjacency list + Fibonacci heap</td>
+                    <td>Theoretical optimization</td>
+                    <td><strong>O(E + V log V)</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p class="math-note">
+                In most practical implementations, an adjacency list with a binary heap
+                priority queue is a very common and efficient choice.
+              </p>
+            </section>
+
+            <section class="card">
+              <h3>What do V and E mean?</h3>
+
+              <p class="math-note">
+                In graph algorithms:
+              </p>
+
+              <ul>
+                <li><strong>V</strong> is the number of vertices;</li>
+                <li><strong>E</strong> is the number of edges.</li>
+              </ul>
+
+              <p class="math-note">
+                A dense graph has many edges, often close to the maximum possible number.
+                A sparse graph has relatively few edges.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Rule of thumb:</strong>
+                matrix representations are simple, while adjacency lists are usually better
+                for large sparse graphs.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Prim vs Kruskal in Practice</h3>
+
+              <p class="math-note">
+                Both Prim and Kruskal find a minimum spanning tree, but they approach
+                the problem from different perspectives.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Prim</th>
+                    <th>Kruskal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Grows one tree from a starting vertex</td>
+                    <td>Sorts edges and merges components</td>
+                  </tr>
+                  <tr>
+                    <td>Often natural with priority queues</td>
+                    <td>Often natural with Union-Find</td>
+                  </tr>
+                  <tr>
+                    <td>Focuses on the frontier of the current tree</td>
+                    <td>Focuses on globally sorted edges</td>
+                  </tr>
+                  <tr>
+                    <td>Can be convenient for connected dense graphs</td>
+                    <td>Can be convenient for sparse edge lists</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="card">
+              <h3>Common Mistakes</h3>
+
+              <ul>
+                <li>Choosing the globally smallest edge instead of the smallest edge leaving the current tree.</li>
+                <li>Adding an edge to a vertex that is already inside the tree.</li>
+                <li>Forgetting that Prim assumes the graph is connected if we want one spanning tree.</li>
+                <li>Confusing the final MST edges with every edge examined by the algorithm.</li>
+              </ul>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Key reminder:</strong>
+                Prim only expands the current tree toward outside vertices.
+              </div>
+            </section>
+          </div>
+
+          <div class="cards-grid" style="margin-top:20px;">
+            <section class="card">
+              <h3>Final Summary</h3>
+
+              <p class="math-note">
+                Prim’s algorithm is a greedy algorithm for finding a minimum spanning tree
+                in a connected, weighted, undirected graph.
+              </p>
+
+              <p class="math-note">
+                It starts from one vertex, grows a single tree, and repeatedly adds
+                the lightest edge that connects the current tree to a new vertex.
+              </p>
+
+              <p class="math-note">
+                Its correctness comes from the cut property, and its efficiency depends
+                on how we represent the graph and choose the next minimum candidate.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Prim in one sentence:</strong>
+                grow one minimum-cost tree by always crossing the cheapest frontier edge.
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Where to Go Next</h3>
+
+              <p class="math-note">
+                After studying Prim and Kruskal, a natural next step is to compare
+                minimum spanning tree problems with shortest path problems.
+              </p>
+
+              <p class="math-note">
+                Minimum spanning trees minimize the total cost to connect all vertices.
+                Shortest path algorithms, such as Dijkstra, minimize the cost of paths
+                from one source to other vertices.
+              </p>
+
+              <p class="math-note">
+                These problems look similar at first, but they answer different questions.
+              </p>
+
+              <div class="note" style="margin-top:10px;">
+                <strong>Next topic suggestion:</strong>
+                Dijkstra’s algorithm and shortest paths.
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      {{> main-footer}}
+    </main>
+  </div>
+</body>
+</html>
