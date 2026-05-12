@@ -1031,3 +1031,26 @@ code {
     font-size: 0.8rem;
   }
 }
+
+.submenu-group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submenu-group-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 14px;
+  height: 14px;
+
+  opacity: 0.72;
+  flex: 0 0 auto;
+}
+
+.submenu-group-icon svg {
+  width: 14px;
+  height: 14px;
+}
